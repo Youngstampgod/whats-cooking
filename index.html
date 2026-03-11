@@ -361,7 +361,97 @@
       font-size: 14px; color: #c49070;
     }
     .pro-tip-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--accent); letter-spacing: 3px; margin-right: 6px; transition: color 0.4s; }
+/* ── SCORE UPLOAD ── */
+    .score-section {
+      margin-top: 24px;
+      border-top: 1px solid #2a1000;
+      padding-top: 20px;
+      display: none;
+    }
+    .score-section.visible { display: block; }
 
+    .score-label {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 12px; color: var(--accent);
+      letter-spacing: 4px; margin-bottom: 10px;
+      transition: color 0.4s;
+    }
+
+    .upload-btn {
+      width: 100%; padding: 14px;
+      border: 2px dashed #3a1800;
+      border-radius: 10px; background: transparent;
+      color: var(--text-muted); font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 14px; font-style: italic;
+      cursor: pointer; transition: all 0.3s; text-align: center;
+    }
+    .upload-btn:hover { border-color: var(--accent); color: var(--text-warm); }
+
+    .score-result {
+      display: none;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #2a1000;
+      border-radius: 10px; padding: 18px;
+    }
+    .score-result.visible { display: block; }
+
+    .score-number {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 64px; line-height: 1;
+      text-align: center; margin-bottom: 4px;
+    }
+    .score-number.high   { color: #34d399; }
+    .score-number.mid    { color: #fbbf24; }
+    .score-number.low    { color: #f87171; }
+
+    .score-out-of {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 14px; color: var(--text-muted);
+      text-align: center; letter-spacing: 3px; margin-bottom: 16px;
+    }
+
+    .score-verdict {
+      font-size: 14px; color: var(--text-warm);
+      font-style: italic; line-height: 1.6;
+      margin-bottom: 14px; text-align: center;
+    }
+
+    .score-row {
+      display: flex; gap: 10px; margin-top: 10px;
+    }
+
+    .score-pill {
+      flex: 1; padding: 10px 12px;
+      border-radius: 8px; font-size: 13px;
+      color: var(--text-warm); line-height: 1.5;
+    }
+    .score-pill.good { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); }
+    .score-pill.bad  { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); }
+    .score-pill-label {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 10px; letter-spacing: 2px;
+      margin-bottom: 4px; display: block;
+    }
+    .score-pill.good .score-pill-label { color: #34d399; }
+    .score-pill.bad  .score-pill-label { color: #f87171; }
+
+    .score-loading {
+      text-align: center; color: var(--text-muted);
+      font-style: italic; font-size: 13px;
+      padding: 16px 0; display: none;
+    }
+    .score-loading.visible { display: block; }
+
+    #imageInput { display: none; }
+
+    .score-preview {
+      width: 100%; max-height: 200px;
+      object-fit: cover; border-radius: 8px;
+      margin-bottom: 12px; display: none;
+    }
+    .score-preview.visible { display: block; }
+    
     /* ── RESTAURANT CARD ── */
     .restaurant-meta {
       display: flex; flex-wrap: wrap; gap: 10px;
