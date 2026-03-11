@@ -1,13 +1,4 @@
-// netlify/functions/recipe.js
-// Proxies requests to Anthropic API — keeps your API key server-side
-
-export default async (req) => {
-  if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 });
-  }
-
-  const body = await req.text();
-
+exports.handler = async (event) => {
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -15,18 +6,12 @@ export default async (req) => {
       "x-api-key": process.env.ANTHROPIC_API_KEY,
       "anthropic-version": "2023-06-01",
     },
-    body,
+    body: event.body,
   });
-
   const data = await response.json();
-
-  return new Response(JSON.stringify(data), {
-    status: response.status,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
 };
-
-export const config = { path: "/api/recipe" };
