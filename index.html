@@ -942,6 +942,7 @@ Respond ONLY with valid JSON (no markdown, no backticks, no trailing commas):
 }
 
 function renderRecipe(r) {
+  currentRecipeTitle = r.title || "this dish";
   document.getElementById("resultInner").innerHTML = `
     <div class="result-title">${r.title || ""}</div>
     ${r.description ? `<p class="result-desc">${r.description}</p>` : ""}
@@ -963,6 +964,17 @@ function renderRecipe(r) {
       <div class="pro-tip">
         <span class="pro-tip-label">PRO TIP:</span>${r.tip}
       </div>` : ""}
+
+    <div class="score-section visible" id="scoreSection">
+      <div class="score-label">📸 How did you do?</div>
+      <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)" />
+      <img class="score-preview" id="scorePreview" />
+      <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+        Tap to upload a photo of your finished dish — get a score
+      </button>
+      <div class="score-loading" id="scoreLoading">The judges are deliberating...</div>
+      <div class="score-result" id="scoreResult"></div>
+    </div>
   `;
 }
 
@@ -1078,7 +1090,70 @@ function renderRestaurant(biz, mode, combo) {
     `}
   `;
 }
+let currentRecipeTitle = "";
 
+async function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // show preview
+  const preview = document.getElementById("scorePreview");
+  preview.src = URL.createObjectURL(file);
+  preview.classList.add("visible");
+
+  document.getElementById("scoreLoading").classList.add("visible");
+  document.getElementById("scoreResult").classList.remove("visible");
+
+  // convert to base64
+  const base64 = await new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result.split(",")[1]);
+    reader.readAsDataURL(file);
+  });
+
+  try {
+    const res = await fetch("/api/recipe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        image: base64,
+        mediaType: file.type,
+        recipeTitle: currentRecipeTitle,
+      }),
+    });
+
+    const data = await res.json();
+    const text = (data.content || []).map(c => c.text || "").join("");
+    const clean = text.replace(/```json|```/g, "").trim();
+    const result = JSON.parse(clean);
+
+    const score = result.score || 0;
+    const colorClass = score >= 8 ? "high" : score >= 5 ? "mid" : "low";
+
+    document.getElementById("scoreResult").innerHTML = `
+      <div class="score-number ${colorClass}">${score}</div>
+      <div class="score-out-of">OUT OF 10</div>
+      <div class="score-verdict">${result.verdict || ""}</div>
+      <div class="score-row">
+        <div class="score-pill good">
+          <span class="score-pill-label">✓ BEST PART</span>
+          ${result.highlight || ""}
+        </div>
+        <div class="score-pill bad">
+          <span class="score-pill-label">↑ IMPROVE</span>
+          ${result.improve || ""}
+        </div>
+      </div>
+    `;
+
+    document.getElementById("scoreResult").classList.add("visible");
+  } catch(e) {
+    document.getElementById("scoreResult").innerHTML = `<p style="color:#f87171;text-align:center;font-size:13px;">Couldn't score this one. Try again.</p>`;
+    document.getElementById("scoreResult").classList.add("visible");
+  }
+
+  document.getElementById("scoreLoading").classList.remove("visible");
+}
 function showResult() {
   const rc = document.getElementById("resultCard");
   rc.classList.add("visible");
