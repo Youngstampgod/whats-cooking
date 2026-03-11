@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What's Cooking — Dinner Decision Engine</title>
+  <title>What Am I Eating — Dinner, Decided</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
@@ -16,8 +16,9 @@
       --deliver-dim: #0284c7;
       --goout: #34d399;
       --goout-dim: #059669;
+      --duo: #c084fc;
+      --duo-dim: #9333ea;
       --bg: #080300;
-      --card-bg: #0f0500;
       --card-border: #2a1000;
       --reel-bg: #0d0500;
       --text-warm: #d4a080;
@@ -27,500 +28,206 @@
     }
 
     html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: #fff;
-      font-family: 'Crimson Pro', Georgia, serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      transition: --accent 0.4s;
-    }
-
+    body { background: var(--bg); color: #fff; font-family: 'Crimson Pro', Georgia, serif; min-height: 100vh; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--reel-bg); }
     ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 2px; }
 
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.6;
+      pointer-events: none; z-index: 0; opacity: 0.6;
     }
 
-    .page {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 16px 80px;
-      min-height: 100vh;
-    }
+    .page { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 16px 80px; min-height: 100vh; }
 
     /* ── HEADER ── */
-    .eyebrow {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(10px, 2vw, 12px);
-      letter-spacing: 7px;
-      color: var(--accent);
-      opacity: 0.7;
-      margin-bottom: 10px;
-      text-align: center;
-      transition: color 0.4s;
-    }
-
-    .headline {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(48px, 12vw, 88px);
-      line-height: 0.88;
-      letter-spacing: 3px;
-      text-align: center;
-      animation: flicker 5s ease-in-out infinite;
-    }
-
-    .headline span {
-      color: var(--accent);
-      transition: color 0.4s;
-    }
-
-    .tagline {
-      margin-top: 12px;
-      color: var(--text-muted);
-      font-size: 14px;
-      font-style: italic;
-      text-align: center;
-    }
+    .eyebrow { font-family: 'Bebas Neue', cursive; font-size: clamp(10px,2vw,12px); letter-spacing: 7px; color: var(--accent); opacity: 0.7; margin-bottom: 10px; text-align: center; transition: color 0.4s; }
+    .headline { font-family: 'Bebas Neue', cursive; font-size: clamp(48px,12vw,88px); line-height: 0.88; letter-spacing: 3px; text-align: center; animation: flicker 5s ease-in-out infinite; }
+    .headline span { color: var(--accent); transition: color 0.4s; }
+    .tagline { margin-top: 12px; color: var(--text-muted); font-size: 14px; font-style: italic; text-align: center; }
 
     /* ── MODE TABS ── */
-    .mode-tabs {
-      display: flex;
-      gap: 6px;
-      margin-top: 30px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid #1a0800;
-      border-radius: 12px;
-      padding: 5px;
-    }
-
-    .mode-tab {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(13px, 3vw, 16px);
-      letter-spacing: 3px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-
-    .mode-tab.active-cook   { background: rgba(255,107,53,0.15); color: var(--fire);    border: 1px solid rgba(255,107,53,0.3); }
-    .mode-tab.active-deliver { background: rgba(56,189,248,0.12); color: var(--deliver); border: 1px solid rgba(56,189,248,0.3); }
-    .mode-tab.active-goout  { background: rgba(52,211,153,0.12); color: var(--goout);   border: 1px solid rgba(52,211,153,0.3); }
-
+    .mode-tabs { display: flex; gap: 5px; margin-top: 28px; background: rgba(255,255,255,0.03); border: 1px solid #1a0800; border-radius: 12px; padding: 5px; flex-wrap: wrap; justify-content: center; }
+    .mode-tab { font-family: 'Bebas Neue', cursive; font-size: clamp(12px,2.5vw,15px); letter-spacing: 2px; padding: 9px 16px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+    .mode-tab.active-cook    { background: rgba(255,107,53,0.15);  color: var(--fire);    border: 1px solid rgba(255,107,53,0.3); }
+    .mode-tab.active-deliver { background: rgba(56,189,248,0.12);  color: var(--deliver); border: 1px solid rgba(56,189,248,0.3); }
+    .mode-tab.active-goout   { background: rgba(52,211,153,0.12);  color: var(--goout);   border: 1px solid rgba(52,211,153,0.3); }
+    .mode-tab.active-duo     { background: rgba(192,132,252,0.12); color: var(--duo);     border: 1px solid rgba(192,132,252,0.3); }
     .mode-tab:hover:not([class*="active"]) { color: #a0784a; }
 
     /* ── MAIN CARD ── */
-    .card {
-      margin-top: 24px;
-      width: 100%;
-      max-width: 620px;
-      background: linear-gradient(160deg, #150900 0%, #0a0300 100%);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 28px 24px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 60px 100px rgba(0,0,0,0.85);
-      transition: border-color 0.4s;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(255,107,53,0.04) 0%, transparent 70%);
-      pointer-events: none;
-      transition: background 0.4s;
-    }
+    .card { margin-top: 22px; width: 100%; max-width: 640px; background: linear-gradient(160deg, #150900 0%, #0a0300 100%); border: 1px solid var(--card-border); border-radius: 20px; padding: 26px 22px; position: relative; overflow: hidden; box-shadow: 0 60px 100px rgba(0,0,0,0.85); transition: border-color 0.4s; }
+    .card::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,107,53,0.04) 0%, transparent 70%); pointer-events: none; }
 
     /* ── LOCATION BAR ── */
-    .location-bar {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 18px;
-      padding: 10px 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid #1a0800;
-      border-radius: 8px;
-      font-size: 13px;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: border-color 0.3s;
-    }
-
+    .location-bar { display: none; align-items: center; gap: 8px; margin-bottom: 16px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid #1a0800; border-radius: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: border-color 0.3s; }
     .location-bar:hover { border-color: #3a2000; }
     .location-bar.visible { display: flex; }
     .location-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; transition: background 0.4s; }
     .location-text { flex: 1; font-style: italic; }
     .location-refresh { font-size: 14px; opacity: 0.5; }
 
-    /* ── REELS ── */
-    .reels {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
+    /* ── SETUP ROW ── */
+    .setup-row { display: none; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+    .setup-row.visible { display: flex; }
 
-    .reel-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .reel-label {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: var(--accent);
-      opacity: 0.8;
-      text-transform: uppercase;
-      transition: color 0.4s;
-    }
-
-    .reel {
-      width: 100%;
-      height: 86px;
-      background: linear-gradient(135deg, #1a0a00 0%, var(--reel-bg) 100%);
-      border: 2px solid #3a1a00;
+    .setup-pill {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #2a1000;
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      box-shadow: inset 0 0 24px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
     }
+    .setup-pill:hover { border-color: var(--accent); background: rgba(255,107,53,0.06); }
+    .setup-pill.active { border-color: var(--accent); background: rgba(255,107,53,0.1); }
 
-    .reel.spinning {
-      border-color: var(--accent);
-      box-shadow: 0 0 22px rgba(255,107,53,0.3), inset 0 0 18px rgba(255,107,53,0.06);
-    }
+    .setup-pill-label { font-family: 'Bebas Neue', cursive; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+    .setup-pill-value { font-family: 'Bebas Neue', cursive; font-size: clamp(12px,2.5vw,15px); color: #fff; letter-spacing: 1px; text-align: center; line-height: 1.1; }
+    .setup-pill.active .setup-pill-value { color: var(--accent); }
 
-    .reel-fade-top, .reel-fade-bottom {
-      position: absolute; left: 0; right: 0; height: 26px;
-      z-index: 2; pointer-events: none;
-    }
+    /* ── REELS ── */
+    .reels { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .reel-wrap { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+    .reel-label { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 3px; color: var(--accent); opacity: 0.8; text-transform: uppercase; transition: color 0.4s; }
+    .reel { width: 100%; height: 82px; background: linear-gradient(135deg, #1a0a00 0%, var(--reel-bg) 100%); border: 2px solid #3a1a00; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; transition: border-color 0.3s, box-shadow 0.3s; box-shadow: inset 0 0 24px rgba(0,0,0,0.6); }
+    .reel.spinning { border-color: var(--accent); box-shadow: 0 0 22px rgba(255,107,53,0.3), inset 0 0 18px rgba(255,107,53,0.06); }
+    .reel-fade-top, .reel-fade-bottom { position: absolute; left: 0; right: 0; height: 24px; z-index: 2; pointer-events: none; }
     .reel-fade-top    { top: 0;    background: linear-gradient(to bottom, var(--reel-bg), transparent); }
     .reel-fade-bottom { bottom: 0; background: linear-gradient(to top,    var(--reel-bg), transparent); }
-
-    .reel-text {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(14px, 3vw, 19px);
-      color: #fff;
-      text-align: center;
-      padding: 0 10px;
-      line-height: 1.1;
-      letter-spacing: 1px;
-      transition: color 0.2s, text-shadow 0.2s;
-      position: relative; z-index: 1;
-    }
-
-    .reel.spinning .reel-text {
-      color: #ffa070;
-      text-shadow: 0 0 18px rgba(255,107,53,0.9);
-    }
+    .reel-text { font-family: 'Bebas Neue', cursive; font-size: clamp(13px,2.8vw,18px); color: #fff; text-align: center; padding: 0 8px; line-height: 1.1; letter-spacing: 1px; transition: color 0.2s, text-shadow 0.2s; position: relative; z-index: 1; }
+    .reel.spinning .reel-text { color: #ffa070; text-shadow: 0 0 18px rgba(255,107,53,0.9); }
 
     /* ── SPIN BUTTON ── */
     .spin-btn-wrap { position: relative; }
-
-    .pulse-ring {
-      display: none;
-      position: absolute; inset: 0;
-      border-radius: 12px;
-      border: 2px solid rgba(255,107,53,0.5);
-      animation: pulse-ring 1s ease-out infinite;
-    }
+    .pulse-ring { display: none; position: absolute; inset: 0; border-radius: 12px; border: 2px solid rgba(255,107,53,0.5); animation: pulse-ring 1s ease-out infinite; }
     .pulse-ring.active { display: block; }
-
-    .spin-btn {
-      width: 100%; height: 66px;
-      background: linear-gradient(135deg, var(--fire) 0%, var(--fire-dim) 100%);
-      border: none; border-radius: 12px;
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(17px, 4vw, 24px);
-      letter-spacing: 5px; color: #fff;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 10px 40px rgba(255,107,53,0.4), 0 2px 0 rgba(255,255,255,0.08) inset;
-      position: relative; overflow: hidden;
-    }
-
-    .spin-btn::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 60%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-      transition: left 0.5s;
-    }
+    .spin-btn { width: 100%; height: 64px; background: linear-gradient(135deg, var(--fire) 0%, var(--fire-dim) 100%); border: none; border-radius: 12px; font-family: 'Bebas Neue', cursive; font-size: clamp(17px,4vw,23px); letter-spacing: 5px; color: #fff; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 40px rgba(255,107,53,0.4), 0 2px 0 rgba(255,255,255,0.08) inset; position: relative; overflow: hidden; }
+    .spin-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); transition: left 0.5s; }
     .spin-btn:hover::after { left: 150%; }
     .spin-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(255,107,53,0.5); }
     .spin-btn:active:not(:disabled) { transform: translateY(0); }
     .spin-btn:disabled { background: linear-gradient(135deg, #3a1800, #200e00); box-shadow: none; cursor: not-allowed; }
-
-    /* mode-colored buttons */
     .spin-btn.mode-deliver { background: linear-gradient(135deg, var(--deliver) 0%, var(--deliver-dim) 100%); box-shadow: 0 10px 40px rgba(56,189,248,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
     .spin-btn.mode-deliver:hover:not(:disabled) { box-shadow: 0 16px 48px rgba(56,189,248,0.5); }
     .spin-btn.mode-goout   { background: linear-gradient(135deg, var(--goout) 0%, var(--goout-dim) 100%);   box-shadow: 0 10px 40px rgba(52,211,153,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
-    .spin-btn.mode-goout:hover:not(:disabled) { box-shadow: 0 16px 48px rgba(52,211,153,0.5); }
+    .spin-btn.mode-goout:hover:not(:disabled)   { box-shadow: 0 16px 48px rgba(52,211,153,0.5); }
+    .spin-btn.mode-duo     { background: linear-gradient(135deg, var(--duo) 0%, var(--duo-dim) 100%);         box-shadow: 0 10px 40px rgba(192,132,252,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
+    .spin-btn.mode-duo:hover:not(:disabled)     { box-shadow: 0 16px 48px rgba(192,132,252,0.5); }
 
     /* ── COMBO BADGE ── */
-    .combo-badge {
-      margin-top: 20px; text-align: center;
-      opacity: 0; transform: translateY(8px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
+    .combo-badge { margin-top: 20px; text-align: center; opacity: 0; transform: translateY(8px); transition: opacity 0.5s, transform 0.5s; }
     .combo-badge.visible { opacity: 1; transform: translateY(0); }
     .combo-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--accent); letter-spacing: 4px; margin-bottom: 5px; transition: color 0.4s; }
-    .combo-text  { font-size: clamp(14px, 3.5vw, 19px); color: #fff; font-style: italic; }
+    .combo-text  { font-size: clamp(14px,3.5vw,18px); color: #fff; font-style: italic; }
 
     .loading-text { margin-top: 18px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 14px; display: none; }
     .loading-text.visible { display: block; }
-    .error-text   { margin-top: 16px; text-align: center; color: #ff5555; font-size: 14px; display: none; }
-    .error-text.visible   { display: block; }
+    .error-text { margin-top: 16px; text-align: center; color: #ff5555; font-size: 14px; display: none; }
+    .error-text.visible { display: block; }
 
-    /* ── RECIPE CARD ── */
-    .result-card {
-      margin-top: 26px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      display: none;
-    }
+    /* ── RESULT CARD ── */
+    .result-card { margin-top: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; display: none; }
     .result-card.visible { display: block; }
     .result-card.shown   { opacity: 1; transform: translateY(0); }
-
-    .result-inner {
-      background: linear-gradient(135deg, #1c0900 0%, #120500 100%);
-      border: 1px solid #3a1800;
-      border-radius: 14px; padding: 24px;
-      position: relative; overflow: hidden;
-    }
-    .result-inner::before {
-      content: '';
-      position: absolute; top: -60px; right: -60px;
-      width: 220px; height: 220px;
-      background: radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .result-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(19px, 4vw, 26px);
-      color: var(--accent); letter-spacing: 2px;
-      border-bottom: 1px solid #2a1000;
-      padding-bottom: 10px; margin-bottom: 10px;
-      transition: color 0.4s;
-    }
-
-    .result-desc { color: #c49070; font-style: italic; font-size: 14px; line-height: 1.65; margin-bottom: 20px; }
-
+    .result-inner { background: linear-gradient(135deg, #1c0900 0%, #120500 100%); border: 1px solid #3a1800; border-radius: 14px; padding: 22px; position: relative; overflow: hidden; }
+    .result-inner::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%); pointer-events: none; }
+    .result-title { font-family: 'Bebas Neue', cursive; font-size: clamp(18px,4vw,25px); color: var(--accent); letter-spacing: 2px; border-bottom: 1px solid #2a1000; padding-bottom: 10px; margin-bottom: 10px; transition: color 0.4s; }
+    .result-desc { color: #c49070; font-style: italic; font-size: 14px; line-height: 1.65; margin-bottom: 18px; }
     .section-label { font-family: 'Bebas Neue', cursive; font-size: 12px; color: var(--accent); letter-spacing: 4px; margin-bottom: 8px; transition: color 0.4s; }
-
-    .ingredient-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 4px 0; border-bottom: 1px solid rgba(58,24,0,0.5);
-      color: var(--text-warm); font-size: 14px;
-    }
+    .ingredient-item { display: flex; align-items: center; gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(58,24,0,0.5); color: var(--text-warm); font-size: 14px; }
     .ingredient-item::before { content: '◆'; color: var(--accent); font-size: 9px; flex-shrink: 0; transition: color 0.4s; }
-
-    .ingredients { margin-bottom: 20px; }
-
-    .step-item {
-      display: flex; gap: 12px;
-      padding: 7px 0; border-bottom: 1px solid rgba(58,24,0,0.3);
-      color: var(--text-warm); font-size: 14px; line-height: 1.55;
-    }
+    .ingredients { margin-bottom: 18px; }
+    .step-item { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid rgba(58,24,0,0.3); color: var(--text-warm); font-size: 14px; line-height: 1.55; }
     .step-num { font-family: 'Bebas Neue', cursive; color: var(--accent); font-size: 17px; min-width: 20px; line-height: 1.2; transition: color 0.4s; }
-
-    .pro-tip {
-      margin-top: 16px;
-      background: rgba(255,107,53,0.07); border: 1px solid rgba(255,107,53,0.18);
-      border-radius: 10px; padding: 12px 16px;
-      font-size: 14px; color: #c49070;
-    }
+    .pro-tip { margin-top: 16px; background: rgba(255,107,53,0.07); border: 1px solid rgba(255,107,53,0.18); border-radius: 10px; padding: 12px 16px; font-size: 14px; color: #c49070; }
     .pro-tip-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--accent); letter-spacing: 3px; margin-right: 6px; transition: color 0.4s; }
-/* ── SCORE UPLOAD ── */
-    .score-section {
-      margin-top: 24px;
-      border-top: 1px solid #2a1000;
-      padding-top: 20px;
-      display: none;
-    }
-    .score-section.visible { display: block; }
 
-    .score-label {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 12px; color: var(--accent);
-      letter-spacing: 4px; margin-bottom: 10px;
-      transition: color 0.4s;
-    }
+    /* ── WHY IT WON ── */
+    .why-won { margin-top: 14px; background: rgba(192,132,252,0.07); border: 1px solid rgba(192,132,252,0.2); border-radius: 10px; padding: 12px 16px; }
+    .why-won-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--duo); letter-spacing: 3px; margin-bottom: 6px; }
+    .why-won-text { font-size: 13px; color: #c4a0e0; font-style: italic; line-height: 1.6; }
+    .why-won-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .why-tag { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2); color: var(--duo); }
 
-    .upload-btn {
-      width: 100%; padding: 14px;
-      border: 2px dashed #3a1800;
-      border-radius: 10px; background: transparent;
-      color: var(--text-muted); font-family: 'Crimson Pro', Georgia, serif;
-      font-size: 14px; font-style: italic;
-      cursor: pointer; transition: all 0.3s; text-align: center;
-    }
-    .upload-btn:hover { border-color: var(--accent); color: var(--text-warm); }
-
-    .score-result {
-      display: none;
-      margin-top: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid #2a1000;
-      border-radius: 10px; padding: 18px;
-    }
-    .score-result.visible { display: block; }
-
-    .score-number {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 64px; line-height: 1;
-      text-align: center; margin-bottom: 4px;
-    }
-    .score-number.high   { color: #34d399; }
-    .score-number.mid    { color: #fbbf24; }
-    .score-number.low    { color: #f87171; }
-
-    .score-out-of {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 14px; color: var(--text-muted);
-      text-align: center; letter-spacing: 3px; margin-bottom: 16px;
-    }
-
-    .score-verdict {
-      font-size: 14px; color: var(--text-warm);
-      font-style: italic; line-height: 1.6;
-      margin-bottom: 14px; text-align: center;
-    }
-
-    .score-row {
-      display: flex; gap: 10px; margin-top: 10px;
-    }
-
-    .score-pill {
-      flex: 1; padding: 10px 12px;
-      border-radius: 8px; font-size: 13px;
-      color: var(--text-warm); line-height: 1.5;
-    }
-    .score-pill.good { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); }
-    .score-pill.bad  { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); }
-    .score-pill-label {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 10px; letter-spacing: 2px;
-      margin-bottom: 4px; display: block;
-    }
-    .score-pill.good .score-pill-label { color: #34d399; }
-    .score-pill.bad  .score-pill-label { color: #f87171; }
-
-    .score-loading {
-      text-align: center; color: var(--text-muted);
-      font-style: italic; font-size: 13px;
-      padding: 16px 0; display: none;
-    }
-    .score-loading.visible { display: block; }
-
-    #imageInput { display: none; }
-
-    .score-preview {
-      width: 100%; max-height: 200px;
-      object-fit: cover; border-radius: 8px;
-      margin-bottom: 12px; display: none;
-    }
-    .score-preview.visible { display: block; }
-    
     /* ── RESTAURANT CARD ── */
-    .restaurant-meta {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      margin-bottom: 18px; align-items: center;
-    }
-    .restaurant-rating {
-      font-family: 'Bebas Neue', cursive; font-size: 22px; color: #fbbf24; letter-spacing: 1px;
-    }
+    .restaurant-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
+    .restaurant-rating { font-family: 'Bebas Neue', cursive; font-size: 22px; color: #fbbf24; letter-spacing: 1px; }
     .restaurant-reviews { color: var(--text-muted); font-size: 13px; }
-    .restaurant-price   { font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--accent); transition: color 0.4s; }
-    .restaurant-cats    { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
-    .restaurant-cat-tag {
-      font-size: 11px; font-family: 'Bebas Neue', cursive; letter-spacing: 1px;
-      padding: 3px 8px; border-radius: 4px;
-      background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid #2a1000;
-    }
-
-    .restaurant-address {
-      color: var(--text-warm); font-size: 14px; font-style: italic;
-      margin-bottom: 6px;
-    }
-    .restaurant-status {
-      font-size: 13px; margin-bottom: 20px;
-    }
+    .restaurant-price { font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--accent); transition: color 0.4s; }
+    .restaurant-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+    .restaurant-cat-tag { font-size: 11px; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid #2a1000; }
+    .restaurant-address { color: var(--text-warm); font-size: 14px; font-style: italic; margin-bottom: 6px; }
+    .restaurant-status { font-size: 13px; margin-bottom: 18px; }
     .status-open   { color: #34d399; }
     .status-closed { color: #f87171; }
-
-    .cta-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 16px;
-      border-radius: 10px; border: none;
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(16px, 3.5vw, 20px); letter-spacing: 3px;
-      cursor: pointer; text-decoration: none; color: #fff;
-      transition: all 0.3s;
-    }
-    .cta-btn.doordash {
-      background: linear-gradient(135deg, var(--deliver) 0%, var(--deliver-dim) 100%);
-      box-shadow: 0 8px 28px rgba(56,189,248,0.3);
-    }
-    .cta-btn.doordash:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(56,189,248,0.45); }
-    .cta-btn.opentable {
-      background: linear-gradient(135deg, var(--goout) 0%, var(--goout-dim) 100%);
-      box-shadow: 0 8px 28px rgba(52,211,153,0.3);
-    }
+    .cta-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 10px; border: none; font-family: 'Bebas Neue', cursive; font-size: clamp(15px,3.5vw,19px); letter-spacing: 3px; cursor: pointer; text-decoration: none; color: #fff; transition: all 0.3s; }
+    .cta-btn.doordash  { background: linear-gradient(135deg, var(--deliver) 0%, var(--deliver-dim) 100%); box-shadow: 0 8px 28px rgba(56,189,248,0.3); }
+    .cta-btn.doordash:hover  { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(56,189,248,0.45); }
+    .cta-btn.opentable { background: linear-gradient(135deg, var(--goout) 0%, var(--goout-dim) 100%);   box-shadow: 0 8px 28px rgba(52,211,153,0.3); }
     .cta-btn.opentable:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(52,211,153,0.45); }
-
-    .cta-divider {
-      display: flex; align-items: center; gap: 10px;
-      margin: 12px 0; color: var(--text-dimmer); font-size: 12px; letter-spacing: 2px;
-      font-family: 'Bebas Neue', cursive;
-    }
-    .cta-divider::before, .cta-divider::after {
-      content: ''; flex: 1; height: 1px; background: #1a0800;
-    }
-
-    .cta-secondary {
-      display: block; text-align: center;
-      color: var(--text-muted); font-size: 13px; font-style: italic;
-      text-decoration: none; padding: 8px;
-      border-radius: 8px; transition: color 0.2s;
-    }
+    .cta-divider { display: flex; align-items: center; gap: 10px; margin: 12px 0; color: var(--text-dimmer); font-size: 12px; letter-spacing: 2px; font-family: 'Bebas Neue', cursive; }
+    .cta-divider::before, .cta-divider::after { content: ''; flex: 1; height: 1px; background: #1a0800; }
+    .cta-secondary { display: block; text-align: center; color: var(--text-muted); font-size: 13px; font-style: italic; text-decoration: none; padding: 8px; border-radius: 8px; transition: color 0.2s; }
     .cta-secondary:hover { color: var(--text-warm); }
 
+    /* ── SCORE UPLOAD ── */
+    .score-section { margin-top: 22px; border-top: 1px solid #2a1000; padding-top: 18px; display: none; }
+    .score-section.visible { display: block; }
+    .score-label { font-family: 'Bebas Neue', cursive; font-size: 12px; color: var(--accent); letter-spacing: 4px; margin-bottom: 10px; transition: color 0.4s; }
+    .upload-btn { width: 100%; padding: 13px; border: 2px dashed #3a1800; border-radius: 10px; background: transparent; color: var(--text-muted); font-family: 'Crimson Pro', Georgia, serif; font-size: 14px; font-style: italic; cursor: pointer; transition: all 0.3s; text-align: center; }
+    .upload-btn:hover { border-color: var(--accent); color: var(--text-warm); }
+    .score-result { display: none; margin-top: 16px; background: rgba(255,255,255,0.03); border: 1px solid #2a1000; border-radius: 10px; padding: 18px; }
+    .score-result.visible { display: block; }
+    .score-number { font-family: 'Bebas Neue', cursive; font-size: 64px; line-height: 1; text-align: center; margin-bottom: 4px; }
+    .score-number.high { color: #34d399; }
+    .score-number.mid  { color: #fbbf24; }
+    .score-number.low  { color: #f87171; }
+    .score-out-of { font-family: 'Bebas Neue', cursive; font-size: 14px; color: var(--text-muted); text-align: center; letter-spacing: 3px; margin-bottom: 14px; }
+    .score-verdict { font-size: 14px; color: var(--text-warm); font-style: italic; line-height: 1.6; margin-bottom: 14px; text-align: center; }
+    .score-row { display: flex; gap: 10px; margin-top: 10px; }
+    .score-pill { flex: 1; padding: 10px 12px; border-radius: 8px; font-size: 13px; color: var(--text-warm); line-height: 1.5; }
+    .score-pill.good { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); }
+    .score-pill.bad  { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); }
+    .score-pill-label { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 2px; margin-bottom: 4px; display: block; }
+    .score-pill.good .score-pill-label { color: #34d399; }
+    .score-pill.bad  .score-pill-label { color: #f87171; }
+    .score-loading { text-align: center; color: var(--text-muted); font-style: italic; font-size: 13px; padding: 16px 0; display: none; }
+    .score-loading.visible { display: block; }
+    #imageInput { display: none; }
+    .score-preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; display: none; }
+    .score-preview.visible { display: block; }
+
+    /* ── DUO MODE ── */
+    .duo-panel { display: none; }
+    .duo-panel.visible { display: block; }
+
+    .duo-intro { text-align: center; margin-bottom: 20px; }
+    .duo-intro-title { font-family: 'Bebas Neue', cursive; font-size: clamp(16px,4vw,22px); color: var(--duo); letter-spacing: 2px; margin-bottom: 6px; }
+    .duo-intro-sub { font-size: 13px; color: var(--text-muted); font-style: italic; }
+
+    .duo-players { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+
+    .duo-player { background: rgba(255,255,255,0.02); border: 1px solid #2a1000; border-radius: 12px; padding: 14px 12px; }
+    .duo-player-name { font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 3px; color: var(--duo); margin-bottom: 12px; text-align: center; opacity: 0.8; }
+
+    .duo-pick { margin-bottom: 10px; }
+    .duo-pick-label { font-family: 'Bebas Neue', cursive; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 5px; }
+    .duo-pick-options { display: flex; flex-direction: column; gap: 4px; }
+    .duo-option { font-family: 'Crimson Pro', Georgia, serif; font-size: 12px; padding: 5px 8px; border-radius: 6px; border: 1px solid #2a1000; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.2s; text-align: left; }
+    .duo-option:hover  { border-color: var(--duo); color: #c4a0e0; }
+    .duo-option.selected { border-color: var(--duo); background: rgba(192,132,252,0.1); color: #fff; }
+
+    .duo-mode-toggle { display: flex; gap: 6px; margin-bottom: 18px; }
+    .duo-mode-btn { flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #2a1000; background: transparent; font-family: 'Bebas Neue', cursive; font-size: 12px; letter-spacing: 2px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+    .duo-mode-btn.active { border-color: var(--duo); background: rgba(192,132,252,0.1); color: var(--duo); }
+
     /* ── FOOTER ── */
-    .footer {
-      margin-top: 40px; font-family: 'Bebas Neue', cursive;
-      font-size: 11px; letter-spacing: 4px; color: var(--text-dimmer); text-align: center;
-    }
+    .footer { margin-top: 40px; font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 4px; color: var(--text-dimmer); text-align: center; }
 
     /* ── ANIMATIONS ── */
     @keyframes flicker { 0%,100%{opacity:1} 48%{opacity:0.88} 50%{opacity:1} }
@@ -532,55 +239,144 @@
   </style>
 </head>
 <body>
-
 <div class="page">
-  <p class="eyebrow" id="eyebrow">Tonight's Challenge</p>
-  <h1 class="headline">What's<br><span id="headlineAccent">Cooking</span></h1>
-  <p class="tagline" id="tagline">Spin the wheel. Cook the card. Win dinner.</p>
+  <p class="eyebrow" id="eyebrow">Dinner, Decided</p>
+  <h1 class="headline">What Am I<br><span id="headlineAccent">Eating</span></h1>
+  <p class="tagline" id="tagline">Pick dinner in 15 seconds.</p>
 
   <!-- Mode Tabs -->
   <div class="mode-tabs">
     <button class="mode-tab active-cook" id="tab-cook"    onclick="setMode('cook')">🍳 Cook</button>
     <button class="mode-tab"             id="tab-deliver" onclick="setMode('deliver')">🛵 Delivery</button>
     <button class="mode-tab"             id="tab-goout"   onclick="setMode('goout')">🍽️ Go Out</button>
+    <button class="mode-tab"             id="tab-duo"     onclick="setMode('duo')">👫 Duo</button>
   </div>
 
   <!-- Main Card -->
   <div class="card" id="mainCard">
 
-    <!-- Location bar (delivery + goout only) -->
+    <!-- Location bar -->
     <div class="location-bar" id="locationBar" onclick="getLocation()">
       <div class="location-dot" id="locationDot"></div>
       <div class="location-text" id="locationText">Tap to detect your location</div>
       <div class="location-refresh">↻</div>
     </div>
 
-    <!-- Reels -->
-    <div class="reels" id="reels"></div>
+    <!-- ── STANDARD SPIN PANEL ── -->
+    <div id="spinPanel">
 
-    <!-- Spin Button -->
-    <div class="spin-btn-wrap">
-      <div class="pulse-ring" id="pulseRing"></div>
-      <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN THE WHEEL</button>
+      <!-- Setup Row (Cook mode only) -->
+      <div class="setup-row" id="setupRow">
+        <div class="setup-pill" id="pill-mood" onclick="cyclePill('mood')">
+          <div class="setup-pill-label">Mood</div>
+          <div class="setup-pill-value" id="pill-mood-val">Any</div>
+        </div>
+        <div class="setup-pill" id="pill-budget" onclick="cyclePill('budget')">
+          <div class="setup-pill-label">Budget</div>
+          <div class="setup-pill-value" id="pill-budget-val">Any</div>
+        </div>
+        <div class="setup-pill" id="pill-effort" onclick="cyclePill('effort')">
+          <div class="setup-pill-label">Effort</div>
+          <div class="setup-pill-value" id="pill-effort-val">Normal</div>
+        </div>
+        <div class="setup-pill" id="pill-serving" onclick="cyclePill('serving')">
+          <div class="setup-pill-label">Serving</div>
+          <div class="setup-pill-value" id="pill-serving-val">For 1</div>
+        </div>
+      </div>
+
+      <!-- Reels -->
+      <div class="reels" id="reels"></div>
+
+      <!-- Spin Button -->
+      <div class="spin-btn-wrap">
+        <div class="pulse-ring" id="pulseRing"></div>
+        <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN THE WHEEL</button>
+      </div>
+
+      <!-- Combo Badge -->
+      <div class="combo-badge" id="comboBadge">
+        <div class="combo-label" id="comboLabel">Your Pick</div>
+        <div class="combo-text"  id="comboText"></div>
+      </div>
+
+      <div class="loading-text" id="loadingText">Deciding...</div>
+      <div class="error-text"   id="errorText"></div>
+
+      <div class="result-card" id="resultCard">
+        <div class="result-inner" id="resultInner"></div>
+      </div>
     </div>
 
-    <!-- Combo Badge -->
-    <div class="combo-badge" id="comboBadge">
-      <div class="combo-label" id="comboLabel">Your Challenge</div>
-      <div class="combo-text"  id="comboText"></div>
+    <!-- ── DUO MODE PANEL ── -->
+    <div class="duo-panel" id="duoPanel">
+      <div class="duo-intro">
+        <div class="duo-intro-title">👫 Duo Mode</div>
+        <div class="duo-intro-sub">Two people. Three choices each. One answer.</div>
+      </div>
+
+      <!-- Cook vs Go Out toggle -->
+      <div class="duo-mode-toggle">
+        <button class="duo-mode-btn active" id="duo-cook-btn"  onclick="setDuoType('cook')">🍳 Cook Together</button>
+        <button class="duo-mode-btn"        id="duo-goout-btn" onclick="setDuoType('goout')">🍽️ Go Out</button>
+        <button class="duo-mode-btn"        id="duo-delivery-btn" onclick="setDuoType('delivery')">🛵 Delivery</button>
+      </div>
+
+      <div class="duo-players">
+        <!-- Player 1 -->
+        <div class="duo-player">
+          <div class="duo-player-name">Person 1</div>
+
+          <div class="duo-pick">
+            <div class="duo-pick-label">Mood</div>
+            <div class="duo-pick-options" id="p1-mood"></div>
+          </div>
+          <div class="duo-pick">
+            <div class="duo-pick-label">Cuisine</div>
+            <div class="duo-pick-options" id="p1-cuisine"></div>
+          </div>
+          <div class="duo-pick">
+            <div class="duo-pick-label">Budget</div>
+            <div class="duo-pick-options" id="p1-budget"></div>
+          </div>
+        </div>
+
+        <!-- Player 2 -->
+        <div class="duo-player">
+          <div class="duo-player-name">Person 2</div>
+
+          <div class="duo-pick">
+            <div class="duo-pick-label">Mood</div>
+            <div class="duo-pick-options" id="p2-mood"></div>
+          </div>
+          <div class="duo-pick">
+            <div class="duo-pick-label">Cuisine</div>
+            <div class="duo-pick-options" id="p2-cuisine"></div>
+          </div>
+          <div class="duo-pick">
+            <div class="duo-pick-label">Budget</div>
+            <div class="duo-pick-options" id="p2-budget"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Duo Spin Button -->
+      <div class="spin-btn-wrap">
+        <div class="pulse-ring" id="duoPulseRing"></div>
+        <button class="spin-btn mode-duo" id="duoBtn" onclick="spinDuo()">FIND OUR MATCH</button>
+      </div>
+
+      <div class="loading-text" id="duoLoadingText">Finding your match...</div>
+      <div class="error-text"   id="duoErrorText"></div>
+
+      <div class="result-card" id="duoResultCard">
+        <div class="result-inner" id="duoResultInner"></div>
+      </div>
     </div>
 
-    <!-- States -->
-    <div class="loading-text" id="loadingText">The chef is thinking...</div>
-    <div class="error-text"   id="errorText"></div>
-
-    <!-- Result -->
-    <div class="result-card" id="resultCard">
-      <div class="result-inner" id="resultInner"></div>
-    </div>
   </div>
 
-  <p class="footer">Powered by the randomizer &nbsp;◆&nbsp; Every spin a new battle</p>
+  <p class="footer">Dinner, decided &nbsp;◆&nbsp; whatamieating</p>
 </div>
 
 <script>
@@ -589,13 +385,15 @@
 // ─────────────────────────────────────────────
 const MODES = {
   cook: {
-    eyebrow: "Tonight's Challenge",
-    headline: "Cooking",
-    tagline: "Spin the wheel. Cook the card. Win dinner.",
-    label: "Your Challenge",
+    eyebrow: "Dinner, Decided",
+    headline: "Eating",
+    tagline: "Pick dinner in 15 seconds.",
+    label: "Your Pick",
     btnText: "SPIN THE WHEEL",
     btnClass: "",
     accent: "#ff6b35",
+    showSetup: true,
+    showLocation: false,
     categories: {
       protein: { label: "Protein", icon: "🥩", items: ["Chicken","Salmon","Beef","Shrimp","Tofu","Pork","Lamb","Eggs","Tuna","Duck"] },
       produce:  { label: "Produce", icon: "🥦", items: ["Broccoli","Spinach","Sweet Potato","Zucchini","Mushrooms","Tomatoes","Bell Peppers","Cauliflower","Kale","Eggplant"] },
@@ -606,26 +404,30 @@ const MODES = {
   deliver: {
     eyebrow: "Delivery Roulette",
     headline: "Deliver",
-    tagline: "Spin your craving. We find the spot. You eat.",
+    tagline: "One strong pick. Zero scrolling.",
     label: "Searching For",
     btnText: "FIND MY DELIVERY",
     btnClass: "mode-deliver",
     accent: "#38bdf8",
+    showSetup: false,
+    showLocation: true,
     categories: {
-      cuisine: { label: "Cuisine",  icon: "🌍", items: ["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Chinese"] },
-      price:   { label: "Budget",   icon: "💰", items: ["$","$$","$$$","$$$$"] },
-      vibe:    { label: "Craving",  icon: "🔥", items: ["Comfort Food","Healthy","Indulgent","Quick & Easy","Adventurous","Light Bites"] },
-      distance:{ label: "Distance", icon: "📍", items: ["Under 1 mi","Under 2 mi","Under 5 mi","Anywhere"] },
+      cuisine:  { label: "Cuisine",  icon: "🌍", items: ["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Chinese"] },
+      price:    { label: "Budget",   icon: "💰", items: ["$","$$","$$$","$$$$"] },
+      vibe:     { label: "Craving",  icon: "🔥", items: ["Comfort Food","Healthy","Indulgent","Quick & Easy","Adventurous","Light Bites"] },
+      distance: { label: "Distance", icon: "📍", items: ["Under 1 mi","Under 2 mi","Under 5 mi","Anywhere"] },
     },
   },
   goout: {
     eyebrow: "Table for Tonight",
     headline: "Go Out",
-    tagline: "Spin your night. Real tables, real vibes.",
+    tagline: "One strong pick. Zero scrolling.",
     label: "Looking For",
     btnText: "FIND MY TABLE",
     btnClass: "mode-goout",
     accent: "#34d399",
+    showSetup: false,
+    showLocation: true,
     categories: {
       cuisine:  { label: "Cuisine",    icon: "🌍", items: ["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Moroccan"] },
       vibe:     { label: "Atmosphere", icon: "✨", items: ["Casual","Romantic","Lively","Trendy","Rooftop","Hidden Gem","Classic"] },
@@ -635,83 +437,139 @@ const MODES = {
   },
 };
 
-const YELP_CUISINE_MAP = {
-  Italian: "italian", Japanese: "japanese", Mexican: "mexican",
-  Indian: "indpak", Thai: "thai", French: "french",
-  Korean: "korean", Mediterranean: "mediterranean", American: "newamerican",
-  Moroccan: "moroccan", Chinese: "chinese", Greek: "greek",
-};
+const YELP_MAP   = { Italian:"italian",Japanese:"japanese",Mexican:"mexican",Indian:"indpak",Thai:"thai",French:"french",Korean:"korean",Mediterranean:"mediterranean",American:"newamerican",Moroccan:"moroccan",Chinese:"chinese" };
+const PRICE_MAP  = { "$":1,"$$":2,"$$$":3,"$$$$":4 };
+const DIST_MAP   = { "Under 1 mi":1609,"Under 2 mi":3218,"Under 5 mi":8047,"Anywhere":40000 };
 
-const PRICE_MAP = { "$": 1, "$$": 2, "$$$": 3, "$$$$": 4 };
-const DISTANCE_MAP = {
-  "Under 1 mi": 1609, "Under 2 mi": 3218, "Under 5 mi": 8047, "Anywhere": 40000,
+// Setup pill options
+const PILL_OPTIONS = {
+  mood:    ["Any","Comfort","Healthy","Indulgent","Adventurous","Light"],
+  budget:  ["Any","Pantry Run","Mid-Range","Splurge"],
+  effort:  ["Normal","Easy","Challenge Me"],
+  serving: ["For 1","For 2","For 4"],
 };
+const pillState = { mood: 0, budget: 0, effort: 0, serving: 0 };
+
+// Duo data
+const DUO_OPTIONS = {
+  mood:    ["Comfort","Healthy","Indulgent","Adventurous","Light","Fast"],
+  cuisine: ["Italian","Japanese","Mexican","Indian","Thai","French","Korean","American","Mediterranean","Chinese"],
+  budget:  ["$","$$","$$$","Doesn't matter"],
+};
+const duoSelections = {
+  p1: { mood: null, cuisine: null, budget: null },
+  p2: { mood: null, cuisine: null, budget: null },
+};
+let duoType = "cook";
 
 // ─────────────────────────────────────────────
 //  STATE
 // ─────────────────────────────────────────────
-let currentMode = "cook";
-let isSpinning = false;
-let isLoading  = false;
-let phase      = "idle";
-let userLat    = null;
-let userLng    = null;
-let userCity   = "your area";
+let currentMode   = "cook";
+let isSpinning    = false;
+let isLoading     = false;
+let phase         = "idle";
+let userLat       = null;
+let userLng       = null;
+let userCity      = "your area";
 let reelIntervals = {};
 let reelIndexes   = {};
+let currentRecipeTitle = "";
 
 // ─────────────────────────────────────────────
 //  INIT
 // ─────────────────────────────────────────────
-function init() { setMode("cook"); }
+function init() {
+  buildDuoOptions();
+  setMode("cook");
+}
 
+// ─────────────────────────────────────────────
+//  MODE
+// ─────────────────────────────────────────────
 function setMode(mode) {
   currentMode = mode;
+
+  // Show/hide panels
+  document.getElementById("spinPanel").style.display = mode === "duo" ? "none" : "block";
+  document.getElementById("duoPanel").style.display  = mode === "duo" ? "block" : "none";
+
+  if (mode === "duo") {
+    document.documentElement.style.setProperty("--accent", "#c084fc");
+    document.getElementById("eyebrow").textContent        = "Dinner, Decided Together";
+    document.getElementById("headlineAccent").textContent = "Eating";
+    document.getElementById("tagline").textContent        = "Two people. One answer. No argument.";
+    ["cook","deliver","goout","duo"].forEach(m => {
+      document.getElementById(`tab-${m}`).className = `mode-tab${m === "duo" ? " active-duo" : ""}`;
+    });
+    document.getElementById("locationBar").classList.remove("visible");
+    return;
+  }
+
   const cfg = MODES[mode];
-
-  // accent CSS var
   document.documentElement.style.setProperty("--accent", cfg.accent);
-
-  // header copy
-  document.getElementById("eyebrow").textContent       = cfg.eyebrow;
+  document.getElementById("eyebrow").textContent        = cfg.eyebrow;
   document.getElementById("headlineAccent").textContent = cfg.headline;
   document.getElementById("tagline").textContent        = cfg.tagline;
 
-  // tabs
-  ["cook","deliver","goout"].forEach(m => {
-    const t = document.getElementById(`tab-${m}`);
-    t.className = `mode-tab${m === mode ? ` active-${m}` : ""}`;
+  ["cook","deliver","goout","duo"].forEach(m => {
+    document.getElementById(`tab-${m}`).className = `mode-tab${m === mode ? ` active-${m}` : ""}`;
   });
 
-  // spin button
   const btn = document.getElementById("spinBtn");
-  btn.className = `spin-btn ${cfg.btnClass}`;
+  btn.className   = `spin-btn ${cfg.btnClass}`;
   btn.textContent = cfg.btnText;
 
-  // location bar
-  const locBar = document.getElementById("locationBar");
-  if (mode === "cook") {
-    locBar.classList.remove("visible");
-  } else {
-    locBar.classList.add("visible");
+  // Setup row
+  document.getElementById("setupRow").classList.toggle("visible", cfg.showSetup);
+
+  // Location bar
+  if (cfg.showLocation) {
+    document.getElementById("locationBar").classList.add("visible");
     if (userLat) updateLocationDisplay();
     else document.getElementById("locationText").textContent = "Tap to detect your location";
+  } else {
+    document.getElementById("locationBar").classList.remove("visible");
   }
 
-  // rebuild reels
   buildReels(cfg.categories);
-
-  // clear result
   resetResult();
   phase = "idle";
 }
 
+// ─────────────────────────────────────────────
+//  SETUP PILLS
+// ─────────────────────────────────────────────
+function cyclePill(key) {
+  const opts = PILL_OPTIONS[key];
+  pillState[key] = (pillState[key] + 1) % opts.length;
+  const val = opts[pillState[key]];
+  document.getElementById(`pill-${key}-val`).textContent = val;
+  const pill = document.getElementById(`pill-${key}`);
+  pill.classList.toggle("active", pillState[key] !== 0);
+}
+
+function getSetupContext() {
+  const mood    = PILL_OPTIONS.mood[pillState.mood];
+  const budget  = PILL_OPTIONS.budget[pillState.budget];
+  const effort  = PILL_OPTIONS.effort[pillState.effort];
+  const serving = PILL_OPTIONS.serving[pillState.serving];
+  const parts = [];
+  if (mood    !== "Any")    parts.push(`Mood: ${mood}`);
+  if (budget  !== "Any")    parts.push(`Budget: ${budget}`);
+  if (effort  !== "Normal") parts.push(`Effort level: ${effort}`);
+  if (serving !== "For 1")  parts.push(`Serving size: ${serving}`);
+  return parts.length ? parts.join(", ") : null;
+}
+
+// ─────────────────────────────────────────────
+//  REELS
+// ─────────────────────────────────────────────
 function buildReels(categories) {
-  const reelsEl = document.getElementById("reels");
-  reelsEl.innerHTML = "";
+  const el = document.getElementById("reels");
+  el.innerHTML = "";
   reelIntervals = {};
   reelIndexes   = {};
-
   Object.entries(categories).forEach(([key, cat]) => {
     reelIndexes[key] = 0;
     const wrap = document.createElement("div");
@@ -722,9 +580,8 @@ function buildReels(categories) {
         <div class="reel-fade-top"></div>
         <div class="reel-fade-bottom"></div>
         <div class="reel-text" id="reel-text-${key}">${cat.items[0]}</div>
-      </div>
-    `;
-    reelsEl.appendChild(wrap);
+      </div>`;
+    el.appendChild(wrap);
   });
 }
 
@@ -740,20 +597,11 @@ function resetResult() {
 //  LOCATION
 // ─────────────────────────────────────────────
 function getLocation() {
-  document.getElementById("locationText").textContent = "Detecting location...";
-  if (!navigator.geolocation) {
-    document.getElementById("locationText").textContent = "Geolocation not supported";
-    return;
-  }
+  document.getElementById("locationText").textContent = "Detecting...";
+  if (!navigator.geolocation) { document.getElementById("locationText").textContent = "Geolocation not supported"; return; }
   navigator.geolocation.getCurrentPosition(
-    pos => {
-      userLat = pos.coords.latitude;
-      userLng = pos.coords.longitude;
-      reverseGeocode(userLat, userLng);
-    },
-    () => {
-      document.getElementById("locationText").textContent = "Location access denied — using city search";
-    }
+    pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; reverseGeocode(userLat, userLng); },
+    ()  => { document.getElementById("locationText").textContent = "Location access denied"; }
   );
 }
 
@@ -763,9 +611,7 @@ async function reverseGeocode(lat, lng) {
     const data = await res.json();
     userCity   = data.address?.city || data.address?.town || data.address?.suburb || "your area";
     updateLocationDisplay();
-  } catch {
-    updateLocationDisplay();
-  }
+  } catch { updateLocationDisplay(); }
 }
 
 function updateLocationDisplay() {
@@ -778,20 +624,12 @@ function updateLocationDisplay() {
 async function spin() {
   if (isSpinning || isLoading) return;
 
-  if (currentMode !== "cook" && !userLat) {
+  if (MODES[currentMode].showLocation && !userLat) {
     await new Promise(resolve => {
-      document.getElementById("locationText").textContent = "Detecting location...";
+      document.getElementById("locationText").textContent = "Detecting...";
       navigator.geolocation.getCurrentPosition(
-        async pos => {
-          userLat = pos.coords.latitude;
-          userLng = pos.coords.longitude;
-          await reverseGeocode(userLat, userLng);
-          resolve();
-        },
-        () => {
-          showError("Location access needed for restaurant search. Please enable location and try again.");
-          resolve();
-        }
+        async pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; await reverseGeocode(userLat, userLng); resolve(); },
+        ()        => { showError("Location needed. Please enable and try again."); resolve(); }
       );
     });
     if (!userLat) return;
@@ -801,20 +639,17 @@ async function spin() {
   phase      = "spinning";
   resetResult();
 
-  const btn       = document.getElementById("spinBtn");
-  const pulseRing = document.getElementById("pulseRing");
+  const btn = document.getElementById("spinBtn");
+  const pr  = document.getElementById("pulseRing");
   btn.disabled    = true;
   btn.textContent = "SPINNING...";
-  pulseRing.classList.add("active");
+  pr.classList.add("active");
 
-  const cfg       = MODES[currentMode];
-  const catKeys   = Object.keys(cfg.categories);
-  const finals    = {};
-  catKeys.forEach(k => {
-    finals[k] = Math.floor(Math.random() * cfg.categories[k].items.length);
-  });
+  const cfg     = MODES[currentMode];
+  const catKeys = Object.keys(cfg.categories);
+  const finals  = {};
+  catKeys.forEach(k => { finals[k] = Math.floor(Math.random() * cfg.categories[k].items.length); });
 
-  // start spinning
   catKeys.forEach(k => {
     document.getElementById(`reel-${k}`).classList.add("spinning");
     reelIntervals[k] = setInterval(() => {
@@ -823,29 +658,24 @@ async function spin() {
     }, 80);
   });
 
-  // staggered stop
-  const stopDelays = [0, 300, 600, 900];
   await new Promise(r => setTimeout(r, 2200));
 
   for (let i = 0; i < catKeys.length; i++) {
-    await new Promise(r => setTimeout(r, stopDelays[i]));
+    await new Promise(r => setTimeout(r, i * 280));
     const k = catKeys[i];
     clearInterval(reelIntervals[k]);
     document.getElementById(`reel-${k}`).classList.remove("spinning");
-    reelIndexes[k] = finals[k];
     document.getElementById(`reel-text-${k}`).textContent = cfg.categories[k].items[finals[k]];
   }
 
   isSpinning = false;
-  pulseRing.classList.remove("active");
+  pr.classList.remove("active");
 
-  // build combo
   const combo = {};
   catKeys.forEach(k => { combo[k] = cfg.categories[k].items[finals[k]]; });
-
   showComboBadge(combo);
 
-  btn.textContent = currentMode === "cook" ? "GENERATING RECIPE..." : "FINDING RESTAURANTS...";
+  btn.textContent = currentMode === "cook" ? "THINKING..." : "FINDING...";
   isLoading = true;
   document.getElementById("loadingText").classList.add("visible");
 
@@ -871,15 +701,14 @@ function getSpinAgainLabel() {
 }
 
 function showComboBadge(combo) {
-  const badge = document.getElementById("comboBadge");
   document.getElementById("comboLabel").textContent = MODES[currentMode].label;
-  const values = Object.values(combo);
+  const v = Object.values(combo);
   let text = "";
-  if (currentMode === "cook")    text = `${values[2]} ${values[0]} with ${values[1]} in ${values[3]}`;
-  if (currentMode === "deliver") text = `${values[0]} · ${values[1]} · ${values[2]}`;
-  if (currentMode === "goout")   text = `${values[0]} · ${values[1]} · ${values[2]}`;
+  if (currentMode === "cook")    text = `${v[2]} ${v[0]} with ${v[1]} · ${v[3]}`;
+  if (currentMode === "deliver") text = `${v[0]} · ${v[1]} · ${v[2]}`;
+  if (currentMode === "goout")   text = `${v[0]} · ${v[1]} · ${v[2]}`;
   document.getElementById("comboText").textContent = text;
-  badge.classList.add("visible");
+  document.getElementById("comboBadge").classList.add("visible");
 }
 
 function showError(msg) {
@@ -892,53 +721,47 @@ function showError(msg) {
 //  COOK MODE
 // ─────────────────────────────────────────────
 async function runCook(combo) {
+  const setupCtx = getSetupContext();
+  const setupLine = setupCtx ? `\nAdditional context from the cook: ${setupCtx}.` : "";
+
   const prompt = `You are the personal chef of someone with serious culinary taste and discernment — think Anthony Bourdain's adventurousness, the precision of a Michelin-trained cook, and the creative ambition of someone who eats to experience the world, not just to feed themselves.
 
 Generate a single recipe using ALL four constraints:
 Protein: ${combo.protein}
 Produce: ${combo.produce}
 Style: ${combo.style}
-Time: ${combo.time}
+Time: ${combo.time}${setupLine}
 
-TASTE PROFILE OF THE COOK:
+TASTE PROFILE:
 - Values bold, specific flavors over safe or generic ones
-- Appreciates technique that is purposeful, not showy — every step should have a reason
-- Seeks the unexpected within the familiar (a classic done with conviction, or a cross-cultural move that actually makes sense)
-- Respects quality ingredients used simply over mediocre ingredients drowning in complexity
-- Wants to learn something from every recipe — a technique, a flavor pairing, a cultural context
-- Has no patience for watered-down, crowd-pleasing blandness
-- Thinks long-term: cooks that build flavor, not shortcuts that fake it
+- Appreciates technique that is purposeful — every step should have a reason
+- Seeks the unexpected within the familiar
+- Respects quality ingredients used simply
+- Wants to learn something from every recipe
+- No patience for watered-down, crowd-pleasing blandness
 
 RECIPE STANDARDS:
-- Name the dish with specificity — not "Pan-Seared Chicken" but something that tells a story
-- The description should make them feel something — one sentence, evocative, honest
-- Ingredients: call out specific varieties, producers, or preparations where it matters (e.g. "Calabrian chili oil" not "chili oil", "good sherry vinegar" not "vinegar")
-- Steps: write like you're in the kitchen together — direct, confident, sensory. Tell them what they should smell, hear, and see, not just what to do
-- The pro tip should reveal something they didn't know — a technique insight, a flavor science moment, or a cultural note that reframes the dish
-- Must be completable in ${combo.time} — no cheating on timing
+- Name with specificity — not "Pan-Seared Chicken" but something that tells a story
+- Description: one evocative sentence, make them feel something
+- Ingredients: be specific (e.g. "Calabrian chili oil", "good sherry vinegar")
+- Steps: direct, confident, sensory — tell them what to smell, hear, see
+- Pro tip: reveal something they didn't know
+- Must be completable in ${combo.time}
 
-Respond ONLY with valid JSON (no markdown, no backticks, no trailing commas):
+Respond ONLY with valid JSON (no markdown, no backticks):
 {"title":"...","description":"...","ingredients":["..."],"steps":["..."],"tip":"..."}
 
-8-10 ingredients. 5-7 steps. Elevated but achievable. Specific but not pretentious.`;
+8-10 ingredients. 5-7 steps. Elevated but achievable.`;
 
   const res  = await fetch("/api/recipe", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      messages: [{ role: "user", content: prompt }],
-    }),
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: prompt }] }),
   });
-
   const data  = await res.json();
   const text  = (data.content || []).map(c => c.text || "").join("");
-  const clean = text.replace(/```json|```/g, "").trim();
-  const r     = JSON.parse(clean);
-
+  const r     = JSON.parse(text.replace(/```json|```/g,"").trim());
   renderRecipe(r);
-  showResult();
+  showResult("resultCard");
 }
 
 function renderRecipe(r) {
@@ -946,218 +769,297 @@ function renderRecipe(r) {
   document.getElementById("resultInner").innerHTML = `
     <div class="result-title">${r.title || ""}</div>
     ${r.description ? `<p class="result-desc">${r.description}</p>` : ""}
-    ${r.ingredients?.length ? `
-      <div class="ingredients">
-        <div class="section-label">Ingredients</div>
-        ${r.ingredients.map(i => `<div class="ingredient-item">${i}</div>`).join("")}
-      </div>` : ""}
-    ${r.steps?.length ? `
-      <div>
-        <div class="section-label">Method</div>
-        ${r.steps.map((s,i) => `
-          <div class="step-item">
-            <div class="step-num">${i+1}</div>
-            <div>${s}</div>
-          </div>`).join("")}
-      </div>` : ""}
-    ${r.tip ? `
-      <div class="pro-tip">
-        <span class="pro-tip-label">PRO TIP:</span>${r.tip}
-      </div>` : ""}
-
+    ${r.ingredients?.length ? `<div class="ingredients"><div class="section-label">Ingredients</div>${r.ingredients.map(i=>`<div class="ingredient-item">${i}</div>`).join("")}</div>` : ""}
+    ${r.steps?.length ? `<div><div class="section-label">Method</div>${r.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div>${s}</div></div>`).join("")}</div>` : ""}
+    ${r.tip ? `<div class="pro-tip"><span class="pro-tip-label">PRO TIP:</span>${r.tip}</div>` : ""}
     <div class="score-section visible" id="scoreSection">
       <div class="score-label">📸 How did you do?</div>
       <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)" />
       <img class="score-preview" id="scorePreview" />
-      <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
-        Tap to upload a photo of your finished dish — get a score
-      </button>
+      <button class="upload-btn" onclick="document.getElementById('imageInput').click()">Upload a photo of your finished dish — get scored</button>
       <div class="score-loading" id="scoreLoading">The judges are deliberating...</div>
       <div class="score-result" id="scoreResult"></div>
-    </div>
-  `;
+    </div>`;
 }
 
 // ─────────────────────────────────────────────
 //  DELIVER MODE
 // ─────────────────────────────────────────────
 async function runDeliver(combo) {
-  const category = YELP_CUISINE_MAP[combo.cuisine] || "restaurants";
-  const price    = PRICE_MAP[combo.price] || 2;
-  const radius   = DISTANCE_MAP[combo.distance] || 8047;
-
-  const params = new URLSearchParams({
-    latitude: userLat, longitude: userLng,
-    categories: category,
-    price, radius,
-    open_now: "true",
-    limit: 10,
-    sort_by: "rating",
-  });
-
-  const res  = await fetch(`/api/restaurants?${params}`);
-  const data = await res.json();
-
-  if (!data.businesses?.length) {
-    showError(`No ${combo.cuisine} spots open nearby. Try different filters.`);
-    return;
-  }
-
-  const pick = data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length, 5))];
-  renderRestaurant(pick, "deliver", combo);
-  showResult();
+  const params = new URLSearchParams({ latitude: userLat, longitude: userLng, categories: YELP_MAP[combo.cuisine] || "restaurants", price: PRICE_MAP[combo.price] || 2, radius: DIST_MAP[combo.distance] || 8047, open_now: "true", limit: 10, sort_by: "rating" });
+  const res    = await fetch(`/api/restaurants?${params}`);
+  const data   = await res.json();
+  if (!data.businesses?.length) { showError(`No ${combo.cuisine} spots open nearby.`); return; }
+  renderRestaurant(data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length, 5))], "deliver", combo);
+  showResult("resultCard");
 }
 
 // ─────────────────────────────────────────────
 //  GO OUT MODE
 // ─────────────────────────────────────────────
 async function runGoOut(combo) {
-  const category = YELP_CUISINE_MAP[combo.cuisine] || "restaurants";
-
-  const vibeKeywords = {
-    "Romantic":   "romantic", "Rooftop": "rooftop", "Trendy": "trendy",
-    "Hidden Gem": "hidden gem", "Classic": "classic", "Lively": "bars",
-    "Casual":     "casual",
-  };
-
-  const params = new URLSearchParams({
-    latitude: userLat, longitude: userLng,
-    categories: category,
-    open_now: combo.timing === "Right Now" ? "true" : "false",
-    limit: 10,
-    sort_by: "rating",
-    radius: 16000,
-  });
-
-  const res  = await fetch(`/api/restaurants?${params}`);
-  const data = await res.json();
-
-  if (!data.businesses?.length) {
-    showError(`No ${combo.cuisine} restaurants found nearby. Try a different spin.`);
-    return;
-  }
-
-  const pick = data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length, 5))];
-  renderRestaurant(pick, "goout", combo);
-  showResult();
+  const params = new URLSearchParams({ latitude: userLat, longitude: userLng, categories: YELP_MAP[combo.cuisine] || "restaurants", open_now: combo.timing === "Right Now" ? "true" : "false", limit: 10, sort_by: "rating", radius: 16000 });
+  const res    = await fetch(`/api/restaurants?${params}`);
+  const data   = await res.json();
+  if (!data.businesses?.length) { showError(`No ${combo.cuisine} restaurants found nearby.`); return; }
+  renderRestaurant(data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length, 5))], "goout", combo);
+  showResult("resultCard");
 }
 
 function renderRestaurant(biz, mode, combo) {
-  const stars  = "★".repeat(Math.round(biz.rating || 0)) + "☆".repeat(5 - Math.round(biz.rating || 0));
-  const price  = biz.price || "";
-  const cats   = (biz.categories || []).map(c => c.title).join(" · ");
-  const addr   = (biz.location?.display_address || []).join(", ");
-  const name   = biz.name || "Restaurant";
-  const isOpen = biz.hours?.[0]?.is_open_now;
-
-  const ddQuery    = encodeURIComponent(name + " " + (biz.location?.city || ""));
-  const ddLink     = `https://www.doordash.com/search/store/${encodeURIComponent(name)}/`;
-  const otCovers   = combo.party === "Just Me" ? 1 : combo.party === "For 2" ? 2 : combo.party === "For 3-4" ? 4 : 6;
-  const otLink     = `https://www.opentable.com/s/?term=${encodeURIComponent(name)}&covers=${otCovers}&metroId=4`;
-
-  const isCook = false;
+  const stars    = "★".repeat(Math.round(biz.rating||0))+"☆".repeat(5-Math.round(biz.rating||0));
+  const addr     = (biz.location?.display_address||[]).join(", ");
+  const name     = biz.name || "Restaurant";
+  const isOpen   = biz.hours?.[0]?.is_open_now;
+  const otCovers = combo.party === "Just Me" ? 1 : combo.party === "For 2" ? 2 : combo.party === "For 3-4" ? 4 : 6;
+  const cats     = (biz.categories||[]).map(c=>c.title).join(" · ");
 
   document.getElementById("resultInner").innerHTML = `
     <div class="result-title">${name}</div>
     <div class="restaurant-meta">
-      <div>
-        <span class="restaurant-rating">${stars}</span>
-        <span class="restaurant-reviews"> ${biz.rating || "?"} (${(biz.review_count || 0).toLocaleString()} reviews)</span>
-      </div>
-      ${price ? `<div class="restaurant-price">${price}</div>` : ""}
+      <div><span class="restaurant-rating">${stars}</span><span class="restaurant-reviews"> ${biz.rating||"?"} (${(biz.review_count||0).toLocaleString()} reviews)</span></div>
+      ${biz.price ? `<div class="restaurant-price">${biz.price}</div>` : ""}
     </div>
-    ${cats ? `<div class="restaurant-cats">${cats.split(" · ").map(c => `<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>` : ""}
+    ${cats ? `<div class="restaurant-cats">${cats.split(" · ").map(c=>`<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>` : ""}
     <br>
     ${addr ? `<div class="restaurant-address">📍 ${addr}</div>` : ""}
-    ${isOpen !== undefined ? `<div class="restaurant-status ${isOpen ? "status-open" : "status-closed"}">${isOpen ? "✓ Open now" : "✗ Currently closed"}</div>` : "<br>"}
-
+    ${isOpen !== undefined ? `<div class="restaurant-status ${isOpen?"status-open":"status-closed"}">${isOpen?"✓ Open now":"✗ Currently closed"}</div>` : "<br>"}
     ${mode === "deliver" ? `
-      <a class="cta-btn doordash" href="${ddLink}" target="_blank" rel="noopener">
-        🛵 &nbsp; ORDER ON DOORDASH
-      </a>
-      <div class="cta-divider">or search manually</div>
-      <a class="cta-secondary" href="https://www.doordash.com/search/store/${encodeURIComponent(combo.cuisine)}/" target="_blank" rel="noopener">
-        Browse all ${combo.cuisine} delivery →
-      </a>
+      <a class="cta-btn doordash" href="https://www.doordash.com/search/store/${encodeURIComponent(name)}/" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON DOORDASH</a>
+      <div class="cta-divider">or browse</div>
+      <a class="cta-secondary" href="https://www.doordash.com/search/store/${encodeURIComponent(combo.cuisine)}/" target="_blank" rel="noopener">All ${combo.cuisine} delivery →</a>
     ` : `
-      <a class="cta-btn opentable" href="${otLink}" target="_blank" rel="noopener">
-        🍽️ &nbsp; RESERVE ON OPENTABLE
-      </a>
-      <div class="cta-divider">or search manually</div>
-      <a class="cta-secondary" href="https://www.opentable.com/s/?term=${encodeURIComponent(combo.cuisine)}&covers=${otCovers}" target="_blank" rel="noopener">
-        Browse all ${combo.cuisine} tables →
-      </a>
-    `}
-  `;
+      <a class="cta-btn opentable" href="https://www.opentable.com/s/?term=${encodeURIComponent(name)}&covers=${otCovers}" target="_blank" rel="noopener">🍽️ &nbsp; RESERVE ON OPENTABLE</a>
+      <div class="cta-divider">or browse</div>
+      <a class="cta-secondary" href="https://www.opentable.com/s/?term=${encodeURIComponent(combo.cuisine||"")}&covers=${otCovers}" target="_blank" rel="noopener">All ${combo.cuisine||""} tables →</a>
+    `}`;
 }
-let currentRecipeTitle = "";
 
+function showResult(id) {
+  const rc = document.getElementById(id);
+  rc.classList.add("visible");
+  requestAnimationFrame(() => requestAnimationFrame(() => rc.classList.add("shown")));
+}
+
+// ─────────────────────────────────────────────
+//  SCORE UPLOAD
+// ─────────────────────────────────────────────
 async function handleImageUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
-
-  // show preview
   const preview = document.getElementById("scorePreview");
   preview.src = URL.createObjectURL(file);
   preview.classList.add("visible");
-
   document.getElementById("scoreLoading").classList.add("visible");
   document.getElementById("scoreResult").classList.remove("visible");
-
-  // convert to base64
-  const base64 = await new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => resolve(e.target.result.split(",")[1]);
-    reader.readAsDataURL(file);
-  });
-
+  const base64 = await new Promise(resolve => { const r = new FileReader(); r.onload = e => resolve(e.target.result.split(",")[1]); r.readAsDataURL(file); });
   try {
-    const res = await fetch("/api/recipe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        image: base64,
-        mediaType: file.type,
-        recipeTitle: currentRecipeTitle,
-      }),
-    });
-
+    const res  = await fetch("/api/recipe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: base64, mediaType: file.type, recipeTitle: currentRecipeTitle }) });
     const data = await res.json();
-    const text = (data.content || []).map(c => c.text || "").join("");
-    const clean = text.replace(/```json|```/g, "").trim();
-    const result = JSON.parse(clean);
-
+    const text = (data.content||[]).map(c=>c.text||"").join("");
+    const result = JSON.parse(text.replace(/```json|```/g,"").trim());
     const score = result.score || 0;
     const colorClass = score >= 8 ? "high" : score >= 5 ? "mid" : "low";
-
     document.getElementById("scoreResult").innerHTML = `
       <div class="score-number ${colorClass}">${score}</div>
       <div class="score-out-of">OUT OF 10</div>
-      <div class="score-verdict">${result.verdict || ""}</div>
+      <div class="score-verdict">${result.verdict||""}</div>
       <div class="score-row">
-        <div class="score-pill good">
-          <span class="score-pill-label">✓ BEST PART</span>
-          ${result.highlight || ""}
-        </div>
-        <div class="score-pill bad">
-          <span class="score-pill-label">↑ IMPROVE</span>
-          ${result.improve || ""}
-        </div>
-      </div>
-    `;
-
+        <div class="score-pill good"><span class="score-pill-label">✓ BEST PART</span>${result.highlight||""}</div>
+        <div class="score-pill bad"><span class="score-pill-label">↑ IMPROVE</span>${result.improve||""}</div>
+      </div>`;
     document.getElementById("scoreResult").classList.add("visible");
   } catch(e) {
     document.getElementById("scoreResult").innerHTML = `<p style="color:#f87171;text-align:center;font-size:13px;">Couldn't score this one. Try again.</p>`;
     document.getElementById("scoreResult").classList.add("visible");
   }
-
   document.getElementById("scoreLoading").classList.remove("visible");
 }
-function showResult() {
-  const rc = document.getElementById("resultCard");
-  rc.classList.add("visible");
-  requestAnimationFrame(() => requestAnimationFrame(() => rc.classList.add("shown")));
+
+// ─────────────────────────────────────────────
+//  DUO MODE
+// ─────────────────────────────────────────────
+function buildDuoOptions() {
+  ["p1","p2"].forEach(player => {
+    Object.entries(DUO_OPTIONS).forEach(([cat, opts]) => {
+      const container = document.getElementById(`${player}-${cat}`);
+      if (!container) return;
+      container.innerHTML = "";
+      opts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className   = "duo-option";
+        btn.textContent = opt;
+        btn.onclick = () => selectDuoOption(player, cat, opt, btn);
+        container.appendChild(btn);
+      });
+    });
+  });
+}
+
+function selectDuoOption(player, cat, value, btn) {
+  const container = document.getElementById(`${player}-${cat}`);
+  container.querySelectorAll(".duo-option").forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
+  duoSelections[player][cat] = value;
+}
+
+function setDuoType(type) {
+  duoType = type;
+  ["cook","goout","delivery"].forEach(t => {
+    document.getElementById(`duo-${t}-btn`).classList.toggle("active", t === type);
+  });
+}
+
+async function spinDuo() {
+  const p1 = duoSelections.p1;
+  const p2 = duoSelections.p2;
+
+  const missing = [];
+  if (!p1.mood)    missing.push("Person 1's mood");
+  if (!p1.cuisine) missing.push("Person 1's cuisine");
+  if (!p1.budget)  missing.push("Person 1's budget");
+  if (!p2.mood)    missing.push("Person 2's mood");
+  if (!p2.cuisine) missing.push("Person 2's cuisine");
+  if (!p2.budget)  missing.push("Person 2's budget");
+
+  if (missing.length) {
+    document.getElementById("duoErrorText").textContent = `Still need: ${missing.join(", ")}`;
+    document.getElementById("duoErrorText").classList.add("visible");
+    return;
+  }
+
+  document.getElementById("duoErrorText").classList.remove("visible");
+
+  if ((duoType === "goout" || duoType === "delivery") && !userLat) {
+    await new Promise(resolve => {
+      navigator.geolocation.getCurrentPosition(
+        async pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; await reverseGeocode(userLat, userLng); resolve(); },
+        () => { document.getElementById("duoErrorText").textContent = "Location needed for restaurant search."; document.getElementById("duoErrorText").classList.add("visible"); resolve(); }
+      );
+    });
+    if (!userLat && duoType !== "cook") return;
+  }
+
+  const btn = document.getElementById("duoBtn");
+  const pr  = document.getElementById("duoPulseRing");
+  btn.disabled    = true;
+  btn.textContent = "FINDING YOUR MATCH...";
+  pr.classList.add("active");
+
+  document.getElementById("duoLoadingText").classList.add("visible");
+  const rc = document.getElementById("duoResultCard");
+  rc.classList.remove("visible","shown");
+
+  try {
+    if (duoType === "cook") await runDuoCook(p1, p2);
+    else await runDuoRestaurant(p1, p2);
+  } catch(e) {
+    document.getElementById("duoErrorText").textContent = "Couldn't find a match. Try again.";
+    document.getElementById("duoErrorText").classList.add("visible");
+  }
+
+  document.getElementById("duoLoadingText").classList.remove("visible");
+  pr.classList.remove("active");
+  btn.disabled    = false;
+  btn.textContent = "TRY ANOTHER MATCH";
+}
+
+async function runDuoCook(p1, p2) {
+  const prompt = `Two people need to agree on what to cook for dinner tonight. Find the best compromise.
+
+Person 1 wants: ${p1.mood} mood, loves ${p1.cuisine} food, budget is ${p1.budget}
+Person 2 wants: ${p2.mood} mood, loves ${p2.cuisine} food, budget is ${p2.budget}
+
+Your job: find ONE recipe that genuinely satisfies both people. Think about where their preferences overlap or complement each other. Sometimes the best answer is neither cuisine they asked for but one that bridges the gap.
+
+The recipe should be realistic to cook at home tonight.
+
+Respond ONLY with valid JSON (no markdown, no backticks):
+{
+  "title": "Recipe name",
+  "description": "One evocative sentence",
+  "ingredients": ["ingredient with quantity"],
+  "steps": ["step description"],
+  "tip": "One pro chef insight",
+  "why_it_won": "2-3 sentences explaining exactly why this works for BOTH people — be specific about which parts of each person's preference it satisfies",
+  "win_tags": ["tag1","tag2","tag3"]
+}
+
+Win tags should be short phrases like "Both wanted comfort", "Bridges Italian + Japanese", "Under $$", "Fast weeknight cook".
+8-10 ingredients. 5-7 steps.`;
+
+  const res  = await fetch("/api/recipe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1200, messages: [{ role: "user", content: prompt }] }) });
+  const data = await res.json();
+  const text = (data.content||[]).map(c=>c.text||"").join("");
+  const r    = JSON.parse(text.replace(/```json|```/g,"").trim());
+  renderDuoRecipe(r);
+  showResult("duoResultCard");
+}
+
+async function runDuoRestaurant(p1, p2) {
+  if (!userLat) return;
+  const cuisineOptions = [YELP_MAP[p1.cuisine], YELP_MAP[p2.cuisine]].filter(Boolean);
+  const category = cuisineOptions[Math.floor(Math.random() * cuisineOptions.length)] || "restaurants";
+  const params = new URLSearchParams({ latitude: userLat, longitude: userLng, categories: category, open_now: "true", limit: 20, sort_by: "rating", radius: 10000 });
+  const res  = await fetch(`/api/restaurants?${params}`);
+  const data = await res.json();
+  if (!data.businesses?.length) {
+    document.getElementById("duoErrorText").textContent = "No restaurants found nearby. Try different preferences.";
+    document.getElementById("duoErrorText").classList.add("visible");
+    return;
+  }
+  const pick = data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length, 8))];
+  renderDuoRestaurant(pick, p1, p2);
+  showResult("duoResultCard");
+}
+
+function renderDuoRecipe(r) {
+  document.getElementById("duoResultInner").innerHTML = `
+    <div class="result-title">${r.title||""}</div>
+    ${r.description ? `<p class="result-desc">${r.description}</p>` : ""}
+    ${r.why_it_won ? `
+      <div class="why-won">
+        <div class="why-won-label">✓ Why This Won</div>
+        <div class="why-won-text">${r.why_it_won}</div>
+        ${r.win_tags?.length ? `<div class="why-won-tags">${r.win_tags.map(t=>`<span class="why-tag">${t}</span>`).join("")}</div>` : ""}
+      </div>` : ""}
+    ${r.ingredients?.length ? `<div class="ingredients" style="margin-top:16px"><div class="section-label">Ingredients</div>${r.ingredients.map(i=>`<div class="ingredient-item">${i}</div>`).join("")}</div>` : ""}
+    ${r.steps?.length ? `<div style="margin-top:4px"><div class="section-label">Method</div>${r.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div>${s}</div></div>`).join("")}</div>` : ""}
+    ${r.tip ? `<div class="pro-tip"><span class="pro-tip-label">PRO TIP:</span>${r.tip}</div>` : ""}`;
+}
+
+function renderDuoRestaurant(biz, p1, p2) {
+  const stars  = "★".repeat(Math.round(biz.rating||0))+"☆".repeat(5-Math.round(biz.rating||0));
+  const addr   = (biz.location?.display_address||[]).join(", ");
+  const name   = biz.name || "Restaurant";
+  const isOpen = biz.hours?.[0]?.is_open_now;
+  const cats   = (biz.categories||[]).map(c=>c.title).join(" · ");
+  const isDelivery = duoType === "delivery";
+
+  document.getElementById("duoResultInner").innerHTML = `
+    <div class="result-title">${name}</div>
+    <div class="why-won" style="margin-bottom:16px">
+      <div class="why-won-label">✓ Why This Won</div>
+      <div class="why-won-text">Matched ${p1.cuisine} and ${p2.cuisine} preferences at a ${p1.budget === p2.budget ? p1.budget : "reasonable"} price point.</div>
+      <div class="why-won-tags">
+        <span class="why-tag">${p1.cuisine} + ${p2.cuisine}</span>
+        <span class="why-tag">${p1.mood} meets ${p2.mood}</span>
+        ${isOpen ? '<span class="why-tag">Open now</span>' : ""}
+      </div>
+    </div>
+    <div class="restaurant-meta">
+      <div><span class="restaurant-rating">${stars}</span><span class="restaurant-reviews"> ${biz.rating||"?"} (${(biz.review_count||0).toLocaleString()} reviews)</span></div>
+      ${biz.price ? `<div class="restaurant-price">${biz.price}</div>` : ""}
+    </div>
+    ${cats ? `<div class="restaurant-cats">${cats.split(" · ").map(c=>`<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>` : ""}
+    <br>
+    ${addr ? `<div class="restaurant-address">📍 ${addr}</div>` : ""}
+    ${isOpen !== undefined ? `<div class="restaurant-status ${isOpen?"status-open":"status-closed"}">${isOpen?"✓ Open now":"✗ Currently closed"}</div>` : "<br>"}
+    ${isDelivery ? `
+      <a class="cta-btn doordash" href="https://www.doordash.com/search/store/${encodeURIComponent(name)}/" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON DOORDASH</a>
+    ` : `
+      <a class="cta-btn opentable" href="https://www.opentable.com/s/?term=${encodeURIComponent(name)}&covers=2" target="_blank" rel="noopener">🍽️ &nbsp; RESERVE ON OPENTABLE</a>
+    `}`;
 }
 
 init();
