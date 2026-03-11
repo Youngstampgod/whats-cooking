@@ -10,3 +10,4 @@
   from = "/api/restaurants"
   to = "/.netlify/functions/restaurants"
   status = 200
+
