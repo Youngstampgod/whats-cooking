@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What Am I Eating — Dinner, Decided</title>
+  <title>What Are We Eating — Dinner, Decided</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
@@ -241,7 +241,7 @@
 <body>
 <div class="page">
   <p class="eyebrow" id="eyebrow">Dinner, Decided</p>
-  <h1 class="headline">What Am I<br><span id="headlineAccent">Eating</span></h1>
+  <h1 class="headline">What Are<br>We <span id="headlineAccent">Eating</span></h1>
   <p class="tagline" id="tagline">Pick dinner in 15 seconds.</p>
 
   <!-- Mode Tabs -->
@@ -376,7 +376,7 @@
 
   </div>
 
-  <p class="footer">Dinner, decided &nbsp;◆&nbsp; whatamieating</p>
+  <p class="footer">Dinner, decided &nbsp;◆&nbsp; whatweeating</p>
 </div>
 
 <script>
@@ -398,7 +398,7 @@ const MODES = {
       protein: { label: "Protein", icon: "🥩", items: ["Chicken","Salmon","Beef","Shrimp","Tofu","Pork","Lamb","Eggs","Tuna","Duck"] },
       produce:  { label: "Produce", icon: "🥦", items: ["Broccoli","Spinach","Sweet Potato","Zucchini","Mushrooms","Tomatoes","Bell Peppers","Cauliflower","Kale","Eggplant"] },
       style:    { label: "Style",   icon: "🌍", items: ["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Moroccan"] },
-      time:     { label: "Time",    icon: "⏱️", items: ["15 min","30 min","45 min","1 hour","2 hours"] },
+      time:     { label: "Time",    icon: "⏱️", items: ["15 min","30 min","1 hour"] },
     },
   },
   deliver: {
@@ -509,7 +509,7 @@ function setMode(mode) {
   const cfg = MODES[mode];
   document.documentElement.style.setProperty("--accent", cfg.accent);
   document.getElementById("eyebrow").textContent        = cfg.eyebrow;
-  document.getElementById("headlineAccent").textContent = cfg.headline;
+  document.getElementById("headlineAccent").textContent = "Eating";
   document.getElementById("tagline").textContent        = cfg.tagline;
 
   ["cook","deliver","goout","duo"].forEach(m => {
@@ -648,7 +648,20 @@ async function spin() {
   const cfg     = MODES[currentMode];
   const catKeys = Object.keys(cfg.categories);
   const finals  = {};
-  catKeys.forEach(k => { finals[k] = Math.floor(Math.random() * cfg.categories[k].items.length); });
+  catKeys.forEach(k => {
+    if (k === "time" && currentMode === "cook") {
+      const effort = PILL_OPTIONS.effort[pillState.effort];
+      const allTimes = cfg.categories[k].items;
+      let allowed = allTimes;
+      if (effort === "Easy")         allowed = ["15 min"];
+      if (effort === "Normal")       allowed = ["15 min","30 min"];
+      if (effort === "Challenge Me") allowed = ["30 min","1 hour"];
+      const picked = allowed[Math.floor(Math.random() * allowed.length)];
+      finals[k] = allTimes.indexOf(picked);
+    } else {
+      finals[k] = Math.floor(Math.random() * cfg.categories[k].items.length);
+    }
+  });
 
   catKeys.forEach(k => {
     document.getElementById(`reel-${k}`).classList.add("spinning");
