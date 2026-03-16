@@ -11,8 +11,8 @@
 
     :root {
       --fire: #ff6b35; --fire-dim: #e8410a;
-      --deliver: #38bdf8; --deliver-dim: #0284c7;
-      --goout: #34d399; --goout-dim: #059669;
+      --green: #34d399; --green-dim: #059669;
+      --blue: #38bdf8; --blue-dim: #0284c7;
       --duo: #c084fc; --duo-dim: #9333ea;
       --p1: #f97316; --p2: #38bdf8;
       --bg: #080300; --card-border: #2a1000; --reel-bg: #0d0500;
@@ -25,82 +25,56 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--reel-bg); }
     ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 2px; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.6; }
 
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 0; opacity: 0.6;
-    }
-
-    .page { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 16px 80px; min-height: 100vh; }
+    .page { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 36px 16px 80px; min-height: 100vh; }
 
     /* ── HEADER ── */
-    .eyebrow { font-family: 'Bebas Neue', cursive; font-size: clamp(10px,2vw,12px); letter-spacing: 7px; color: var(--accent); opacity: 0.7; margin-bottom: 10px; text-align: center; transition: color 0.4s; }
-    .headline { font-family: 'Bebas Neue', cursive; font-size: clamp(48px,12vw,88px); line-height: 0.88; letter-spacing: 3px; text-align: center; animation: flicker 5s ease-in-out infinite; }
-    .headline span { color: var(--accent); transition: color 0.4s; }
-    .tagline { margin-top: 12px; color: var(--text-muted); font-size: 14px; font-style: italic; text-align: center; }
+    .eyebrow { font-family: 'Bebas Neue', cursive; font-size: clamp(10px,2vw,12px); letter-spacing: 7px; color: var(--accent); opacity: 0.7; margin-bottom: 8px; text-align: center; }
+    .headline { font-family: 'Bebas Neue', cursive; font-size: clamp(44px,11vw,82px); line-height: 0.88; letter-spacing: 3px; text-align: center; animation: flicker 5s ease-in-out infinite; }
+    .headline span { color: var(--accent); }
+    .tagline { margin-top: 10px; color: var(--text-muted); font-size: 14px; font-style: italic; text-align: center; }
 
-    /* ── MODE TABS ── */
-    .mode-tabs { display: flex; gap: 5px; margin-top: 28px; background: rgba(255,255,255,0.03); border: 1px solid #1a0800; border-radius: 12px; padding: 5px; flex-wrap: wrap; justify-content: center; }
-    .mode-tab { font-family: 'Bebas Neue', cursive; font-size: clamp(12px,2.5vw,15px); letter-spacing: 2px; padding: 9px 16px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.3s; white-space: nowrap; }
-    .mode-tab.active-cook    { background: rgba(255,107,53,0.15);  color: var(--fire);    border: 1px solid rgba(255,107,53,0.3); }
-    .mode-tab.active-deliver { background: rgba(56,189,248,0.12);  color: var(--deliver); border: 1px solid rgba(56,189,248,0.3); }
-    .mode-tab.active-goout   { background: rgba(52,211,153,0.12);  color: var(--goout);   border: 1px solid rgba(52,211,153,0.3); }
-    .mode-tab.active-duo     { background: rgba(192,132,252,0.12); color: var(--duo);     border: 1px solid rgba(192,132,252,0.3); }
+    /* ── CAPITAN ── */
+    .mascot-wrap { position: relative; display: flex; justify-content: center; align-items: flex-end; margin: 4px 0 -4px; height: 124px; }
+    .mascot-svg { animation: capitan-bob 3s ease-in-out infinite; filter: drop-shadow(0 8px 20px rgba(255,107,53,0.25)); transform-origin: bottom center; }
+    .mascot-shadow { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 60px; height: 10px; background: radial-gradient(ellipse, rgba(255,107,53,0.25) 0%, transparent 70%); animation: shadow-pulse 3s ease-in-out infinite; border-radius: 50%; }
+
+    /* ── TABS ── */
+    .mode-tabs { display: flex; gap: 5px; margin-top: 22px; background: rgba(255,255,255,0.03); border: 1px solid #1a0800; border-radius: 12px; padding: 5px; }
+    .mode-tab { font-family: 'Bebas Neue', cursive; font-size: clamp(12px,2.5vw,15px); letter-spacing: 2px; padding: 9px 22px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+    .mode-tab.active-spin { background: rgba(255,107,53,0.15); color: var(--fire); border: 1px solid rgba(255,107,53,0.3); }
+    .mode-tab.active-duo  { background: rgba(192,132,252,0.12); color: var(--duo); border: 1px solid rgba(192,132,252,0.3); }
     .mode-tab:hover:not([class*="active"]) { color: #a0784a; }
 
     /* ── MAIN CARD ── */
-    .card { margin-top: 22px; width: 100%; max-width: 640px; background: linear-gradient(160deg, #150900 0%, #0a0300 100%); border: 1px solid var(--card-border); border-radius: 20px; padding: 26px 22px; position: relative; overflow: hidden; box-shadow: 0 60px 100px rgba(0,0,0,0.85); }
+    .card { margin-top: 18px; width: 100%; max-width: 640px; background: linear-gradient(160deg, #150900 0%, #0a0300 100%); border: 1px solid var(--card-border); border-radius: 20px; padding: 24px 20px; position: relative; overflow: hidden; box-shadow: 0 60px 100px rgba(0,0,0,0.85); }
     .card::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,107,53,0.04) 0%, transparent 70%); pointer-events: none; }
 
     /* ── LOCATION BAR ── */
-    .location-bar { display: none; align-items: center; gap: 8px; margin-bottom: 16px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid #1a0800; border-radius: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: border-color 0.3s; }
+    .location-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid #1a0800; border-radius: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: border-color 0.3s; }
     .location-bar:hover { border-color: #3a2000; }
-    .location-bar.visible { display: flex; }
-    .location-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .location-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: dot-pulse 2s ease-in-out infinite; }
     .location-text { flex: 1; font-style: italic; }
     .location-refresh { font-size: 14px; opacity: 0.5; }
 
-    /* ── SETUP ROW ── */
-    .setup-row { display: none; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
-    .setup-row.visible { display: flex; }
-    .setup-pill { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 10px; background: rgba(255,255,255,0.03); border: 1px solid #2a1000; border-radius: 10px; cursor: pointer; transition: all 0.2s; user-select: none; }
-    .setup-pill:hover { border-color: var(--accent); background: rgba(255,107,53,0.06); }
-    .setup-pill.active { border-color: var(--accent); background: rgba(255,107,53,0.1); }
-    .setup-pill-label { font-family: 'Bebas Neue', cursive; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); }
-    .setup-pill-value { font-family: 'Bebas Neue', cursive; font-size: clamp(12px,2.5vw,15px); color: #fff; letter-spacing: 1px; text-align: center; line-height: 1.1; }
-    .setup-pill.active .setup-pill-value { color: var(--accent); }
-
     /* ── REELS ── */
-    .reels { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
     .reel-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
     .reel-label { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 3px; color: var(--accent); opacity: 0.8; text-transform: uppercase; }
-    .reel { width: 100%; height: 78px; background: linear-gradient(135deg, #1a0a00 0%, var(--reel-bg) 100%); border: 2px solid #3a1a00; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; transition: border-color 0.3s, box-shadow 0.3s; box-shadow: inset 0 0 24px rgba(0,0,0,0.6); }
+    .reel { width: 100%; height: 80px; background: linear-gradient(135deg, #1a0a00 0%, var(--reel-bg) 100%); border: 2px solid #3a1a00; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; transition: border-color 0.3s, box-shadow 0.3s; box-shadow: inset 0 0 24px rgba(0,0,0,0.6); }
     .reel.spinning { border-color: var(--accent); box-shadow: 0 0 22px rgba(255,107,53,0.3), inset 0 0 18px rgba(255,107,53,0.06); }
     .reel.disliked { border-color: rgba(248,113,113,0.4); }
     .reel-fade-top, .reel-fade-bottom { position: absolute; left: 0; right: 0; height: 22px; z-index: 2; pointer-events: none; }
-    .reel-fade-top    { top: 0;    background: linear-gradient(to bottom, var(--reel-bg), transparent); }
-    .reel-fade-bottom { bottom: 0; background: linear-gradient(to top,    var(--reel-bg), transparent); }
-    .reel-text { font-family: 'Bebas Neue', cursive; font-size: clamp(13px,2.8vw,17px); color: #fff; text-align: center; padding: 0 8px; line-height: 1.1; letter-spacing: 1px; transition: color 0.2s, text-shadow 0.2s; position: relative; z-index: 1; }
+    .reel-fade-top    { top: 0; background: linear-gradient(to bottom, var(--reel-bg), transparent); }
+    .reel-fade-bottom { bottom: 0; background: linear-gradient(to top, var(--reel-bg), transparent); }
+    .reel-text { font-family: 'Bebas Neue', cursive; font-size: clamp(12px,2.6vw,16px); color: #fff; text-align: center; padding: 0 6px; line-height: 1.15; letter-spacing: 0.5px; transition: color 0.2s, text-shadow 0.2s; position: relative; z-index: 1; }
     .reel.spinning .reel-text { color: #ffa070; text-shadow: 0 0 18px rgba(255,107,53,0.9); }
 
-    /* ── REEL CONTROLS (thumbs down + swap) ── */
-    .reel-controls { display: none; justify-content: center; gap: 6px; height: 0; overflow: hidden; transition: height 0.3s; }
-    .reel-controls.visible { display: flex; height: 26px; }
-
-    .reel-ctrl-btn {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 5px;
-      border: 1px solid #2a1000;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-family: 'Bebas Neue', cursive;
-      letter-spacing: 1px;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
+    /* ── REEL CONTROLS ── */
+    .reel-controls { display: none; justify-content: center; gap: 5px; overflow: hidden; }
+    .reel-controls.visible { display: flex; margin-top: 4px; }
+    .reel-ctrl-btn { font-size: 10px; padding: 2px 7px; border-radius: 5px; border: 1px solid #2a1000; background: transparent; color: var(--text-muted); cursor: pointer; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; transition: all 0.2s; white-space: nowrap; }
     .reel-ctrl-btn:hover { border-color: var(--accent); color: var(--text-warm); }
     .reel-ctrl-btn.dislike-btn:hover { border-color: #f87171; color: #f87171; }
     .reel-ctrl-btn.disliked-active { border-color: #f87171; color: #f87171; background: rgba(248,113,113,0.08); }
@@ -108,36 +82,70 @@
     .reel-ctrl-btn.swap-btn:hover { background: rgba(255,107,53,0.1); }
     .reel-ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* ── SPIN BUTTON ── */
+    /* ── MAIN SPIN BUTTON ── */
     .spin-btn-wrap { position: relative; }
     .pulse-ring { display: none; position: absolute; inset: 0; border-radius: 12px; border: 2px solid rgba(255,107,53,0.5); animation: pulse-ring 1s ease-out infinite; }
     .pulse-ring.active { display: block; }
-    .spin-btn { width: 100%; height: 64px; background: linear-gradient(135deg, var(--fire) 0%, var(--fire-dim) 100%); border: none; border-radius: 12px; font-family: 'Bebas Neue', cursive; font-size: clamp(17px,4vw,23px); letter-spacing: 5px; color: #fff; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 40px rgba(255,107,53,0.4), 0 2px 0 rgba(255,255,255,0.08) inset; position: relative; overflow: hidden; }
+    .spin-btn { width: 100%; height: 68px; background: linear-gradient(135deg, var(--fire) 0%, var(--fire-dim) 100%); border: none; border-radius: 12px; font-family: 'Bebas Neue', cursive; font-size: clamp(18px,4.5vw,26px); letter-spacing: 6px; color: #fff; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 40px rgba(255,107,53,0.4), 0 2px 0 rgba(255,255,255,0.08) inset; position: relative; overflow: hidden; }
     .spin-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); transition: left 0.5s; }
     .spin-btn:hover::after { left: 150%; }
     .spin-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(255,107,53,0.5); }
     .spin-btn:active:not(:disabled) { transform: translateY(0); }
     .spin-btn:disabled { background: linear-gradient(135deg, #3a1800, #200e00); box-shadow: none; cursor: not-allowed; }
-    .spin-btn.mode-deliver { background: linear-gradient(135deg, var(--deliver) 0%, var(--deliver-dim) 100%); box-shadow: 0 10px 40px rgba(56,189,248,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
-    .spin-btn.mode-deliver:hover:not(:disabled) { box-shadow: 0 16px 48px rgba(56,189,248,0.5); }
-    .spin-btn.mode-goout   { background: linear-gradient(135deg, var(--goout) 0%, var(--goout-dim) 100%); box-shadow: 0 10px 40px rgba(52,211,153,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
-    .spin-btn.mode-goout:hover:not(:disabled) { box-shadow: 0 16px 48px rgba(52,211,153,0.5); }
-    .spin-btn.mode-duo { background: linear-gradient(135deg, var(--duo) 0%, var(--duo-dim) 100%); box-shadow: 0 10px 40px rgba(192,132,252,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
-    .spin-btn.mode-duo:hover:not(:disabled) { box-shadow: 0 16px 48px rgba(192,132,252,0.5); }
+    .spin-btn.duo-btn { background: linear-gradient(135deg, var(--duo) 0%, var(--duo-dim) 100%); box-shadow: 0 10px 40px rgba(192,132,252,0.3), 0 2px 0 rgba(255,255,255,0.08) inset; }
 
     /* ── COMBO BADGE ── */
-    .combo-badge { margin-top: 20px; text-align: center; opacity: 0; transform: translateY(8px); transition: opacity 0.5s, transform 0.5s; }
+    .combo-badge { margin-top: 18px; text-align: center; opacity: 0; transform: translateY(8px); transition: opacity 0.5s, transform 0.5s; }
     .combo-badge.visible { opacity: 1; transform: translateY(0); }
-    .combo-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--accent); letter-spacing: 4px; margin-bottom: 5px; }
-    .combo-text  { font-size: clamp(14px,3.5vw,18px); color: #fff; font-style: italic; }
+    .combo-label { font-family: 'Bebas Neue', cursive; font-size: 10px; color: var(--accent); letter-spacing: 4px; margin-bottom: 4px; }
+    .combo-text  { font-size: clamp(15px,3.5vw,20px); color: #fff; font-style: italic; font-weight: 600; }
 
-    .loading-text { margin-top: 18px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 14px; display: none; }
+    /* ── EXECUTION BUTTONS ── */
+    .exec-buttons {
+      display: none;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .exec-buttons.visible { display: grid; }
+
+    .exec-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 14px 8px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Bebas Neue', cursive;
+    }
+    .exec-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+    .exec-btn:hover::after { left: 150%; }
+    .exec-btn:hover { transform: translateY(-3px); }
+    .exec-btn:active { transform: translateY(0); }
+    .exec-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .exec-btn.cook-btn  { background: linear-gradient(135deg, #ff6b35, #e8410a); box-shadow: 0 8px 24px rgba(255,107,53,0.35); color: #fff; }
+    .exec-btn.goout-btn { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 8px 24px rgba(52,211,153,0.35); color: #fff; }
+    .exec-btn.order-btn { background: linear-gradient(135deg, #38bdf8, #0284c7); box-shadow: 0 8px 24px rgba(56,189,248,0.35); color: #fff; }
+
+    .exec-btn-icon { font-size: 22px; line-height: 1; }
+    .exec-btn-label { font-size: clamp(11px,2.5vw,14px); letter-spacing: 2px; }
+    .exec-btn-sub { font-family: 'Crimson Pro', Georgia, serif; font-size: 10px; opacity: 0.75; font-style: italic; letter-spacing: 0; }
+
+    /* ── STATUS TEXT ── */
+    .loading-text { margin-top: 16px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 14px; display: none; }
     .loading-text.visible { display: block; }
-    .error-text { margin-top: 16px; text-align: center; color: #ff5555; font-size: 14px; display: none; }
+    .error-text { margin-top: 14px; text-align: center; color: #ff5555; font-size: 14px; display: none; }
     .error-text.visible { display: block; }
 
     /* ── RESULT CARD ── */
-    .result-card { margin-top: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; display: none; }
+    .result-card { margin-top: 22px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; display: none; }
     .result-card.visible { display: block; }
     .result-card.shown   { opacity: 1; transform: translateY(0); }
 
@@ -147,25 +155,9 @@
     .ticket-stub { background: #1a0800; border-radius: 0 0 4px 4px; padding: 10px 18px 14px; margin-bottom: 4px; }
     .ticket-header { background: #1a0800; padding: 16px 18px 14px; border-radius: 4px 4px 0 0; }
     .ticket-order-num { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 4px; color: var(--accent); opacity: 0.7; margin-bottom: 4px; }
-    .ticket-title { font-family: 'Bebas Neue', cursive; font-size: clamp(22px,5vw,32px); color: #fff; letter-spacing: 2px; line-height: 1; margin-bottom: 6px; }
+    .ticket-title { font-family: 'Bebas Neue', cursive; font-size: clamp(20px,5vw,30px); color: #fff; letter-spacing: 2px; line-height: 1; margin-bottom: 6px; }
     .ticket-desc { font-size: 13px; color: #c49070; font-style: italic; line-height: 1.5; }
     .ticket-body { padding: 16px 18px; }
-
-    /* ── TIMER ── */
-    .timer-wrap { margin-bottom: 16px; padding: 12px 14px; background: #f5ede6; border-radius: 6px; border: 1px solid #e8d0c0; }
-    .timer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .timer-label { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 3px; color: #7a4a30; }
-    .timer-countdown { font-family: 'Bebas Neue', cursive; font-size: clamp(22px,5vw,30px); color: #1a0800; letter-spacing: 2px; line-height: 1; transition: color 0.3s; }
-    .timer-countdown.warning { color: #e8410a; }
-    .timer-countdown.done    { color: #34d399; }
-    .timer-track { width: 100%; height: 6px; background: #e0cfc4; border-radius: 3px; overflow: hidden; }
-    .timer-fill { height: 100%; background: linear-gradient(90deg, var(--fire), var(--fire-dim)); border-radius: 3px; transition: width 1s linear, background 0.3s; }
-    .timer-fill.warning { background: linear-gradient(90deg, #e8410a, #dc2626); }
-    .timer-start-btn { width: 100%; padding: 10px; background: #1a0800; color: #fff; border: none; border-radius: 6px; font-family: 'Bebas Neue', cursive; font-size: 15px; letter-spacing: 3px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
-    .timer-start-btn:hover { background: var(--fire); }
-    .timer-start-btn.running { background: #3a1800; cursor: default; }
-
-    /* ── TICKET BODY ── */
     .ticket-section-label { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 4px; color: #7a4a30; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #e8d0c0; }
     .ticket-ingredients { margin-bottom: 18px; }
     .ticket-ingredient { display: flex; align-items: baseline; gap: 8px; padding: 3px 0; font-size: 13px; color: #3a1800; border-bottom: 1px dashed #e8d0c0; }
@@ -182,7 +174,46 @@
     .ticket-tip { background: #fef3ec; border: 1px solid #f0c8a8; border-radius: 6px; padding: 10px 14px; font-size: 13px; color: #7a4a30; margin-bottom: 14px; }
     .ticket-tip-label { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 3px; color: var(--accent); margin-right: 6px; }
 
-    /* ── SCORE SECTION ── */
+    /* ── TIMER ── */
+    .timer-wrap { margin-bottom: 16px; padding: 12px 14px; background: #f5ede6; border-radius: 6px; border: 1px solid #e8d0c0; }
+    .timer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .timer-label { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 3px; color: #7a4a30; }
+    .timer-countdown { font-family: 'Bebas Neue', cursive; font-size: clamp(22px,5vw,30px); color: #1a0800; letter-spacing: 2px; line-height: 1; transition: color 0.3s; }
+    .timer-countdown.warning { color: #e8410a; }
+    .timer-countdown.done    { color: #34d399; }
+    .timer-track { width: 100%; height: 6px; background: #e0cfc4; border-radius: 3px; overflow: hidden; }
+    .timer-fill { height: 100%; background: linear-gradient(90deg, var(--fire), var(--fire-dim)); border-radius: 3px; transition: width 1s linear, background 0.3s; }
+    .timer-fill.warning { background: linear-gradient(90deg, #e8410a, #dc2626); }
+    .timer-start-btn { width: 100%; padding: 10px; background: #1a0800; color: #fff; border: none; border-radius: 6px; font-family: 'Bebas Neue', cursive; font-size: 15px; letter-spacing: 3px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
+    .timer-start-btn:hover { background: var(--fire); }
+    .timer-start-btn.running { background: #3a1800; cursor: default; }
+
+    /* ── RESTAURANT CARD ── */
+    .result-inner { background: linear-gradient(135deg, #1c0900 0%, #120500 100%); border: 1px solid #3a1800; border-radius: 14px; padding: 22px; position: relative; overflow: hidden; }
+    .result-inner::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%); pointer-events: none; }
+    .result-title { font-family: 'Bebas Neue', cursive; font-size: clamp(18px,4vw,24px); color: var(--accent); letter-spacing: 2px; border-bottom: 1px solid #2a1000; padding-bottom: 10px; margin-bottom: 12px; }
+    .restaurant-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; align-items: center; }
+    .restaurant-rating { font-family: 'Bebas Neue', cursive; font-size: 22px; color: #fbbf24; letter-spacing: 1px; }
+    .restaurant-reviews { color: var(--text-muted); font-size: 13px; }
+    .restaurant-price { font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--accent); }
+    .restaurant-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .restaurant-cat-tag { font-size: 11px; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid #2a1000; }
+    .restaurant-address { color: var(--text-warm); font-size: 14px; font-style: italic; margin-bottom: 5px; }
+    .restaurant-status { font-size: 13px; margin-bottom: 16px; }
+    .status-open { color: #34d399; } .status-closed { color: #f87171; }
+
+    /* ── GO OUT CTA BUTTONS ── */
+    .goout-ctas { display: flex; flex-direction: column; gap: 10px; }
+    .cta-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 10px; border: none; font-family: 'Bebas Neue', cursive; font-size: clamp(14px,3.5vw,18px); letter-spacing: 3px; cursor: pointer; text-decoration: none; color: #fff; transition: all 0.3s; }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-btn.resy    { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 8px 28px rgba(52,211,153,0.3); }
+    .cta-btn.uber    { background: linear-gradient(135deg, #1a1a1a, #000); box-shadow: 0 8px 28px rgba(0,0,0,0.5); border: 1px solid #333; }
+    .cta-btn.seamless { background: linear-gradient(135deg, #38bdf8, #0284c7); box-shadow: 0 8px 28px rgba(56,189,248,0.3); }
+    .cta-btn.ubereats { background: linear-gradient(135deg, #1a1a1a, #000); box-shadow: 0 8px 28px rgba(0,0,0,0.4); border: 1px solid #333; }
+    .cta-divider { display: flex; align-items: center; gap: 10px; margin: 4px 0; color: var(--text-dimmer); font-size: 11px; letter-spacing: 2px; font-family: 'Bebas Neue', cursive; }
+    .cta-divider::before, .cta-divider::after { content: ''; flex: 1; height: 1px; background: #1a0800; }
+
+    /* ── SCORE ── */
     .ticket-score-label { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 3px; color: var(--accent); margin-bottom: 8px; }
     .ticket-upload-btn { width: 100%; padding: 11px; border: 2px dashed #3a1800; border-radius: 8px; background: transparent; color: var(--text-muted); font-family: 'Crimson Pro', Georgia, serif; font-size: 13px; font-style: italic; cursor: pointer; transition: all 0.3s; text-align: center; }
     .ticket-upload-btn:hover { border-color: var(--accent); color: var(--text-warm); }
@@ -203,61 +234,6 @@
     .score-preview { width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; display: none; }
     .score-preview.visible { display: block; }
 
-    /* ── RESTAURANT CARD ── */
-    .result-inner { background: linear-gradient(135deg, #1c0900 0%, #120500 100%); border: 1px solid #3a1800; border-radius: 14px; padding: 22px; position: relative; overflow: hidden; }
-    .result-inner::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%); pointer-events: none; }
-    .result-title { font-family: 'Bebas Neue', cursive; font-size: clamp(18px,4vw,25px); color: var(--accent); letter-spacing: 2px; border-bottom: 1px solid #2a1000; padding-bottom: 10px; margin-bottom: 10px; }
-    .result-desc { color: #c49070; font-style: italic; font-size: 14px; line-height: 1.65; margin-bottom: 18px; }
-    .section-label { font-family: 'Bebas Neue', cursive; font-size: 12px; color: var(--accent); letter-spacing: 4px; margin-bottom: 8px; }
-    .ingredient-item { display: flex; align-items: center; gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(58,24,0,0.5); color: var(--text-warm); font-size: 14px; }
-    .ingredient-item::before { content: '◆'; color: var(--accent); font-size: 9px; flex-shrink: 0; }
-    .ingredients { margin-bottom: 18px; }
-    .step-item { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid rgba(58,24,0,0.3); color: var(--text-warm); font-size: 14px; line-height: 1.55; }
-    .step-num { font-family: 'Bebas Neue', cursive; color: var(--accent); font-size: 17px; min-width: 20px; line-height: 1.2; }
-    .restaurant-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
-    .restaurant-rating { font-family: 'Bebas Neue', cursive; font-size: 22px; color: #fbbf24; letter-spacing: 1px; }
-    .restaurant-reviews { color: var(--text-muted); font-size: 13px; }
-    .restaurant-price { font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--accent); }
-    .restaurant-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
-    .restaurant-cat-tag { font-size: 11px; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid #2a1000; }
-    .restaurant-address { color: var(--text-warm); font-size: 14px; font-style: italic; margin-bottom: 6px; }
-    .restaurant-status { font-size: 13px; margin-bottom: 18px; }
-    .status-open { color: #34d399; } .status-closed { color: #f87171; }
-    .cta-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 10px; border: none; font-family: 'Bebas Neue', cursive; font-size: clamp(15px,3.5vw,19px); letter-spacing: 3px; cursor: pointer; text-decoration: none; color: #fff; transition: all 0.3s; }
-    .cta-btn.doordash  { background: linear-gradient(135deg, var(--deliver) 0%, var(--deliver-dim) 100%); box-shadow: 0 8px 28px rgba(56,189,248,0.3); }
-    .cta-btn.doordash:hover  { transform: translateY(-2px); }
-    .cta-btn.opentable { background: linear-gradient(135deg, var(--goout) 0%, var(--goout-dim) 100%); box-shadow: 0 8px 28px rgba(52,211,153,0.3); }
-    .cta-btn.opentable:hover { transform: translateY(-2px); }
-    .cta-divider { display: flex; align-items: center; gap: 10px; margin: 12px 0; color: var(--text-dimmer); font-size: 12px; letter-spacing: 2px; font-family: 'Bebas Neue', cursive; }
-    .cta-divider::before, .cta-divider::after { content: ''; flex: 1; height: 1px; background: #1a0800; }
-    .cta-secondary { display: block; text-align: center; color: var(--text-muted); font-size: 13px; font-style: italic; text-decoration: none; padding: 8px; border-radius: 8px; transition: color 0.2s; }
-    .cta-secondary:hover { color: var(--text-warm); }
-
-    /* ── WHY IT WON ── */
-    .why-won { margin-top: 14px; background: rgba(192,132,252,0.07); border: 1px solid rgba(192,132,252,0.2); border-radius: 10px; padding: 12px 16px; }
-    .why-won-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--duo); letter-spacing: 3px; margin-bottom: 6px; }
-    .why-won-text  { font-size: 13px; color: #c4a0e0; font-style: italic; line-height: 1.6; }
-    .why-won-tags  { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .why-tag { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2); color: var(--duo); }
-
-    /* ── DUO STATIONS ── */
-    .stations-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-    .station { border-radius: 8px; overflow: hidden; }
-    .station-header { padding: 8px 12px; font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 3px; color: #fff; }
-    .station.p1 .station-header { background: var(--p1); }
-    .station.p2 .station-header { background: var(--p2); color: #0a0300; }
-    .station-role { font-size: 9px; letter-spacing: 2px; opacity: 0.7; display: block; margin-top: 1px; font-family: 'Crimson Pro', Georgia, serif; font-style: italic; }
-    .station-steps { background: rgba(255,255,255,0.03); border: 1px solid #2a1000; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; }
-    .station-step { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: opacity 0.2s; }
-    .station-step:last-child { border-bottom: none; }
-    .station-step.done-step { opacity: 0.4; }
-    .station-checkbox { width: 16px; height: 16px; flex-shrink: 0; border-radius: 3px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 2px; border: 1px solid #3a1800; background: transparent; }
-    .station.p1 .station-step.done-step .station-checkbox { background: var(--p1); border-color: var(--p1); }
-    .station.p2 .station-step.done-step .station-checkbox { background: var(--p2); border-color: var(--p2); }
-    .station-check-icon { display: none; color: #fff; font-size: 10px; font-weight: bold; }
-    .station-step.done-step .station-check-icon { display: block; }
-    .station-step-text { font-size: 12px; color: var(--text-warm); line-height: 1.5; }
-
     /* ── DUO PANEL ── */
     .duo-panel { display: none; }
     .duo-panel.visible { display: block; }
@@ -277,71 +253,165 @@
     .duo-mode-btn { flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #2a1000; background: transparent; font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 2px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
     .duo-mode-btn.active { border-color: var(--duo); background: rgba(192,132,252,0.1); color: var(--duo); }
 
+    /* ── DUO STATIONS ── */
+    .stations-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    .station { border-radius: 8px; overflow: hidden; }
+    .station-header { padding: 8px 12px; font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 3px; color: #fff; }
+    .station.p1 .station-header { background: var(--p1); }
+    .station.p2 .station-header { background: var(--p2); color: #0a0300; }
+    .station-role { font-size: 9px; letter-spacing: 2px; opacity: 0.7; display: block; margin-top: 1px; font-family: 'Crimson Pro', Georgia, serif; font-style: italic; }
+    .station-steps { background: rgba(255,255,255,0.03); border: 1px solid #2a1000; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; }
+    .station-step { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: opacity 0.2s; }
+    .station-step:last-child { border-bottom: none; }
+    .station-step.done-step { opacity: 0.4; }
+    .station-checkbox { width: 16px; height: 16px; flex-shrink: 0; border-radius: 3px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 2px; border: 1px solid #3a1800; background: transparent; }
+    .station.p1 .station-step.done-step .station-checkbox { background: var(--p1); border-color: var(--p1); }
+    .station.p2 .station-step.done-step .station-checkbox { background: var(--p2); border-color: var(--p2); }
+    .station-check-icon { display: none; color: #fff; font-size: 10px; font-weight: bold; }
+    .station-step.done-step .station-check-icon { display: block; }
+    .station-step-text { font-size: 12px; color: var(--text-warm); line-height: 1.5; }
+    .result-desc { color: #c49070; font-style: italic; font-size: 14px; line-height: 1.65; margin-bottom: 14px; }
+    .section-label { font-family: 'Bebas Neue', cursive; font-size: 12px; color: var(--accent); letter-spacing: 4px; margin-bottom: 8px; }
+    .ingredients { margin-bottom: 18px; }
+    .ingredient-item { display: flex; align-items: center; gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(58,24,0,0.5); color: var(--text-warm); font-size: 14px; }
+    .ingredient-item::before { content: '◆'; color: var(--accent); font-size: 9px; flex-shrink: 0; }
+    .why-won { margin-top: 14px; background: rgba(192,132,252,0.07); border: 1px solid rgba(192,132,252,0.2); border-radius: 10px; padding: 12px 16px; }
+    .why-won-label { font-family: 'Bebas Neue', cursive; font-size: 11px; color: var(--duo); letter-spacing: 3px; margin-bottom: 6px; }
+    .why-won-text  { font-size: 13px; color: #c4a0e0; font-style: italic; line-height: 1.6; }
+    .why-won-tags  { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .why-tag { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2); color: var(--duo); }
+
     /* ── FOOTER ── */
     .footer { margin-top: 40px; font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 4px; color: var(--text-dimmer); text-align: center; }
 
+    /* ── ANIMATIONS ── */
     @keyframes flicker { 0%,100%{opacity:1} 48%{opacity:0.88} 50%{opacity:1} }
     @keyframes pulse-ring { 0%{transform:scale(1);opacity:0.7} 100%{transform:scale(1.06);opacity:0} }
-
-    @media (min-width: 500px) {
-      .reels { grid-template-columns: repeat(4, 1fr); }
-    }
+    @keyframes capitan-bob { 0%,100%{transform:translateY(0) rotate(0deg)} 30%{transform:translateY(-6px) rotate(1.5deg)} 60%{transform:translateY(-3px) rotate(-1deg)} }
+    @keyframes shadow-pulse { 0%,100%{transform:translateX(-50%) scaleX(1);opacity:0.6} 30%{transform:translateX(-50%) scaleX(0.75);opacity:0.3} }
+    @keyframes dot-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
   </style>
 </head>
 <body>
 <div class="page">
-  <p class="eyebrow" id="eyebrow">Dinner, Decided</p>
-  <h1 class="headline">What Are<br>We <span id="headlineAccent">Eating</span></h1>
-  <p class="tagline" id="tagline">Pick dinner in 15 seconds.</p>
 
-  <div class="mode-tabs">
-    <button class="mode-tab active-cook" id="tab-cook"    onclick="setMode('cook')">🍳 Cook</button>
-    <button class="mode-tab"             id="tab-deliver" onclick="setMode('deliver')">🛵 Delivery</button>
-    <button class="mode-tab"             id="tab-goout"   onclick="setMode('goout')">🍽️ Go Out</button>
-    <button class="mode-tab"             id="tab-duo"     onclick="setMode('duo')">👫 Duo</button>
+  <p class="eyebrow">Dinner, Decided</p>
+  <h1 class="headline">What Are<br>We <span>Eating</span></h1>
+  <p class="tagline">Spin. Pick how. Done.</p>
+
+  <!-- CAPITAN -->
+  <div class="mascot-wrap">
+    <div class="mascot-shadow"></div>
+    <svg class="mascot-svg" width="116" height="144" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg">
+      <rect x="28" y="54" width="64" height="13" rx="5" fill="#ff6b35"/>
+      <rect x="30" y="55" width="60" height="6" rx="3" fill="#e8410a" opacity="0.5"/>
+      <rect x="33" y="14" width="54" height="44" rx="7" fill="#f8f8f8"/>
+      <rect x="40" y="18" width="6" height="34" rx="3" fill="rgba(0,0,0,0.05)"/>
+      <rect x="54" y="18" width="6" height="34" rx="3" fill="rgba(0,0,0,0.05)"/>
+      <rect x="68" y="18" width="6" height="34" rx="3" fill="rgba(0,0,0,0.05)"/>
+      <ellipse cx="60" cy="16" rx="27" ry="11" fill="#f8f8f8"/>
+      <ellipse cx="60" cy="13" rx="20" ry="7" fill="#fff"/>
+      <ellipse cx="60" cy="138" rx="26" ry="16" fill="#e8c882"/>
+      <rect x="40" y="118" width="40" height="28" rx="8" fill="#f0f0ee"/>
+      <polygon points="60,122 46,142 74,142" fill="#f0e0c0"/>
+      <circle cx="60" cy="128" r="2" fill="#ddd"/>
+      <circle cx="60" cy="136" r="2" fill="#ddd"/>
+      <path d="M 52 118 Q 60 126 68 118 L 65 113 Q 60 108 55 113 Z" fill="#ff6b35" opacity="0.85"/>
+      <circle cx="20" cy="88" r="16" fill="#dfc07a"/>
+      <circle cx="16" cy="100" r="14" fill="#e8ca8a"/>
+      <circle cx="22" cy="114" r="13" fill="#dfc07a"/>
+      <circle cx="36" cy="122" r="12" fill="#e8ca8a"/>
+      <circle cx="100" cy="88" r="16" fill="#dfc07a"/>
+      <circle cx="104" cy="100" r="14" fill="#e8ca8a"/>
+      <circle cx="98" cy="114" r="13" fill="#dfc07a"/>
+      <circle cx="84" cy="122" r="12" fill="#e8ca8a"/>
+      <circle cx="50" cy="124" r="11" fill="#e8ca8a"/>
+      <circle cx="70" cy="124" r="11" fill="#dfc07a"/>
+      <circle cx="60" cy="127" r="10" fill="#eacf8e"/>
+      <circle cx="44" cy="60" r="10" fill="#dfc07a"/>
+      <circle cx="76" cy="60" r="10" fill="#e8ca8a"/>
+      <ellipse cx="60" cy="92" rx="36" ry="34" fill="#f0dda8"/>
+      <ellipse cx="25" cy="88" rx="11" ry="18" fill="#d4a84a" transform="rotate(-10 25 88)"/>
+      <ellipse cx="26" cy="89" rx="7" ry="13" fill="#c89840" transform="rotate(-10 26 89)"/>
+      <ellipse cx="95" cy="88" rx="11" ry="18" fill="#d4a84a" transform="rotate(10 95 88)"/>
+      <ellipse cx="94" cy="89" rx="7" ry="13" fill="#c89840" transform="rotate(10 94 89)"/>
+      <ellipse cx="60" cy="91" rx="30" ry="28" fill="#f5e6b8"/>
+      <ellipse cx="46" cy="87" rx="10" ry="10" fill="#fff"/>
+      <ellipse cx="74" cy="87" rx="10" ry="10" fill="#fff"/>
+      <circle cx="47" cy="88" r="7" fill="#5c3010"/>
+      <circle cx="75" cy="88" r="7" fill="#5c3010"/>
+      <circle cx="48" cy="89" r="4.5" fill="#1a0800"/>
+      <circle cx="76" cy="89" r="4.5" fill="#1a0800"/>
+      <circle cx="50" cy="86" r="2" fill="#fff"/>
+      <circle cx="78" cy="86" r="2" fill="#fff"/>
+      <circle cx="46" cy="91" r="1" fill="rgba(255,255,255,0.5)"/>
+      <circle cx="74" cy="91" r="1" fill="rgba(255,255,255,0.5)"/>
+      <path d="M 38 78 Q 47 73 56 77" stroke="#a07030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 64 77 Q 73 73 82 78" stroke="#a07030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="60" cy="104" rx="18" ry="13" fill="#eedda0"/>
+      <ellipse cx="60" cy="99" rx="9" ry="7" fill="#2a1200"/>
+      <ellipse cx="57" cy="97" rx="3" ry="2" fill="rgba(255,255,255,0.28)"/>
+      <path d="M 46 108 Q 60 120 74 108" stroke="#2a1200" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 48 109 Q 60 120 72 109 Q 60 124 48 109 Z" fill="#3d1808" opacity="0.6"/>
+      <ellipse cx="60" cy="116" rx="10" ry="8" fill="#f87171"/>
+      <path d="M 60 108 L 60 123" stroke="#e05050" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+      <circle cx="34" cy="103" r="8" fill="#f97316" opacity="0.15"/>
+      <circle cx="86" cy="103" r="8" fill="#f97316" opacity="0.15"/>
+      <line x1="95" y1="105" x2="117" y2="145" stroke="#c8803a" stroke-width="5" stroke-linecap="round"/>
+      <ellipse cx="93" cy="101" rx="9" ry="11" fill="#d4944a" transform="rotate(-25 93 101)"/>
+      <ellipse cx="93" cy="101" rx="6" ry="8" fill="#bf8035" transform="rotate(-25 93 101)"/>
+      <ellipse cx="90" cy="98" rx="2.5" ry="3.5" fill="rgba(255,230,180,0.4)" transform="rotate(-25 90 98)"/>
+    </svg>
   </div>
 
-  <div class="card" id="mainCard">
-    <div class="location-bar" id="locationBar" onclick="getLocation()">
-      <div class="location-dot"></div>
-      <div class="location-text" id="locationText">Tap to detect your location</div>
-      <div class="location-refresh">↻</div>
-    </div>
+  <!-- TABS -->
+  <div class="mode-tabs">
+    <button class="mode-tab active-spin" id="tab-spin" onclick="setTab('spin')">🎲 Spin</button>
+    <button class="mode-tab"             id="tab-duo"  onclick="setTab('duo')">👫 Duo</button>
+  </div>
+
+  <div class="card">
 
     <!-- SPIN PANEL -->
     <div id="spinPanel">
-      <div class="setup-row" id="setupRow">
-        <div class="setup-pill" id="pill-mood"    onclick="cyclePill('mood')">
-          <div class="setup-pill-label">Mood</div>
-          <div class="setup-pill-value" id="pill-mood-val">Any</div>
-        </div>
-        <div class="setup-pill" id="pill-budget"  onclick="cyclePill('budget')">
-          <div class="setup-pill-label">Budget</div>
-          <div class="setup-pill-value" id="pill-budget-val">Any</div>
-        </div>
-        <div class="setup-pill" id="pill-effort"  onclick="cyclePill('effort')">
-          <div class="setup-pill-label">Effort</div>
-          <div class="setup-pill-value" id="pill-effort-val">Normal</div>
-        </div>
-        <div class="setup-pill" id="pill-serving" onclick="cyclePill('serving')">
-          <div class="setup-pill-label">Serving</div>
-          <div class="setup-pill-value" id="pill-serving-val">For 1</div>
-        </div>
+      <div class="location-bar" id="locationBar" onclick="getLocation()">
+        <div class="location-dot"></div>
+        <div class="location-text" id="locationText">📍 Tap to detect location</div>
+        <div class="location-refresh">↻</div>
       </div>
 
       <div class="reels" id="reels"></div>
 
       <div class="spin-btn-wrap">
         <div class="pulse-ring" id="pulseRing"></div>
-        <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN THE WHEEL</button>
+        <button class="spin-btn" id="spinBtn" onclick="spin()">WHAT ARE WE EATING</button>
       </div>
 
+      <!-- COMBO + EXEC BUTTONS -->
       <div class="combo-badge" id="comboBadge">
-        <div class="combo-label" id="comboLabel">Your Pick</div>
-        <div class="combo-text"  id="comboText"></div>
+        <div class="combo-label">TONIGHT'S PICK</div>
+        <div class="combo-text" id="comboText"></div>
       </div>
 
-      <div class="loading-text" id="loadingText">Deciding...</div>
+      <div class="exec-buttons" id="execButtons">
+        <button class="exec-btn cook-btn" id="execCook" onclick="execute('cook')">
+          <span class="exec-btn-icon">🍳</span>
+          <span class="exec-btn-label">COOK IT</span>
+          <span class="exec-btn-sub">Recipe + timer</span>
+        </button>
+        <button class="exec-btn goout-btn" id="execGoOut" onclick="execute('goout')">
+          <span class="exec-btn-icon">🍽️</span>
+          <span class="exec-btn-label">GO OUT</span>
+          <span class="exec-btn-sub">Resy + Uber</span>
+        </button>
+        <button class="exec-btn order-btn" id="execOrder" onclick="execute('order')">
+          <span class="exec-btn-icon">🛵</span>
+          <span class="exec-btn-label">ORDER IT</span>
+          <span class="exec-btn-sub">Seamless</span>
+        </button>
+      </div>
+
+      <div class="loading-text" id="loadingText">One sec...</div>
       <div class="error-text"   id="errorText"></div>
 
       <div class="result-card" id="resultCard">
@@ -358,7 +428,7 @@
       <div class="duo-mode-toggle">
         <button class="duo-mode-btn active" id="duo-cook-btn"     onclick="setDuoType('cook')">🍳 Cook</button>
         <button class="duo-mode-btn"        id="duo-goout-btn"    onclick="setDuoType('goout')">🍽️ Go Out</button>
-        <button class="duo-mode-btn"        id="duo-delivery-btn" onclick="setDuoType('delivery')">🛵 Delivery</button>
+        <button class="duo-mode-btn"        id="duo-delivery-btn" onclick="setDuoType('delivery')">🛵 Order</button>
       </div>
       <div class="duo-players">
         <div class="duo-player">
@@ -376,268 +446,177 @@
       </div>
       <div class="spin-btn-wrap">
         <div class="pulse-ring" id="duoPulseRing"></div>
-        <button class="spin-btn mode-duo" id="duoBtn" onclick="spinDuo()">FIND OUR MATCH</button>
+        <button class="spin-btn duo-btn" id="duoBtn" onclick="spinDuo()">FIND OUR MATCH</button>
       </div>
       <div class="loading-text" id="duoLoadingText">Finding your match...</div>
       <div class="error-text"   id="duoErrorText"></div>
       <div class="result-card"  id="duoResultCard"><div id="duoResultInner"></div></div>
     </div>
+
   </div>
 
-  <p class="footer">Dinner, decided &nbsp;◆&nbsp; whatweeating</p>
+  <p class="footer">New York City &nbsp;◆&nbsp; whatweeating</p>
 </div>
 
 <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)" style="display:none" />
 
 <script>
 // ─────────────────────────────────────────────
-//  DATA
+//  REEL DATA — NYC-tuned
 // ─────────────────────────────────────────────
-const MODES = {
-  cook: {
-    eyebrow:"Dinner, Decided", tagline:"Pick dinner in 15 seconds.",
-    label:"Your Pick", btnText:"SPIN THE WHEEL", btnClass:"", accent:"#ff6b35",
-    showSetup:true, showLocation:false,
-    categories:{
-      protein:{ label:"Protein", icon:"🥩", items:["Chicken","Salmon","Beef","Shrimp","Tofu","Pork","Lamb","Eggs","Tuna","Duck"] },
-      produce: { label:"Produce", icon:"🥦", items:["Broccoli","Spinach","Sweet Potato","Zucchini","Mushrooms","Tomatoes","Bell Peppers","Cauliflower","Kale","Eggplant"] },
-      style:   { label:"Style",   icon:"🌍", items:["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Moroccan"] },
-      time:    { label:"Time",    icon:"⏱️", items:["15 min","30 min","1 hour"] },
-    },
-  },
-  deliver: {
-    eyebrow:"Delivery Roulette", tagline:"One strong pick. Zero scrolling.",
-    label:"Searching For", btnText:"FIND MY DELIVERY", btnClass:"mode-deliver", accent:"#38bdf8",
-    showSetup:false, showLocation:true,
-    categories:{
-      cuisine: { label:"Cuisine",  icon:"🌍", items:["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Chinese"] },
-      price:   { label:"Budget",   icon:"💰", items:["$","$$","$$$","$$$$"] },
-      vibe:    { label:"Craving",  icon:"🔥", items:["Comfort Food","Healthy","Indulgent","Quick & Easy","Adventurous","Light Bites"] },
-      distance:{ label:"Distance", icon:"📍", items:["Under 1 mi","Under 2 mi","Under 5 mi","Anywhere"] },
-    },
-  },
-  goout: {
-    eyebrow:"Table for Tonight", tagline:"One strong pick. Zero scrolling.",
-    label:"Looking For", btnText:"FIND MY TABLE", btnClass:"mode-goout", accent:"#34d399",
-    showSetup:false, showLocation:true,
-    categories:{
-      cuisine: { label:"Cuisine",    icon:"🌍", items:["Italian","Japanese","Mexican","Indian","Thai","French","Korean","Mediterranean","American","Moroccan"] },
-      vibe:    { label:"Atmosphere", icon:"✨", items:["Casual","Romantic","Lively","Trendy","Rooftop","Hidden Gem","Classic"] },
-      party:   { label:"Party Size", icon:"👥", items:["Just Me","For 2","For 3-4","For 5+"] },
-      timing:  { label:"When",       icon:"🕐", items:["Right Now","Tonight","This Weekend","Next Week"] },
-    },
-  },
+const CUISINES = ["Korean","Japanese","Italian","Mexican","Thai","Indian","French","Mediterranean","Chinese","Halal Cart","Dominican","West African","Dim Sum","Jewish Deli","Pizza","Sushi"];
+const VIBES    = ["Comfort","Healthy","Indulgent","Adventurous","Light","Quick & Easy","Romantic","Lively"];
+const FOR      = ["Just Me","For Two","Small Group","Big Night"];
+
+// Mood weights — biases for cuisine per vibe
+const VIBE_WEIGHTS = {
+  Comfort:      ["Korean","Italian","Chinese","Jewish Deli","American"],
+  Healthy:      ["Japanese","Mediterranean","Thai","Sushi"],
+  Indulgent:    ["French","Italian","Korean","Dim Sum"],
+  Adventurous:  ["West African","Dominican","Halal Cart","Korean","Thai"],
+  Light:        ["Japanese","Sushi","Mediterranean","Thai"],
+  "Quick & Easy":["Pizza","Halal Cart","Mexican","Chinese"],
+  Romantic:     ["Italian","French","Japanese","Sushi","Mediterranean"],
+  Lively:       ["Korean","Mexican","Dominican","Chinese"],
 };
 
-// ── MOOD WEIGHTS ──────────────────────────────
-// Each mood biases specific proteins and styles.
-// Items in these arrays get 4x weight vs the rest.
-const MOOD_WEIGHTS = {
-  Comfort:     { protein:["Chicken","Beef","Pork","Eggs"],        style:["American","Italian","Korean","French"] },
-  Healthy:     { protein:["Salmon","Shrimp","Tofu","Tuna","Eggs"],style:["Japanese","Mediterranean","Thai"] },
-  Indulgent:   { protein:["Beef","Lamb","Duck","Pork"],           style:["French","Italian","American","Korean"] },
-  Adventurous: { protein:["Duck","Lamb","Tuna","Shrimp"],         style:["Moroccan","Indian","Korean","Thai"] },
-  Light:       { protein:["Tuna","Shrimp","Tofu","Eggs","Salmon"],style:["Japanese","Mediterranean","Thai","Mexican"] },
+const REEL_CONFIG = [
+  { key:"cuisine", label:"Cuisine", icon:"🌍", items: CUISINES },
+  { key:"vibe",    label:"Vibe",    icon:"✨", items: VIBES },
+  { key:"for",     label:"For",     icon:"👥", items: FOR },
+];
+
+const YELP_MAP = {
+  Korean:"korean", Japanese:"japanese", Italian:"italian", Mexican:"mexican",
+  Thai:"thai", Indian:"indpak", French:"french", Mediterranean:"mediterranean",
+  Chinese:"chinese", "Halal Cart":"halal", Dominican:"dominican",
+  "West African":"african", "Dim Sum":"dimsum", "Jewish Deli":"delis",
+  Pizza:"pizza", Sushi:"sushi",
 };
 
-const YELP_MAP  = { Italian:"italian",Japanese:"japanese",Mexican:"mexican",Indian:"indpak",Thai:"thai",French:"french",Korean:"korean",Mediterranean:"mediterranean",American:"newamerican",Moroccan:"moroccan",Chinese:"chinese" };
-const PRICE_MAP = { "$":1,"$$":2,"$$$":3,"$$$$":4 };
-const DIST_MAP  = { "Under 1 mi":1609,"Under 2 mi":3218,"Under 5 mi":8047,"Anywhere":40000 };
+const PARTY_SEATS = { "Just Me":1, "For Two":2, "Small Group":4, "Big Night":6 };
 
-const PILL_OPTIONS = {
-  mood:    ["Any","Comfort","Healthy","Indulgent","Adventurous","Light"],
-  budget:  ["Any","Pantry Run","Mid-Range","Splurge"],
-  effort:  ["Normal","Easy","Challenge Me"],
-  serving: ["For 1","For 2","For 4"],
-};
-const pillState = { mood:0, budget:0, effort:0, serving:0 };
+// ─────────────────────────────────────────────
+//  DISLIKES (localStorage)
+// ─────────────────────────────────────────────
+const DISLIKE_KEY = "wawe_dislikes_v2";
+let dislikes = {};
+function loadDislikes() { try { const r = localStorage.getItem(DISLIKE_KEY); if (r) { const o = JSON.parse(r); Object.keys(o).forEach(k => { dislikes[k] = new Set(o[k]); }); } } catch {} }
+function saveDislikes() { try { const o = {}; Object.keys(dislikes).forEach(k => { o[k] = [...dislikes[k]]; }); localStorage.setItem(DISLIKE_KEY, JSON.stringify(o)); } catch {} }
+function isDisliked(key, val) { return dislikes[key]?.has(val) || false; }
+function toggleDislike(key, val) { if (!dislikes[key]) dislikes[key] = new Set(); dislikes[key].has(val) ? dislikes[key].delete(val) : dislikes[key].add(val); saveDislikes(); }
+function allowedItems(key) { const items = REEL_CONFIG.find(r => r.key === key)?.items || []; const f = items.filter(i => !isDisliked(key, i)); return f.length > 0 ? f : items; }
+
+// ─────────────────────────────────────────────
+//  WEIGHTED PICK
+// ─────────────────────────────────────────────
+function weightedPick(items, preferred) {
+  const pool = [];
+  items.forEach(i => { const w = preferred?.includes(i) ? 4 : 1; for (let j=0;j<w;j++) pool.push(i); });
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let currentTab = "spin";
+let isSpinning = false, isLoading = false;
+let userLat = null, userLng = null, userCity = "New York";
+let currentCombo = {};
+let reelIntervals = {};
+let currentRecipeTitle = "";
+let timerInterval = null, timerTotal = 0, timerRemaining = 0, timerRunning = false;
+let lastRestaurant = null; // for Uber deep link
 
 const DUO_OPTIONS = {
   mood:    ["Comfort","Healthy","Indulgent","Adventurous","Light","Fast"],
-  cuisine: ["Italian","Japanese","Mexican","Indian","Thai","French","Korean","American","Mediterranean","Chinese"],
+  cuisine: CUISINES.slice(0, 12),
   budget:  ["$","$$","$$$","Doesn't matter"],
 };
 const duoSelections = { p1:{mood:null,cuisine:null,budget:null}, p2:{mood:null,cuisine:null,budget:null} };
 let duoType = "cook";
 
 // ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
-let currentMode = "cook";
-let isSpinning = false, isLoading = false, phase = "idle";
-let userLat = null, userLng = null, userCity = "your area";
-let reelIntervals = {}, reelIndexes = {};
-let currentRecipeTitle = "";
-let currentCombo = {};           // tracks live combo so swap can update it
-let timerInterval = null, timerTotal = 0, timerRemaining = 0, timerRunning = false;
-
-// ── DISLIKES (localStorage) ───────────────────
-const DISLIKE_KEY = "wawe_dislikes_v1";
-let dislikes = {};   // { "cook:protein": Set<string>, "cook:style": Set<string>, ... }
-
-function loadDislikes() {
-  try {
-    const raw = localStorage.getItem(DISLIKE_KEY);
-    if (!raw) return;
-    const obj = JSON.parse(raw);
-    Object.keys(obj).forEach(k => { dislikes[k] = new Set(obj[k]); });
-  } catch {}
-}
-
-function saveDislikes() {
-  try {
-    const obj = {};
-    Object.keys(dislikes).forEach(k => { obj[k] = [...dislikes[k]]; });
-    localStorage.setItem(DISLIKE_KEY, JSON.stringify(obj));
-  } catch {}
-}
-
-function dislikeKey(mode, cat) { return `${mode}:${cat}`; }
-
-function isDisliked(mode, cat, value) {
-  const k = dislikeKey(mode, cat);
-  return dislikes[k]?.has(value) || false;
-}
-
-function toggleDislike(mode, cat, value) {
-  const k = dislikeKey(mode, cat);
-  if (!dislikes[k]) dislikes[k] = new Set();
-  if (dislikes[k].has(value)) {
-    dislikes[k].delete(value);
-  } else {
-    dislikes[k].add(value);
-  }
-  saveDislikes();
-}
-
-// Returns items filtered by dislikes. If ALL are disliked, returns full list (fail-safe).
-function allowedItems(mode, cat) {
-  const items = MODES[mode]?.categories[cat]?.items || [];
-  const filtered = items.filter(i => !isDisliked(mode, cat, i));
-  return filtered.length > 0 ? filtered : items;
-}
-
-// ─────────────────────────────────────────────
-//  WEIGHTED RANDOM SELECTION
-// ─────────────────────────────────────────────
-function weightedPick(items, preferred) {
-  // preferred items get 4x weight; others 1x
-  const pool = [];
-  items.forEach(item => {
-    const w = preferred && preferred.includes(item) ? 4 : 1;
-    for (let i = 0; i < w; i++) pool.push(item);
-  });
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-// ─────────────────────────────────────────────
 //  INIT
 // ─────────────────────────────────────────────
-function init() { loadDislikes(); buildDuoOptions(); setMode("cook"); }
-
-// ─────────────────────────────────────────────
-//  MODE
-// ─────────────────────────────────────────────
-function setMode(mode) {
-  currentMode = mode; stopTimer();
-  document.getElementById("spinPanel").style.display = mode === "duo" ? "none" : "block";
-  document.getElementById("duoPanel").style.display  = mode === "duo" ? "block" : "none";
-  const accent = mode === "duo" ? "#c084fc" : (MODES[mode]?.accent || "#ff6b35");
-  document.documentElement.style.setProperty("--accent", accent);
-  if (mode === "duo") {
-    document.getElementById("eyebrow").textContent = "Dinner, Decided Together";
-    document.getElementById("headlineAccent").textContent = "Eating";
-    document.getElementById("tagline").textContent = "Two people. One answer. No argument.";
-    ["cook","deliver","goout","duo"].forEach(m => { document.getElementById(`tab-${m}`).className = `mode-tab${m==="duo"?" active-duo":""}`; });
-    document.getElementById("locationBar").classList.remove("visible");
-    return;
-  }
-  const cfg = MODES[mode];
-  document.getElementById("eyebrow").textContent = cfg.eyebrow;
-  document.getElementById("headlineAccent").textContent = "Eating";
-  document.getElementById("tagline").textContent = cfg.tagline;
-  ["cook","deliver","goout","duo"].forEach(m => { document.getElementById(`tab-${m}`).className = `mode-tab${m===mode?` active-${m}`:""}`; });
-  const btn = document.getElementById("spinBtn");
-  btn.className = `spin-btn ${cfg.btnClass}`; btn.textContent = cfg.btnText;
-  document.getElementById("setupRow").classList.toggle("visible", cfg.showSetup);
-  if (cfg.showLocation) {
-    document.getElementById("locationBar").classList.add("visible");
-    if (userLat) updateLocationDisplay();
-    else document.getElementById("locationText").textContent = "Tap to detect your location";
-  } else {
-    document.getElementById("locationBar").classList.remove("visible");
-  }
-  buildReels(cfg.categories); resetResult(); phase = "idle";
+function init() {
+  loadDislikes();
+  buildReels();
+  buildDuoOptions();
+  getLocation();
 }
 
 // ─────────────────────────────────────────────
-//  SETUP PILLS
+//  TABS
 // ─────────────────────────────────────────────
-function cyclePill(key) {
-  pillState[key] = (pillState[key] + 1) % PILL_OPTIONS[key].length;
-  const val = PILL_OPTIONS[key][pillState[key]];
-  document.getElementById(`pill-${key}-val`).textContent = val;
-  document.getElementById(`pill-${key}`).classList.toggle("active", pillState[key] !== 0);
-}
-function getSetupContext() {
-  const parts = [];
-  if (pillState.mood   !== 0) parts.push(`Mood: ${PILL_OPTIONS.mood[pillState.mood]}`);
-  if (pillState.budget !== 0) parts.push(`Budget: ${PILL_OPTIONS.budget[pillState.budget]}`);
-  if (pillState.effort !== 0) parts.push(`Effort: ${PILL_OPTIONS.effort[pillState.effort]}`);
-  if (pillState.serving!== 0) parts.push(`Serving: ${PILL_OPTIONS.serving[pillState.serving]}`);
-  return parts.length ? parts.join(", ") : null;
+function setTab(tab) {
+  currentTab = tab;
+  document.getElementById("spinPanel").style.display = tab === "spin" ? "block" : "none";
+  document.getElementById("duoPanel").style.display  = tab === "duo"  ? "block" : "none";
+  document.getElementById("tab-spin").className = `mode-tab${tab==="spin"?" active-spin":""}`;
+  document.getElementById("tab-duo").className  = `mode-tab${tab==="duo"?" active-duo":""}`;
+  document.documentElement.style.setProperty("--accent", tab === "duo" ? "#c084fc" : "#ff6b35");
 }
 
 // ─────────────────────────────────────────────
-//  REELS
+//  LOCATION
 // ─────────────────────────────────────────────
-function buildReels(categories) {
+function getLocation() {
+  if (!navigator.geolocation) return;
+  document.getElementById("locationText").textContent = "Detecting...";
+  navigator.geolocation.getCurrentPosition(
+    async pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; await reverseGeocode(userLat, userLng); },
+    () => { document.getElementById("locationText").textContent = "📍 New York City"; userLat = 40.7128; userLng = -74.0060; }
+  );
+}
+async function reverseGeocode(lat, lng) {
+  try {
+    const d = await (await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)).json();
+    userCity = d.address?.neighbourhood || d.address?.suburb || d.address?.city || "New York";
+  } catch {}
+  document.getElementById("locationText").textContent = `📍 ${userCity}`;
+}
+
+// ─────────────────────────────────────────────
+//  BUILD REELS
+// ─────────────────────────────────────────────
+function buildReels() {
   const el = document.getElementById("reels");
-  el.innerHTML = ""; reelIntervals = {}; reelIndexes = {};
-  Object.entries(categories).forEach(([key, cat]) => {
-    reelIndexes[key] = 0;
+  el.innerHTML = "";
+  REEL_CONFIG.forEach(cfg => {
     const wrap = document.createElement("div");
-    wrap.className = "reel-wrap"; wrap.id = `reel-wrap-${key}`;
+    wrap.className = "reel-wrap"; wrap.id = `reel-wrap-${cfg.key}`;
     wrap.innerHTML = `
-      <div class="reel-label">${cat.icon} ${cat.label}</div>
-      <div class="reel" id="reel-${key}">
+      <div class="reel-label">${cfg.icon} ${cfg.label}</div>
+      <div class="reel" id="reel-${cfg.key}">
         <div class="reel-fade-top"></div><div class="reel-fade-bottom"></div>
-        <div class="reel-text" id="reel-text-${key}">${cat.items[0]}</div>
+        <div class="reel-text" id="reel-text-${cfg.key}">${cfg.items[0]}</div>
       </div>
-      <div class="reel-controls" id="reel-ctrl-${key}"></div>`;
+      <div class="reel-controls" id="reel-ctrl-${cfg.key}"></div>`;
     el.appendChild(wrap);
   });
 }
 
 function showReelControls(combo) {
-  // After spin, show thumbs-down and swap controls under each reel
-  const cfg = MODES[currentMode];
-  Object.entries(cfg.categories).forEach(([key]) => {
-    const value = combo[key];
-    const ctrlEl = document.getElementById(`reel-ctrl-${key}`);
-    if (!ctrlEl) return;
-    const isD = isDisliked(currentMode, key, value);
-    ctrlEl.innerHTML = `
-      <button class="reel-ctrl-btn dislike-btn${isD?" disliked-active":""}" 
-        onclick="handleDislike('${key}','${value}',this)" 
-        title="${isD?"Un-ban":"Ban"} ${value}">
-        ${isD ? "✓ BANNED" : "👎 BAN"}
-      </button>
-      <button class="reel-ctrl-btn swap-btn" onclick="swapReel('${key}')" title="Swap this reel">↻ SWAP</button>`;
-    ctrlEl.classList.add("visible");
+  REEL_CONFIG.forEach(cfg => {
+    const val  = combo[cfg.key];
+    const ctrl = document.getElementById(`reel-ctrl-${cfg.key}`);
+    if (!ctrl) return;
+    const isD = isDisliked(cfg.key, val);
+    ctrl.innerHTML = `
+      <button class="reel-ctrl-btn dislike-btn${isD?" disliked-active":""}" onclick="handleDislike('${cfg.key}','${val}',this)">${isD?"✓ BANNED":"👎 BAN"}</button>
+      <button class="reel-ctrl-btn swap-btn" onclick="swapReel('${cfg.key}')">↻ SWAP</button>`;
+    ctrl.classList.add("visible");
   });
 }
 
 function hideReelControls() {
-  document.querySelectorAll(".reel-controls").forEach(el => {
-    el.classList.remove("visible");
-    el.innerHTML = "";
-  });
+  document.querySelectorAll(".reel-controls").forEach(el => { el.classList.remove("visible"); el.innerHTML = ""; });
 }
 
-function handleDislike(key, value, btn) {
-  toggleDislike(currentMode, key, value);
-  const isD = isDisliked(currentMode, key, value);
+function handleDislike(key, val, btn) {
+  toggleDislike(key, val);
+  const isD = isDisliked(key, val);
   btn.textContent = isD ? "✓ BANNED" : "👎 BAN";
   btn.classList.toggle("disliked-active", isD);
   document.getElementById(`reel-${key}`)?.classList.toggle("disliked", isD);
@@ -648,100 +627,129 @@ function handleDislike(key, value, btn) {
 // ─────────────────────────────────────────────
 async function swapReel(key) {
   if (isSpinning || isLoading) return;
-
-  // Disable all swap buttons while working
   document.querySelectorAll(".reel-ctrl-btn").forEach(b => b.disabled = true);
-
-  const cfg   = MODES[currentMode];
-  const cat   = cfg.categories[key];
-  const mood  = PILL_OPTIONS.mood[pillState.mood];
-  const moodW = MOOD_WEIGHTS[mood];
-  const pool  = allowedItems(currentMode, key).filter(i => i !== currentCombo[key]);
-
-  // If pool is empty after filtering current, use full allowed list
-  const finalPool = pool.length > 0 ? pool : allowedItems(currentMode, key);
-  const preferred = (key === "protein" || key === "style") ? moodW?.[key] : null;
+  const cfg  = REEL_CONFIG.find(r => r.key === key);
+  const vibe = currentCombo.vibe;
+  const pool = allowedItems(key).filter(i => i !== currentCombo[key]);
+  const finalPool = pool.length > 0 ? pool : allowedItems(key);
+  const preferred = key === "cuisine" ? VIBE_WEIGHTS[vibe] : null;
   const newVal = weightedPick(finalPool, preferred);
-
-  // Animate the single reel
   const reelEl = document.getElementById(`reel-${key}`);
   const textEl = document.getElementById(`reel-text-${key}`);
   reelEl.classList.add("spinning");
-  const spinInterval = setInterval(() => {
-    const rand = cat.items[Math.floor(Math.random() * cat.items.length)];
-    textEl.textContent = rand;
-  }, 80);
-
+  const si = setInterval(() => { textEl.textContent = cfg.items[Math.floor(Math.random()*cfg.items.length)]; }, 80);
   await new Promise(r => setTimeout(r, 900));
-  clearInterval(spinInterval);
-  reelEl.classList.remove("spinning");
-  textEl.textContent = newVal;
-  currentCombo[key] = newVal;
-
-  // Update dislike indicator
-  const isD = isDisliked(currentMode, key, newVal);
-  reelEl.classList.toggle("disliked", isD);
-
-  // Update controls for this reel
-  const ctrlEl = document.getElementById(`reel-ctrl-${key}`);
-  if (ctrlEl) {
-    ctrlEl.innerHTML = `
-      <button class="reel-ctrl-btn dislike-btn${isD?" disliked-active":""}" 
-        onclick="handleDislike('${key}','${newVal}',this)">
-        ${isD ? "✓ BANNED" : "👎 BAN"}
-      </button>
+  clearInterval(si); reelEl.classList.remove("spinning");
+  textEl.textContent = newVal; currentCombo[key] = newVal;
+  reelEl.classList.toggle("disliked", isDisliked(key, newVal));
+  const ctrl = document.getElementById(`reel-ctrl-${key}`);
+  if (ctrl) {
+    const isD = isDisliked(key, newVal);
+    ctrl.innerHTML = `
+      <button class="reel-ctrl-btn dislike-btn${isD?" disliked-active":""}" onclick="handleDislike('${key}','${newVal}',this)">${isD?"✓ BANNED":"👎 BAN"}</button>
       <button class="reel-ctrl-btn swap-btn" onclick="swapReel('${key}')">↻ SWAP</button>`;
   }
-
-  // Update combo badge
-  showComboBadge(currentCombo);
-
-  // Re-enable buttons
+  updateComboBadge();
   document.querySelectorAll(".reel-ctrl-btn").forEach(b => b.disabled = false);
+  // Clear result on swap so user re-chooses execution
+  const rc = document.getElementById("resultCard");
+  rc.classList.remove("visible","shown");
+}
 
-  // If cook mode, regenerate recipe
-  if (currentMode === "cook") {
-    const rc = document.getElementById("resultCard");
-    rc.classList.remove("visible","shown");
-    isLoading = true;
-    const loadEl = document.getElementById("loadingText");
-    loadEl.textContent = "Updating recipe..."; loadEl.classList.add("visible");
-    const spinBtnEl = document.getElementById("spinBtn");
-    spinBtnEl.disabled = true;
-    try { await runCook(currentCombo); } catch(e) { showError("Couldn't regenerate. Try again."); }
-    isLoading = false;
-    loadEl.classList.remove("visible");
-    spinBtnEl.disabled = false;
-    spinBtnEl.textContent = "SPIN AGAIN";
-  }
-
-  // If deliver/goout, re-fetch restaurant
-  if (currentMode === "deliver") {
-    const rc = document.getElementById("resultCard");
-    rc.classList.remove("visible","shown");
-    isLoading = true;
-    const loadEl = document.getElementById("loadingText");
-    loadEl.textContent = "Finding new spot..."; loadEl.classList.add("visible");
-    try { await runDeliver(currentCombo); } catch(e) { showError("Couldn't find a spot. Try again."); }
-    isLoading = false; loadEl.classList.remove("visible");
-  }
-
-  if (currentMode === "goout") {
-    const rc = document.getElementById("resultCard");
-    rc.classList.remove("visible","shown");
-    isLoading = true;
-    const loadEl = document.getElementById("loadingText");
-    loadEl.textContent = "Finding new table..."; loadEl.classList.add("visible");
-    try { await runGoOut(currentCombo); } catch(e) { showError("Couldn't find a table. Try again."); }
-    isLoading = false; loadEl.classList.remove("visible");
-  }
+function updateComboBadge() {
+  document.getElementById("comboText").textContent = `${currentCombo.cuisine} · ${currentCombo.vibe} · ${currentCombo.for}`;
 }
 
 // ─────────────────────────────────────────────
-//  RESET
+//  SPIN
 // ─────────────────────────────────────────────
+async function spin() {
+  if (isSpinning || isLoading) return;
+  isSpinning = true;
+  resetResult();
+
+  const btn = document.getElementById("spinBtn");
+  const pr  = document.getElementById("pulseRing");
+  btn.disabled = true; btn.textContent = "SPINNING..."; pr.classList.add("active");
+
+  // Pick finals with vibe-weighted cuisine
+  const vibePool    = allowedItems("vibe");
+  const vibe        = weightedPick(vibePool, null);
+  const cuisinePool = allowedItems("cuisine");
+  const cuisine     = weightedPick(cuisinePool, VIBE_WEIGHTS[vibe]);
+  const forPool     = allowedItems("for");
+  const forVal      = weightedPick(forPool, null);
+  const finals      = { cuisine, vibe, for: forVal };
+
+  // Animate
+  REEL_CONFIG.forEach(cfg => {
+    document.getElementById(`reel-${cfg.key}`).classList.add("spinning");
+    reelIntervals[cfg.key] = setInterval(() => {
+      document.getElementById(`reel-text-${cfg.key}`).textContent = cfg.items[Math.floor(Math.random()*cfg.items.length)];
+    }, 80);
+  });
+
+  await new Promise(r => setTimeout(r, 2200));
+
+  for (let i = 0; i < REEL_CONFIG.length; i++) {
+    await new Promise(r => setTimeout(r, i * 300));
+    const cfg = REEL_CONFIG[i];
+    clearInterval(reelIntervals[cfg.key]);
+    document.getElementById(`reel-${cfg.key}`).classList.remove("spinning");
+    document.getElementById(`reel-text-${cfg.key}`).textContent = finals[cfg.key];
+    document.getElementById(`reel-${cfg.key}`).classList.toggle("disliked", isDisliked(cfg.key, finals[cfg.key]));
+  }
+
+  isSpinning = false; pr.classList.remove("active");
+  currentCombo = { ...finals };
+
+  // Show combo + execution buttons
+  updateComboBadge();
+  document.getElementById("comboBadge").classList.add("visible");
+  document.getElementById("execButtons").classList.add("visible");
+  showReelControls(currentCombo);
+
+  btn.disabled = false; btn.textContent = "SPIN AGAIN";
+}
+
+// ─────────────────────────────────────────────
+//  EXECUTE
+// ─────────────────────────────────────────────
+async function execute(mode) {
+  if (isLoading) return;
+  if ((mode === "goout" || mode === "order") && !userLat) {
+    await new Promise(resolve => {
+      navigator.geolocation.getCurrentPosition(
+        async pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; await reverseGeocode(userLat, userLng); resolve(); },
+        () => { userLat = 40.7128; userLng = -74.0060; resolve(); }
+      );
+    });
+  }
+
+  isLoading = true;
+  const rc = document.getElementById("resultCard");
+  rc.classList.remove("visible","shown");
+  document.getElementById("errorText").classList.remove("visible");
+  document.getElementById("loadingText").classList.add("visible");
+  document.querySelectorAll(".exec-btn").forEach(b => b.disabled = true);
+
+  try {
+    if (mode === "cook")  await runCook();
+    if (mode === "goout") await runGoOut();
+    if (mode === "order") runOrder();
+  } catch(e) {
+    document.getElementById("errorText").textContent = "Something went wrong. Try again.";
+    document.getElementById("errorText").classList.add("visible");
+  }
+
+  isLoading = false;
+  document.getElementById("loadingText").classList.remove("visible");
+  document.querySelectorAll(".exec-btn").forEach(b => b.disabled = false);
+}
+
 function resetResult() {
   document.getElementById("comboBadge").classList.remove("visible");
+  document.getElementById("execButtons").classList.remove("visible");
   document.getElementById("loadingText").classList.remove("visible");
   document.getElementById("errorText").classList.remove("visible");
   document.getElementById("resultCard").classList.remove("visible","shown");
@@ -749,236 +757,128 @@ function resetResult() {
 }
 
 // ─────────────────────────────────────────────
-//  LOCATION
+//  COOK
 // ─────────────────────────────────────────────
-function getLocation() {
-  document.getElementById("locationText").textContent = "Detecting...";
-  if (!navigator.geolocation) { document.getElementById("locationText").textContent = "Not supported"; return; }
-  navigator.geolocation.getCurrentPosition(
-    pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; reverseGeocode(userLat, userLng); },
-    ()  => { document.getElementById("locationText").textContent = "Location denied"; }
-  );
-}
-async function reverseGeocode(lat, lng) {
-  try {
-    const data = await (await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)).json();
-    userCity = data.address?.city || data.address?.town || data.address?.suburb || "your area";
-  } catch {}
-  updateLocationDisplay();
-}
-function updateLocationDisplay() { document.getElementById("locationText").textContent = `📍 ${userCity}`; }
+async function runCook() {
+  const partySize = currentCombo.for;
+  const prompt = `You are the personal chef for someone with serious culinary taste — Anthony Bourdain's adventurousness meets Michelin precision.
 
-// ─────────────────────────────────────────────
-//  SPIN
-// ─────────────────────────────────────────────
-async function spin() {
-  if (isSpinning || isLoading) return;
-  if (MODES[currentMode].showLocation && !userLat) {
-    await new Promise(resolve => {
-      document.getElementById("locationText").textContent = "Detecting...";
-      navigator.geolocation.getCurrentPosition(
-        async pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; await reverseGeocode(userLat, userLng); resolve(); },
-        () => { showError("Location needed."); resolve(); }
-      );
-    });
-    if (!userLat) return;
-  }
+Generate a recipe inspired by:
+Cuisine: ${currentCombo.cuisine}
+Vibe: ${currentCombo.vibe}
+For: ${partySize}
 
-  isSpinning = true; phase = "spinning"; resetResult();
-  const btn = document.getElementById("spinBtn");
-  const pr  = document.getElementById("pulseRing");
-  btn.disabled = true; btn.textContent = "SPINNING..."; pr.classList.add("active");
+Pick a specific protein and 1-2 vegetables that make sense for this cuisine and vibe. Be creative but achievable at home tonight.
 
-  const cfg = MODES[currentMode];
-  const catKeys = Object.keys(cfg.categories);
-  const mood  = PILL_OPTIONS.mood[pillState.mood];
-  const moodW = MOOD_WEIGHTS[mood];
-  const finals = {};
+Standards: bold specific flavors, purposeful technique, unexpected within familiar. Be specific with ingredients ("Calabrian chili oil" not "chili"). Steps should tell them what to smell, hear, see.
 
-  catKeys.forEach(k => {
-    const items = allowedItems(currentMode, k);
-    if (k === "time" && currentMode === "cook") {
-      const effort = PILL_OPTIONS.effort[pillState.effort];
-      const allTimes = cfg.categories[k].items;
-      let allowed = items;
-      if (effort === "Easy")         allowed = items.filter(i => ["15 min"].includes(i));
-      if (effort === "Normal")       allowed = items.filter(i => ["15 min","30 min"].includes(i));
-      if (effort === "Challenge Me") allowed = items.filter(i => ["30 min","1 hour"].includes(i));
-      if (!allowed.length) allowed = items;
-      const picked = allowed[Math.floor(Math.random() * allowed.length)];
-      finals[k] = cfg.categories[k].items.indexOf(picked);
-    } else {
-      // Apply mood weights to protein and style in cook mode
-      const preferred = currentMode === "cook" && moodW ? moodW[k] : null;
-      const picked = weightedPick(items, preferred);
-      finals[k] = cfg.categories[k].items.indexOf(picked);
-    }
-  });
+Respond ONLY with valid JSON (no markdown):
+{"title":"...","description":"...","time":"30 min","ingredients":["..."],"steps":["..."],"tip":"..."}
 
-  // Animate all reels
-  catKeys.forEach(k => {
-    document.getElementById(`reel-${k}`).classList.add("spinning");
-    reelIntervals[k] = setInterval(() => {
-      reelIndexes[k] = (reelIndexes[k] + 1) % cfg.categories[k].items.length;
-      document.getElementById(`reel-text-${k}`).textContent = cfg.categories[k].items[reelIndexes[k]];
-    }, 80);
-  });
-
-  await new Promise(r => setTimeout(r, 2200));
-
-  for (let i = 0; i < catKeys.length; i++) {
-    await new Promise(r => setTimeout(r, i * 280));
-    const k = catKeys[i];
-    clearInterval(reelIntervals[k]);
-    document.getElementById(`reel-${k}`).classList.remove("spinning");
-    const finalVal = cfg.categories[k].items[finals[k]];
-    document.getElementById(`reel-text-${k}`).textContent = finalVal;
-    // Mark disliked reels (shouldn't happen but just in case)
-    document.getElementById(`reel-${k}`).classList.toggle("disliked", isDisliked(currentMode, k, finalVal));
-  }
-
-  isSpinning = false; pr.classList.remove("active");
-
-  currentCombo = {};
-  catKeys.forEach(k => { currentCombo[k] = cfg.categories[k].items[finals[k]]; });
-  showComboBadge(currentCombo);
-  showReelControls(currentCombo);
-
-  btn.textContent = currentMode === "cook" ? "THINKING..." : "FINDING...";
-  isLoading = true;
-  document.getElementById("loadingText").classList.add("visible");
-
-  try {
-    if (currentMode === "cook")    await runCook(currentCombo);
-    if (currentMode === "deliver") await runDeliver(currentCombo);
-    if (currentMode === "goout")   await runGoOut(currentCombo);
-  } catch(e) { showError("Something went wrong. Give it another spin."); }
-
-  isLoading = false;
-  document.getElementById("loadingText").classList.remove("visible");
-  btn.disabled = false;
-  btn.textContent = phase === "done" ? getSpinAgainLabel() : cfg.btnText;
-  phase = "done";
-}
-
-function getSpinAgainLabel() {
-  if (currentMode === "cook")    return "SPIN AGAIN";
-  if (currentMode === "deliver") return "FIND ANOTHER";
-  return "FIND ANOTHER TABLE";
-}
-
-function showComboBadge(combo) {
-  document.getElementById("comboLabel").textContent = MODES[currentMode].label;
-  const v = Object.values(combo);
-  let text = "";
-  if (currentMode === "cook")    text = `${v[2]} ${v[0]} with ${v[1]} · ${v[3]}`;
-  if (currentMode === "deliver") text = `${v[0]} · ${v[1]} · ${v[2]}`;
-  if (currentMode === "goout")   text = `${v[0]} · ${v[1]} · ${v[2]}`;
-  document.getElementById("comboText").textContent = text;
-  document.getElementById("comboBadge").classList.add("visible");
-}
-
-function showError(msg) {
-  const el = document.getElementById("errorText");
-  el.textContent = msg; el.classList.add("visible");
-}
-
-// ─────────────────────────────────────────────
-//  TIMER
-// ─────────────────────────────────────────────
-function timeStringToSeconds(t) {
-  if (t === "15 min") return 15 * 60;
-  if (t === "30 min") return 30 * 60;
-  if (t === "1 hour") return 60 * 60;
-  return 30 * 60;
-}
-function formatTime(s) { return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`; }
-function startTimer() {
-  if (timerRunning) return; timerRunning = true;
-  const startBtn = document.getElementById("timerStartBtn");
-  if (startBtn) { startBtn.textContent = "CLOCK IS RUNNING"; startBtn.classList.add("running"); startBtn.disabled = true; }
-  timerInterval = setInterval(() => {
-    timerRemaining--;
-    updateTimerDisplay();
-    if (timerRemaining <= 0) { clearInterval(timerInterval); timerRunning = false; onTimerDone(); }
-  }, 1000);
-}
-function stopTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  timerRunning = false;
-}
-function updateTimerDisplay() {
-  const cd = document.getElementById("timerCountdown");
-  const fill = document.getElementById("timerFill");
-  if (!cd || !fill) return;
-  const pct = (timerRemaining / timerTotal) * 100;
-  cd.textContent = formatTime(timerRemaining);
-  fill.style.width = `${pct}%`;
-  const warn = timerRemaining <= 60 && timerRemaining > 0;
-  cd.classList.toggle("warning", warn); cd.classList.toggle("done", timerRemaining <= 0);
-  fill.classList.toggle("warning", warn);
-}
-function onTimerDone() {
-  const cd = document.getElementById("timerCountdown");
-  if (cd) { cd.textContent = "TIME'S UP"; cd.classList.add("done"); }
-  const score = document.getElementById("ticketScoreSection");
-  if (score) { score.style.display = "block"; score.scrollIntoView({behavior:"smooth",block:"nearest"}); }
-}
-
-// ─────────────────────────────────────────────
-//  COOK MODE
-// ─────────────────────────────────────────────
-async function runCook(combo) {
-  const setupCtx  = getSetupContext();
-  const setupLine = setupCtx ? `\nAdditional preferences: ${setupCtx}.` : "";
-  const prompt = `You are the personal chef of someone with serious culinary taste and discernment — think Anthony Bourdain's adventurousness, the precision of a Michelin-trained cook, and the creative ambition of someone who eats to experience the world, not just to feed themselves.
-
-Generate a single recipe using ALL four constraints:
-Protein: ${combo.protein}
-Produce: ${combo.produce}
-Style: ${combo.style}
-Time: ${combo.time}${setupLine}
-
-TASTE PROFILE:
-- Values bold specific flavors over safe or generic ones
-- Appreciates purposeful technique — every step should have a reason
-- Seeks the unexpected within the familiar
-- Respects quality ingredients used simply
-- Wants to learn something from every recipe
-- No patience for watered-down blandness
-
-RECIPE STANDARDS:
-- Name with specificity — something that tells a story
-- Description: one evocative sentence
-- Ingredients: be specific ("Calabrian chili oil", "good sherry vinegar")
-- Steps: direct, confident, sensory — what to smell, hear, see
-- Pro tip: reveal something they didn't know
-- Must be completable in ${combo.time}
-
-Respond ONLY with valid JSON (no markdown, no backticks):
-{"title":"...","description":"...","ingredients":["..."],"steps":["..."],"tip":"..."}
-
-8-10 ingredients. 5-7 steps. Elevated but achievable.`;
+8-10 ingredients. 5-7 steps. Time: 15 min, 30 min, or 1 hour.`;
 
   const res  = await fetch("/api/recipe", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}] }) });
   const data = await res.json();
   const text = (data.content||[]).map(c=>c.text||"").join("");
   const r    = JSON.parse(text.replace(/```json|```/g,"").trim());
-  renderTicket(r, combo.time);
+  renderTicket(r);
   showResult("resultCard");
+}
+
+// ─────────────────────────────────────────────
+//  GO OUT — Yelp + Resy + Uber
+// ─────────────────────────────────────────────
+async function runGoOut() {
+  const cat    = YELP_MAP[currentCombo.cuisine] || "restaurants";
+  const seats  = PARTY_SEATS[currentCombo.for] || 2;
+  const params = new URLSearchParams({ latitude:userLat, longitude:userLng, categories:cat, open_now:"true", limit:15, sort_by:"rating", radius:1600 });
+  const data   = await (await fetch(`/api/restaurants?${params}`)).json();
+  if (!data.businesses?.length) {
+    // Widen radius if nothing found nearby
+    const params2 = new URLSearchParams({ latitude:userLat, longitude:userLng, categories:cat, open_now:"true", limit:15, sort_by:"rating", radius:8000 });
+    const data2   = await (await fetch(`/api/restaurants?${params2}`)).json();
+    if (!data2.businesses?.length) { throw new Error("none"); }
+    renderRestaurantCard(data2.businesses[Math.floor(Math.random() * Math.min(data2.businesses.length,6))], seats);
+  } else {
+    renderRestaurantCard(data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length,6))], seats);
+  }
+  showResult("resultCard");
+}
+
+function renderRestaurantCard(biz, seats) {
+  lastRestaurant = biz;
+  const stars   = "★".repeat(Math.round(biz.rating||0))+"☆".repeat(5-Math.round(biz.rating||0));
+  const addr    = (biz.location?.display_address||[]).join(", ");
+  const name    = biz.name || "Restaurant";
+  const isOpen  = biz.hours?.[0]?.is_open_now;
+  const cats    = (biz.categories||[]).map(c=>c.title).join(" · ");
+  const cuisine = currentCombo.cuisine;
+
+  // Uber deep link with destination pre-filled
+  const uberURL = `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(addr)}&dropoff%5Bnickname%5D=${encodeURIComponent(name)}`;
+
+  // Resy — NYC city code
+  const today    = new Date().toISOString().split("T")[0];
+  const resyURL  = `https://resy.com/cities/ny?date=${today}&seats=${seats}&query=${encodeURIComponent(name)}`;
+
+  document.getElementById("resultInner").innerHTML = `
+    <div class="result-inner">
+      <div class="result-title">${name}</div>
+      <div class="restaurant-meta">
+        <div><span class="restaurant-rating">${stars}</span><span class="restaurant-reviews"> ${biz.rating||"?"} (${(biz.review_count||0).toLocaleString()})</span></div>
+        ${biz.price?`<div class="restaurant-price">${biz.price}</div>`:""}
+      </div>
+      ${cats?`<div class="restaurant-cats">${cats.split(" · ").map(c=>`<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>`:""}
+      ${addr?`<div class="restaurant-address" style="margin-top:8px">📍 ${addr}</div>`:""}
+      ${isOpen!==undefined?`<div class="restaurant-status ${isOpen?"status-open":"status-closed"}" style="margin-top:4px">${isOpen?"✓ Open now":"✗ Currently closed"}</div>`:""}
+      <div class="goout-ctas" style="margin-top:16px">
+        <a class="cta-btn resy" href="${resyURL}" target="_blank" rel="noopener">🍽️ &nbsp; BOOK ON RESY</a>
+        <a class="cta-btn uber" href="${uberURL}" target="_blank" rel="noopener">⬛ &nbsp; GET AN UBER THERE</a>
+        <div class="cta-divider">or try another</div>
+        <button class="cta-btn" style="background:rgba(255,255,255,0.06);border:1px solid #2a1000;font-family:'Bebas Neue',cursive;letter-spacing:3px;font-size:14px;color:var(--text-muted);cursor:pointer" onclick="execute('goout')">↻ &nbsp; DIFFERENT SPOT</button>
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────
+//  ORDER — Seamless deep link (NYC default)
+// ─────────────────────────────────────────────
+function runOrder() {
+  const cuisine = currentCombo.cuisine;
+  const seamlessURL  = `https://www.seamless.com/search#sq=${encodeURIComponent(cuisine)}`;
+  const uberEatsURL  = `https://www.ubereats.com/search?q=${encodeURIComponent(cuisine)}`;
+
+  document.getElementById("resultInner").innerHTML = `
+    <div class="result-inner">
+      <div class="result-title">${cuisine} Delivery</div>
+      <p style="color:var(--text-muted);font-style:italic;font-size:14px;margin-bottom:18px">Ordering ${cuisine} · ${currentCombo.vibe} · ${currentCombo.for}</p>
+      <div class="goout-ctas">
+        <a class="cta-btn seamless" href="${seamlessURL}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON SEAMLESS</a>
+        <div class="cta-divider">or</div>
+        <a class="cta-btn ubereats" href="${uberEatsURL}" target="_blank" rel="noopener">⬛ &nbsp; ORDER ON UBER EATS</a>
+      </div>
+    </div>`;
+  showResult("resultCard");
+  isLoading = false;
+  document.getElementById("loadingText").classList.remove("visible");
+  document.querySelectorAll(".exec-btn").forEach(b => b.disabled = false);
 }
 
 // ─────────────────────────────────────────────
 //  ORDER TICKET
 // ─────────────────────────────────────────────
-function renderTicket(r, timeStr) {
+function timeStringToSeconds(t) { if(t==="15 min")return 900; if(t==="1 hour")return 3600; return 1800; }
+function formatTime(s) { return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`; }
+
+function renderTicket(r) {
   currentRecipeTitle = r.title || "this dish";
-  timerTotal = timeStringToSeconds(timeStr); timerRemaining = timerTotal; timerRunning = false; stopTimer();
+  const ts = r.time || "30 min";
+  timerTotal = timeStringToSeconds(ts); timerRemaining = timerTotal; timerRunning = false; stopTimer();
   const orderNum = `#${String(Math.floor(Math.random()*9000)+1000)}`;
   document.getElementById("resultInner").innerHTML = `
     <div class="ticket">
       <div class="ticket-header">
-        <div class="ticket-order-num">ORDER ${orderNum} · ${timeStr.toUpperCase()}</div>
+        <div class="ticket-order-num">ORDER ${orderNum} · ${ts.toUpperCase()}</div>
         <div class="ticket-title">${r.title||""}</div>
         ${r.description?`<div class="ticket-desc">${r.description}</div>`:""}
       </div>
@@ -996,7 +896,7 @@ function renderTicket(r, timeStr) {
           ${(r.ingredients||[]).map(i=>`<div class="ticket-ingredient">${i}</div>`).join("")}
         </div>
         <div class="ticket-steps">
-          <div class="ticket-section-label">METHOD — TAP EACH STEP WHEN DONE</div>
+          <div class="ticket-section-label">METHOD — TAP WHEN DONE</div>
           ${(r.steps||[]).map((s,i)=>`
             <div class="ticket-step" onclick="toggleStep(this)">
               <div class="step-checkbox"><span class="step-check-icon">✓</span></div>
@@ -1010,7 +910,7 @@ function renderTicket(r, timeStr) {
     <div class="ticket-stub" id="ticketScoreSection" style="display:none">
       <div class="ticket-score-label">📸 How did you do?</div>
       <img class="score-preview" id="scorePreview" />
-      <button class="ticket-upload-btn" onclick="document.getElementById('imageInput').click()">Upload your finished dish — get scored</button>
+      <button class="ticket-upload-btn" onclick="document.getElementById('imageInput').click()">Upload your dish — get scored</button>
       <div class="score-loading" id="scoreLoading">The judges are deliberating...</div>
       <div class="score-result"  id="scoreResult"></div>
     </div>`;
@@ -1019,69 +919,29 @@ function renderTicket(r, timeStr) {
 function toggleStep(el) {
   el.classList.toggle("done-step");
   const allDone = [...document.querySelectorAll(".ticket-step")].every(s => s.classList.contains("done-step"));
-  if (allDone) {
-    const score = document.getElementById("ticketScoreSection");
-    if (score) { score.style.display = "block"; score.scrollIntoView({behavior:"smooth",block:"nearest"}); }
-  }
+  if (allDone) { const sc = document.getElementById("ticketScoreSection"); if (sc) { sc.style.display="block"; sc.scrollIntoView({behavior:"smooth",block:"nearest"}); } }
 }
 
 // ─────────────────────────────────────────────
-//  DELIVER / GO OUT
+//  TIMER
 // ─────────────────────────────────────────────
-async function runDeliver(combo) {
-  const params = new URLSearchParams({ latitude:userLat, longitude:userLng, categories:YELP_MAP[combo.cuisine]||"restaurants", price:PRICE_MAP[combo.price]||2, radius:DIST_MAP[combo.distance]||8047, open_now:"true", limit:10, sort_by:"rating" });
-  const data   = await (await fetch(`/api/restaurants?${params}`)).json();
-  if (!data.businesses?.length) { showError(`No ${combo.cuisine} spots open nearby.`); return; }
-  renderRestaurant(data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length,5))], "deliver", combo);
-  showResult("resultCard");
+function startTimer() {
+  if (timerRunning) return; timerRunning = true;
+  const sb = document.getElementById("timerStartBtn");
+  if (sb) { sb.textContent = "CLOCK IS RUNNING"; sb.classList.add("running"); sb.disabled = true; }
+  timerInterval = setInterval(() => {
+    timerRemaining--;
+    const cd = document.getElementById("timerCountdown");
+    const tf = document.getElementById("timerFill");
+    if (cd) { cd.textContent = formatTime(timerRemaining); cd.classList.toggle("warning", timerRemaining<=60&&timerRemaining>0); cd.classList.toggle("done", timerRemaining<=0); }
+    if (tf) { tf.style.width = `${(timerRemaining/timerTotal)*100}%`; tf.classList.toggle("warning", timerRemaining<=60&&timerRemaining>0); }
+    if (timerRemaining <= 0) { clearInterval(timerInterval); timerRunning = false; const cd2 = document.getElementById("timerCountdown"); if(cd2){cd2.textContent="TIME'S UP";cd2.classList.add("done");} const sc = document.getElementById("ticketScoreSection"); if(sc){sc.style.display="block";sc.scrollIntoView({behavior:"smooth",block:"nearest"});} }
+  }, 1000);
 }
-
-async function runGoOut(combo) {
-  const params = new URLSearchParams({ latitude:userLat, longitude:userLng, categories:YELP_MAP[combo.cuisine]||"restaurants", open_now:combo.timing==="Right Now"?"true":"false", limit:10, sort_by:"rating", radius:16000 });
-  const data   = await (await fetch(`/api/restaurants?${params}`)).json();
-  if (!data.businesses?.length) { showError(`No ${combo.cuisine} restaurants found nearby.`); return; }
-  renderRestaurant(data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length,5))], "goout", combo);
-  showResult("resultCard");
-}
-
-function renderRestaurant(biz, mode, combo) {
-  const stars    = "★".repeat(Math.round(biz.rating||0))+"☆".repeat(5-Math.round(biz.rating||0));
-  const addr     = (biz.location?.display_address||[]).join(", ");
-  const name     = biz.name || "Restaurant";
-  const isOpen   = biz.hours?.[0]?.is_open_now;
-  const cats     = (biz.categories||[]).map(c=>c.title).join(" · ");
-  const otCovers = combo.party==="Just Me"?1:combo.party==="For 2"?2:combo.party==="For 3-4"?4:6;
-  document.getElementById("resultInner").innerHTML = `
-    <div class="result-inner">
-      <div class="result-title">${name}</div>
-      <div class="restaurant-meta">
-        <div><span class="restaurant-rating">${stars}</span><span class="restaurant-reviews"> ${biz.rating||"?"} (${(biz.review_count||0).toLocaleString()} reviews)</span></div>
-        ${biz.price?`<div class="restaurant-price">${biz.price}</div>`:""}
-      </div>
-      ${cats?`<div class="restaurant-cats">${cats.split(" · ").map(c=>`<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>`:""}
-      <br>
-      ${addr?`<div class="restaurant-address">📍 ${addr}</div>`:""}
-      ${isOpen!==undefined?`<div class="restaurant-status ${isOpen?"status-open":"status-closed"}">${isOpen?"✓ Open now":"✗ Currently closed"}</div>`:"<br>"}
-      ${mode==="deliver"?`
-        <a class="cta-btn doordash" href="https://www.doordash.com/search/store/${encodeURIComponent(name)}/" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON DOORDASH</a>
-        <div class="cta-divider">or browse</div>
-        <a class="cta-secondary" href="https://www.doordash.com/search/store/${encodeURIComponent(combo.cuisine||"")}/" target="_blank">All ${combo.cuisine} delivery →</a>
-      `:`
-        <a class="cta-btn opentable" href="https://www.opentable.com/s/?term=${encodeURIComponent(name)}&covers=${otCovers}" target="_blank" rel="noopener">🍽️ &nbsp; RESERVE ON OPENTABLE</a>
-        <div class="cta-divider">or browse</div>
-        <a class="cta-secondary" href="https://www.opentable.com/s/?term=${encodeURIComponent(combo.cuisine||"")}&covers=${otCovers}" target="_blank">All ${combo.cuisine} tables →</a>
-      `}
-    </div>`;
-}
-
-function showResult(id) {
-  const rc = document.getElementById(id);
-  rc.classList.add("visible");
-  requestAnimationFrame(() => requestAnimationFrame(() => rc.classList.add("shown")));
-}
+function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } timerRunning = false; }
 
 // ─────────────────────────────────────────────
-//  SCORE UPLOAD
+//  PHOTO SCORE
 // ─────────────────────────────────────────────
 async function handleImageUpload(event) {
   const file = event.target.files[0]; if (!file) return;
@@ -1091,14 +951,14 @@ async function handleImageUpload(event) {
   const result  = document.getElementById("scoreResult");
   if (loading) loading.classList.add("visible");
   if (result)  result.classList.remove("visible");
-  const base64 = await new Promise(resolve => { const r = new FileReader(); r.onload = e => resolve(e.target.result.split(",")[1]); r.readAsDataURL(file); });
+  const base64 = await new Promise(resolve => { const rd = new FileReader(); rd.onload = e => resolve(e.target.result.split(",")[1]); rd.readAsDataURL(file); });
   try {
     const res  = await fetch("/api/recipe", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ image:base64, mediaType:file.type, recipeTitle:currentRecipeTitle }) });
     const data = await res.json();
     const text = (data.content||[]).map(c=>c.text||"").join("");
     const sc   = JSON.parse(text.replace(/```json|```/g,"").trim());
-    const score = sc.score || 0;
-    const cls   = score >= 8 ? "high" : score >= 5 ? "mid" : "low";
+    const score = sc.score||0;
+    const cls   = score>=8?"high":score>=5?"mid":"low";
     if (result) {
       result.innerHTML = `
         <div class="score-number ${cls}">${score}</div>
@@ -1110,9 +970,7 @@ async function handleImageUpload(event) {
         </div>`;
       result.classList.add("visible");
     }
-  } catch(e) {
-    if (result) { result.innerHTML = `<p style="color:#f87171;text-align:center;font-size:13px;">Couldn't score this. Try again.</p>`; result.classList.add("visible"); }
-  }
+  } catch(e) { if(result){result.innerHTML=`<p style="color:#f87171;text-align:center;font-size:13px">Couldn't score this. Try again.</p>`;result.classList.add("visible");} }
   if (loading) loading.classList.remove("visible");
 }
 
@@ -1127,81 +985,56 @@ function buildDuoOptions() {
       opts.forEach(opt => {
         const btn = document.createElement("button");
         btn.className = "duo-option"; btn.textContent = opt;
-        btn.onclick = () => selectDuoOption(player, cat, opt, btn);
+        btn.onclick = () => { document.getElementById(`${player}-${cat}`).querySelectorAll(".duo-option").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); duoSelections[player][cat] = opt; };
         container.appendChild(btn);
       });
     });
   });
 }
 
-function selectDuoOption(player, cat, value, btn) {
-  document.getElementById(`${player}-${cat}`).querySelectorAll(".duo-option").forEach(b => b.classList.remove("selected"));
-  btn.classList.add("selected");
-  duoSelections[player][cat] = value;
-}
-
 function setDuoType(type) {
   duoType = type;
-  ["cook","goout","delivery"].forEach(t => { document.getElementById(`duo-${t}-btn`).classList.toggle("active", t === type); });
+  ["cook","goout","delivery"].forEach(t => { document.getElementById(`duo-${t}-btn`).classList.toggle("active", t===type); });
 }
 
 async function spinDuo() {
   const p1 = duoSelections.p1, p2 = duoSelections.p2;
   const missing = [];
-  if (!p1.mood) missing.push("P1 mood"); if (!p1.cuisine) missing.push("P1 cuisine"); if (!p1.budget) missing.push("P1 budget");
-  if (!p2.mood) missing.push("P2 mood"); if (!p2.cuisine) missing.push("P2 cuisine"); if (!p2.budget) missing.push("P2 budget");
-  if (missing.length) {
-    document.getElementById("duoErrorText").textContent = `Still need: ${missing.join(", ")}`;
-    document.getElementById("duoErrorText").classList.add("visible"); return;
-  }
+  ["mood","cuisine","budget"].forEach(k => { if(!p1[k]) missing.push(`P1 ${k}`); if(!p2[k]) missing.push(`P2 ${k}`); });
+  if (missing.length) { document.getElementById("duoErrorText").textContent = `Still need: ${missing.join(", ")}`; document.getElementById("duoErrorText").classList.add("visible"); return; }
   document.getElementById("duoErrorText").classList.remove("visible");
-  if (duoType !== "cook" && !userLat) {
-    await new Promise(resolve => {
-      navigator.geolocation.getCurrentPosition(
-        async pos => { userLat = pos.coords.latitude; userLng = pos.coords.longitude; await reverseGeocode(userLat, userLng); resolve(); },
-        () => { document.getElementById("duoErrorText").textContent = "Location needed."; document.getElementById("duoErrorText").classList.add("visible"); resolve(); }
-      );
-    });
-    if (!userLat) return;
-  }
+
+  if (duoType !== "cook" && !userLat) { await new Promise(r => navigator.geolocation.getCurrentPosition(async pos => { userLat=pos.coords.latitude; userLng=pos.coords.longitude; r(); }, () => { userLat=40.7128; userLng=-74.0060; r(); })); }
+
   const btn = document.getElementById("duoBtn");
   const pr  = document.getElementById("duoPulseRing");
-  btn.disabled = true; btn.textContent = "FINDING YOUR MATCH..."; pr.classList.add("active");
+  btn.disabled=true; btn.textContent="FINDING..."; pr.classList.add("active");
   document.getElementById("duoLoadingText").classList.add("visible");
   document.getElementById("duoResultCard").classList.remove("visible","shown");
+
   try {
-    if (duoType === "cook") await runDuoCook(p1, p2);
-    else await runDuoRestaurant(p1, p2);
-  } catch(e) {
-    document.getElementById("duoErrorText").textContent = "Couldn't find a match. Try again.";
-    document.getElementById("duoErrorText").classList.add("visible");
-  }
+    if (duoType==="cook") await runDuoCook(p1,p2);
+    else await runDuoRestaurant(p1,p2);
+  } catch(e) { document.getElementById("duoErrorText").textContent="Couldn't find a match. Try again."; document.getElementById("duoErrorText").classList.add("visible"); }
+
   document.getElementById("duoLoadingText").classList.remove("visible");
-  pr.classList.remove("active"); btn.disabled = false; btn.textContent = "TRY ANOTHER MATCH";
+  pr.classList.remove("active"); btn.disabled=false; btn.textContent="TRY ANOTHER MATCH";
 }
 
-async function runDuoCook(p1, p2) {
-  const prompt = `Two people need to agree on what to cook for dinner tonight. Find the best compromise.
+async function runDuoCook(p1,p2) {
+  const prompt = `Two people need to agree on dinner. Find the perfect compromise.
+Person 1: ${p1.mood} mood, loves ${p1.cuisine}, budget ${p1.budget}
+Person 2: ${p2.mood} mood, loves ${p2.cuisine}, budget ${p2.budget}
 
-Person 1 wants: ${p1.mood} mood, loves ${p1.cuisine}, budget is ${p1.budget}
-Person 2 wants: ${p2.mood} mood, loves ${p2.cuisine}, budget is ${p2.budget}
+Find ONE recipe that satisfies both. Split into TWO parallel stations:
+- Person 1: protein, heat, main cooking
+- Person 2: prep, vegetables, sauce, plating
 
-Find ONE recipe that genuinely satisfies both. Think about overlap and bridges.
+Respond ONLY valid JSON:
+{"title":"...","description":"...","ingredients":["..."],"p1_steps":["..."],"p2_steps":["..."],"tip":"...","why_it_won":"...","win_tags":["..."]}
+3-5 steps each, truly parallel.`;
 
-CRITICAL: Split into TWO distinct cooking stations:
-- Station 1 (Person 1): protein preparation, heat management, main cooking
-- Station 2 (Person 2): prep work, vegetables, sauce, plating
-
-Respond ONLY with valid JSON (no markdown, no backticks):
-{
-  "title":"...","description":"...","ingredients":["..."],
-  "p1_steps":["..."],"p2_steps":["..."],"tip":"...",
-  "why_it_won":"...","win_tags":["..."]
-}
-
-3-5 steps per person. Both people cooking in parallel.`;
-
-  const res  = await fetch("/api/recipe", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1400, messages:[{role:"user",content:prompt}] }) });
+  const res  = await fetch("/api/recipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1400,messages:[{role:"user",content:prompt}]})});
   const data = await res.json();
   const text = (data.content||[]).map(c=>c.text||"").join("");
   const r    = JSON.parse(text.replace(/```json|```/g,"").trim());
@@ -1209,82 +1042,69 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 }
 
 function renderDuoStations(r) {
-  const stationSteps = (steps, player) => (steps||[]).map(s => `
-    <div class="station-step" onclick="toggleStationStep(this)">
-      <div class="station-checkbox"><span class="station-check-icon">✓</span></div>
-      <div class="station-step-text">${s}</div>
-    </div>`).join("");
-
+  const steps = (arr,player) => (arr||[]).map(s=>`<div class="station-step" onclick="this.classList.toggle('done-step')"><div class="station-checkbox"><span class="station-check-icon">✓</span></div><div class="station-step-text">${s}</div></div>`).join("");
   document.getElementById("duoResultInner").innerHTML = `
     <div class="result-inner">
       <div class="result-title">${r.title||""}</div>
       ${r.description?`<p class="result-desc">${r.description}</p>`:""}
-      ${r.why_it_won?`
-        <div class="why-won">
-          <div class="why-won-label">✓ Why This Won</div>
-          <div class="why-won-text">${r.why_it_won}</div>
-          ${r.win_tags?.length?`<div class="why-won-tags">${r.win_tags.map(t=>`<span class="why-tag">${t}</span>`).join("")}</div>`:""}
-        </div>`:""}
+      ${r.why_it_won?`<div class="why-won"><div class="why-won-label">✓ Why This Won</div><div class="why-won-text">${r.why_it_won}</div>${r.win_tags?.length?`<div class="why-won-tags">${r.win_tags.map(t=>`<span class="why-tag">${t}</span>`).join("")}</div>`:""}</div>`:""}
       <div class="stations-wrap">
-        <div class="station p1">
-          <div class="station-header">Person 1<span class="station-role">Protein + Heat</span></div>
-          <div class="station-steps">${stationSteps(r.p1_steps)}</div>
-        </div>
-        <div class="station p2">
-          <div class="station-header">Person 2<span class="station-role">Prep + Plating</span></div>
-          <div class="station-steps">${stationSteps(r.p2_steps)}</div>
-        </div>
+        <div class="station p1"><div class="station-header">Person 1<span class="station-role">Protein + Heat</span></div><div class="station-steps">${steps(r.p1_steps)}</div></div>
+        <div class="station p2"><div class="station-header">Person 2<span class="station-role">Prep + Plating</span></div><div class="station-steps">${steps(r.p2_steps)}</div></div>
       </div>
-      ${r.ingredients?.length?`<div class="ingredients" style="margin-top:16px"><div class="section-label">Full Ingredient List</div>${r.ingredients.map(i=>`<div class="ingredient-item">${i}</div>`).join("")}</div>`:""}
+      ${r.ingredients?.length?`<div class="ingredients" style="margin-top:16px"><div class="section-label">Ingredients</div>${r.ingredients.map(i=>`<div class="ingredient-item">${i}</div>`).join("")}</div>`:""}
       ${r.tip?`<div style="margin-top:14px;background:rgba(255,107,53,0.07);border:1px solid rgba(255,107,53,0.18);border-radius:10px;padding:12px 16px;font-size:13px;color:#c49070"><span style="font-family:'Bebas Neue',cursive;font-size:11px;color:var(--accent);letter-spacing:3px;margin-right:6px">PRO TIP:</span>${r.tip}</div>`:""}
     </div>`;
 }
 
-function toggleStationStep(el) { el.classList.toggle("done-step"); }
-
-async function runDuoRestaurant(p1, p2) {
-  const cuisineOptions = [YELP_MAP[p1.cuisine], YELP_MAP[p2.cuisine]].filter(Boolean);
-  const category = cuisineOptions[Math.floor(Math.random() * cuisineOptions.length)] || "restaurants";
-  const params   = new URLSearchParams({ latitude:userLat, longitude:userLng, categories:category, open_now:"true", limit:20, sort_by:"rating", radius:10000 });
-  const data     = await (await fetch(`/api/restaurants?${params}`)).json();
-  if (!data.businesses?.length) {
-    document.getElementById("duoErrorText").textContent = "No restaurants found nearby.";
-    document.getElementById("duoErrorText").classList.add("visible"); return;
-  }
-  const pick     = data.businesses[Math.floor(Math.random() * Math.min(data.businesses.length, 8))];
-  const stars    = "★".repeat(Math.round(pick.rating||0))+"☆".repeat(5-Math.round(pick.rating||0));
-  const addr     = (pick.location?.display_address||[]).join(", ");
-  const name     = pick.name || "Restaurant";
-  const isOpen   = pick.hours?.[0]?.is_open_now;
-  const cats     = (pick.categories||[]).map(c=>c.title).join(" · ");
-  const isDelivery = duoType === "delivery";
+async function runDuoRestaurant(p1,p2) {
+  const cats = [YELP_MAP[p1.cuisine],YELP_MAP[p2.cuisine]].filter(Boolean);
+  const cat  = cats[Math.floor(Math.random()*cats.length)]||"restaurants";
+  const params = new URLSearchParams({latitude:userLat,longitude:userLng,categories:cat,open_now:"true",limit:20,sort_by:"rating",radius:8000});
+  const data   = await (await fetch(`/api/restaurants?${params}`)).json();
+  if (!data.businesses?.length) { throw new Error("none"); }
+  const pick   = data.businesses[Math.floor(Math.random()*Math.min(data.businesses.length,8))];
+  const addr   = (pick.location?.display_address||[]).join(", ");
+  const name   = pick.name||"Restaurant";
+  const stars  = "★".repeat(Math.round(pick.rating||0))+"☆".repeat(5-Math.round(pick.rating||0));
+  const isOpen = pick.hours?.[0]?.is_open_now;
+  const cats2  = (pick.categories||[]).map(c=>c.title).join(" · ");
+  const today  = new Date().toISOString().split("T")[0];
+  const resyURL  = `https://resy.com/cities/ny?date=${today}&seats=2&query=${encodeURIComponent(name)}`;
+  const uberURL  = `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(addr)}&dropoff%5Bnickname%5D=${encodeURIComponent(name)}`;
+  const seamlessURL = `https://www.seamless.com/search#sq=${encodeURIComponent(p1.cuisine)}`;
+  const isDelivery = duoType==="delivery";
 
   document.getElementById("duoResultInner").innerHTML = `
     <div class="result-inner">
       <div class="result-title">${name}</div>
       <div class="why-won" style="margin-bottom:14px">
         <div class="why-won-label">✓ Why This Won</div>
-        <div class="why-won-text">Matched ${p1.cuisine} and ${p2.cuisine} preferences.</div>
-        <div class="why-won-tags">
-          <span class="why-tag">${p1.cuisine} + ${p2.cuisine}</span>
-          <span class="why-tag">${p1.mood} meets ${p2.mood}</span>
-          ${isOpen?'<span class="why-tag">Open now</span>':""}
-        </div>
+        <div class="why-won-text">Bridges ${p1.cuisine} and ${p2.cuisine} at a shared price point.</div>
+        <div class="why-won-tags"><span class="why-tag">${p1.cuisine} + ${p2.cuisine}</span><span class="why-tag">${p1.mood} meets ${p2.mood}</span>${isOpen?'<span class="why-tag">Open now</span>':""}</div>
       </div>
       <div class="restaurant-meta">
-        <div><span class="restaurant-rating">${stars}</span><span class="restaurant-reviews"> ${pick.rating||"?"} (${(pick.review_count||0).toLocaleString()} reviews)</span></div>
+        <div><span class="restaurant-rating">${stars}</span><span class="restaurant-reviews"> ${pick.rating||"?"} (${(pick.review_count||0).toLocaleString()})</span></div>
         ${pick.price?`<div class="restaurant-price">${pick.price}</div>`:""}
       </div>
-      ${cats?`<div class="restaurant-cats">${cats.split(" · ").map(c=>`<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>`:""}
-      <br>
-      ${addr?`<div class="restaurant-address">📍 ${addr}</div>`:""}
-      ${isOpen!==undefined?`<div class="restaurant-status ${isOpen?"status-open":"status-closed"}">${isOpen?"✓ Open now":"✗ Currently closed"}</div>`:"<br>"}
-      ${isDelivery?`
-        <a class="cta-btn doordash" href="https://www.doordash.com/search/store/${encodeURIComponent(name)}/" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON DOORDASH</a>
-      `:`
-        <a class="cta-btn opentable" href="https://www.opentable.com/s/?term=${encodeURIComponent(name)}&covers=2" target="_blank" rel="noopener">🍽️ &nbsp; RESERVE ON OPENTABLE</a>
-      `}
+      ${cats2?`<div class="restaurant-cats">${cats2.split(" · ").map(c=>`<span class="restaurant-cat-tag">${c}</span>`).join("")}</div>`:""}
+      ${addr?`<div class="restaurant-address" style="margin-top:8px">📍 ${addr}</div>`:""}
+      ${isOpen!==undefined?`<div class="restaurant-status ${isOpen?"status-open":"status-closed"}" style="margin-top:4px">${isOpen?"✓ Open now":"✗ Currently closed"}</div>`:""}
+      <div class="goout-ctas" style="margin-top:16px">
+        ${isDelivery?`
+          <a class="cta-btn seamless" href="${seamlessURL}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON SEAMLESS</a>
+        `:`
+          <a class="cta-btn resy" href="${resyURL}" target="_blank" rel="noopener">🍽️ &nbsp; BOOK ON RESY</a>
+          <a class="cta-btn uber" href="${uberURL}" target="_blank" rel="noopener">⬛ &nbsp; GET AN UBER THERE</a>
+        `}
+      </div>
     </div>`;
+}
+
+function showResult(id) {
+  const rc = document.getElementById(id);
+  rc.classList.add("visible");
+  requestAnimationFrame(() => requestAnimationFrame(() => rc.classList.add("shown")));
 }
 
 init();
