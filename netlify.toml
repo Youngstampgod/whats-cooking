@@ -5,8 +5,3 @@
   from = "/api/recipe"
   to = "/.netlify/functions/recipe"
   status = 200
-
-[[redirects]]
-  from = "/api/restaurants"
-  to = "/.netlify/functions/restaurants"
-  status = 200
