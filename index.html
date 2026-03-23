@@ -441,16 +441,17 @@ async function callClaude(prompt, maxTokens = 1200) {
     }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.error?.message || `Server error ${res.status}`);
+    const msg = data?.error?.message || data?.error || `Server error ${res.status}`;
+    throw new Error(msg);
   }
 
-  const data = await res.json();
   const text = (data.content || []).map(c => c.text || "").join("");
   const start = text.indexOf("{");
   const end   = text.lastIndexOf("}");
-  if (start === -1 || end === -1) throw new Error("Bad response from server");
+  if (start === -1 || end === -1) throw new Error("Bad response: " + text.slice(0, 100));
   return JSON.parse(text.slice(start, end + 1));
 }
 
@@ -675,10 +676,7 @@ async function execute(mode) {
     if(mode==="order") runOrder();
   } catch(e) {
     console.error("execute error:",e);
-    const msg = e.message?.includes("429") ? "Rate limited — wait a moment and try again." :
-                e.message?.includes("500") ? "Server error — try again." :
-                "Something went wrong — try again.";
-    document.getElementById("errorText").textContent=msg;
+    document.getElementById("errorText").textContent = e.message || "Something went wrong — try again.";
     document.getElementById("errorText").classList.add("visible");
   }
 
