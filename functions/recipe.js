@@ -18,7 +18,15 @@ exports.handler = async function(event) {
   }
 
   let messages;
-  if (body.image) {
+  if (body.snapMode && body.image) {
+    messages = [{
+      role: "user",
+      content: [
+        { type: "image", source: { type: "base64", media_type: body.mediaType || "image/jpeg", data: body.image } },
+        { type: "text", text: `Look at this photo. Do NOT describe it literally. Instead, use its colors, textures, mood, energy, and aesthetic to inspire a food recommendation.\n\nWhat should this person eat tonight, based purely on the vibe of this photo?\n\nRespond ONLY with this JSON, nothing else:\n{"vibe_reading":"one evocative sentence about the energy/feeling of this photo","dish":"specific dish name (e.g. Spicy Crispy Honey Chicken, not just chicken)","why":"2 sentences explaining why this dish matches the photo's aesthetic and mood","cuisine":"cuisine type (e.g. Korean, Italian, Mexican)","time":"30 min"}` }
+      ]
+    }];
+  } else if (body.image) {
     messages = [{
       role: "user",
       content: [
@@ -31,7 +39,7 @@ exports.handler = async function(event) {
   }
 
   const payload = JSON.stringify({
-    model: "claude-sonnet-4-5",
+    model: "claude-sonnet-4-6",
     max_tokens: body.max_tokens || 1200,
     messages: messages,
   });
