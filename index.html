@@ -689,20 +689,13 @@ function resetResult() {
 }
 
 async function runCook() {
-  const r = await callClaude(`You are a personal chef for someone with serious culinary taste — think Anthony Bourdain meets Michelin precision.
+  const r = await callClaude(`Personal chef, Anthony Bourdain precision. One recipe:
+Cuisine: ${currentCombo.cuisine} | Vibe: ${currentCombo.vibe} | Serves: ${currentCombo.for} | NYC ingredients
 
-Generate a single recipe:
-Cuisine: ${currentCombo.cuisine}
-Vibe: ${currentCombo.vibe}
-Serving: ${currentCombo.for}
-Location: New York City (they have access to good ingredients)
+Respond ONLY with this JSON:
+{"title":"...","description":"one evocative sentence","time":"30 min","ingredients":["6 specific items max"],"steps":["4 sensory steps max"],"tip":"one insider tip"}
 
-Be specific with ingredients (e.g. "Calabrian chili oil", "good sherry vinegar", "gochujang"). Steps should be sensory — what to smell, hear, see. No generic instructions.
-
-Respond ONLY with this JSON, nothing else before or after:
-{"title":"...","description":"one evocative sentence","time":"30 min","ingredients":["..."],"steps":["..."],"tip":"one thing they didn't know"}
-
-Time must be exactly: "15 min", "30 min", or "1 hour". 8-10 ingredients. 5-7 steps.`, 1100);
+time: "15 min", "30 min", or "1 hour". Exactly 6 ingredients. Exactly 4 steps. Each step 1-2 sentences. Be specific (e.g. "Calabrian chili oil", "gochujang").`, 650);
   renderTicket(r); showResult("resultCard");
 }
 
@@ -978,13 +971,9 @@ async function runSnapCook() {
   const container=document.getElementById("snapActionResult"); if(!container)return;
   container.innerHTML=`<p style="color:var(--text-muted);font-style:italic;font-size:13px;text-align:center;padding:16px 0">Generating recipe...</p>`;
   try {
-    const r=await callClaude(`You are a personal chef for someone with serious culinary taste.
-Generate a recipe for: ${snapCurrentDish}
-Cuisine style: ${snapCurrentCuisine}
-Location: New York City
-Be specific with ingredients. Steps should be sensory — smell, hear, see. No generic instructions.
-Respond ONLY with this JSON: {"title":"...","description":"one evocative sentence","time":"30 min","ingredients":["..."],"steps":["..."],"tip":"..."}
-Time must be: "15 min", "30 min", or "1 hour". 8-10 ingredients. 5-7 steps.`, 1100);
+    const r=await callClaude(`Personal chef. One recipe for: ${snapCurrentDish} (${snapCurrentCuisine} style). NYC ingredients.
+Respond ONLY with this JSON: {"title":"...","description":"one evocative sentence","time":"30 min","ingredients":["6 specific items max"],"steps":["4 sensory steps max"],"tip":"..."}
+time: "15 min", "30 min", or "1 hour". Exactly 6 ingredients. Exactly 4 steps, 1-2 sentences each.`, 650);
     const wrapper=document.createElement("div"); wrapper.style.marginTop="16px"; wrapper.id="snapTicketTarget";
     container.innerHTML=""; container.appendChild(wrapper);
     renderTicket(r,"snapTicketTarget");
