@@ -47,8 +47,8 @@
     .mascot-img { width:150px; height:150px; object-fit:contain; animation:capitan-bob 3s ease-in-out infinite; transform-origin:bottom center; }
 
     /* TABS */
-    .mode-tabs { display:flex; gap:5px; margin-top:22px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:12px; padding:5px; }
-    .mode-tab { font-family:'Bebas Neue',cursive; font-size:clamp(12px,2.5vw,15px); letter-spacing:2px; padding:9px 18px; border-radius:8px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.3s; white-space:nowrap; }
+    .mode-tabs { display:flex; gap:5px; margin-top:22px; width:100%; max-width:640px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:12px; padding:5px; }
+    .mode-tab { font-family:'Bebas Neue',cursive; font-size:clamp(12px,2.5vw,15px); letter-spacing:2px; padding:9px 18px; border-radius:8px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.3s; white-space:nowrap; flex:1; }
     .mode-tab.active-spin { background:rgba(255,68,0,0.15); color:var(--fire); border:1px solid rgba(255,68,0,0.35); }
     .mode-tab.active-duo  { background:rgba(221,68,255,0.12); color:var(--duo); border:1px solid rgba(221,68,255,0.3); }
     .mode-tab.active-snap { background:rgba(255,221,0,0.12); color:var(--snap); border:1px solid rgba(255,221,0,0.3); }
