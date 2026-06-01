@@ -223,6 +223,23 @@
     /* DUO */
     .duo-panel { display:none; }
     .duo-panel.visible { display:block; }
+    .duo-invite-banner { background:rgba(221,68,255,0.1); border:1px solid rgba(221,68,255,0.3); border-radius:10px; padding:12px 16px; margin-bottom:16px; text-align:center; font-size:13px; color:var(--duo); display:none; }
+    .duo-invite-banner strong { display:block; font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; margin-bottom:4px; }
+    .duo-challenge-wrap { margin-top:14px; display:none; }
+    .duo-challenge-btn { width:100%; padding:12px; background:rgba(221,68,255,0.1); border:1px solid rgba(221,68,255,0.35); border-radius:10px; color:var(--duo); font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:3px; cursor:pointer; transition:all 0.2s; }
+    .duo-challenge-btn:hover { background:rgba(221,68,255,0.2); }
+    .duo-challenge-copied { margin-top:8px; text-align:center; font-size:12px; color:var(--text-muted); font-style:italic; display:none; }
+    .compromise-score { text-align:center; margin-bottom:14px; padding:12px; background:rgba(221,68,255,0.07); border:1px solid rgba(221,68,255,0.2); border-radius:10px; }
+    .compromise-num { font-family:'Bebas Neue',cursive; font-size:42px; color:var(--duo); line-height:1; }
+    .compromise-label { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:3px; color:var(--text-muted); margin-top:2px; }
+    .again-wrap { display:none; margin-top:10px; align-items:center; justify-content:center; gap:10px; }
+    .again-wrap.visible { display:flex; }
+    .again-text { font-size:12px; color:var(--text-muted); font-style:italic; }
+    .again-btn { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:2px; padding:4px 10px; border:1px solid rgba(255,68,0,0.3); border-radius:5px; background:transparent; color:var(--accent); cursor:pointer; transition:all 0.2s; }
+    .again-btn:hover { background:rgba(255,68,0,0.1); }
+    .ban-count { display:none; margin-bottom:10px; text-align:center; font-size:11px; color:var(--text-muted); font-style:italic; cursor:pointer; }
+    .ban-count.visible { display:block; }
+    .ban-count:hover { color:var(--text-warm); }
     .duo-intro { text-align:center; margin-bottom:18px; }
     .duo-intro-title { font-family:'Bebas Neue',cursive; font-size:clamp(16px,4vw,22px); color:var(--duo); letter-spacing:2px; margin-bottom:6px; }
     .duo-intro-sub { font-size:13px; color:var(--text-muted); font-style:italic; }
@@ -375,11 +392,20 @@
       <div class="result-card" id="resultCard">
         <div id="resultInner"></div>
       </div>
-      <button class="coward-btn" id="cowardBtn" onclick="spin()">↻ &nbsp; SPIN AGAIN, COWARD</button>
+      <button class="coward-btn" id="cowardBtn" onclick="spin()">↻ &nbsp; SPIN AGAIN, HUMAN</button>
+      <div class="ban-count" id="banCount" onclick="clearAllBans()"></div>
+      <div class="again-wrap" id="againWrap">
+        <span class="again-text">Last time: <span id="againText"></span></span>
+        <button class="again-btn" onclick="spinAgainCombo()">AGAIN?</button>
+      </div>
     </div>
 
     <!-- DUO PANEL -->
     <div class="duo-panel" id="duoPanel">
+      <div class="duo-invite-banner" id="duoInviteBanner">
+        <strong>👫 CHALLENGE ACCEPTED</strong>
+        Your friend locked in their picks. Now choose yours — then find your match.
+      </div>
       <div class="duo-intro">
         <div class="duo-intro-title">👫 Duo Mode</div>
         <div class="duo-intro-sub">Two people. Three picks each. One answer.</div>
@@ -402,6 +428,10 @@
           <div class="duo-pick"><div class="duo-pick-label">Cuisine</div><div class="duo-pick-options" id="p2-cuisine"></div></div>
           <div class="duo-pick"><div class="duo-pick-label">Budget</div><div class="duo-pick-options" id="p2-budget"></div></div>
         </div>
+      </div>
+      <div class="duo-challenge-wrap" id="duoChallengeWrap">
+        <button class="duo-challenge-btn" onclick="generateDuoLink()">⚡ CHALLENGE A FRIEND</button>
+        <div class="duo-challenge-copied" id="duoChallengeCopied">Link copied — send it!</div>
       </div>
       <div class="spin-btn-wrap">
         <div class="pulse-ring" id="duoPulseRing"></div>
@@ -500,7 +530,7 @@ let dislikes = {};
 function loadDislikes() { try { const r=localStorage.getItem(DISLIKE_KEY); if(r){const o=JSON.parse(r);Object.keys(o).forEach(k=>{dislikes[k]=new Set(o[k]);});} } catch{} }
 function saveDislikes() { try { const o={};Object.keys(dislikes).forEach(k=>{o[k]=[...dislikes[k]];});localStorage.setItem(DISLIKE_KEY,JSON.stringify(o)); } catch{} }
 function isDisliked(key,val) { return dislikes[key]?.has(val)||false; }
-function toggleDislike(key,val) { if(!dislikes[key])dislikes[key]=new Set(); dislikes[key].has(val)?dislikes[key].delete(val):dislikes[key].add(val); saveDislikes(); }
+function toggleDislike(key,val) { if(!dislikes[key])dislikes[key]=new Set(); dislikes[key].has(val)?dislikes[key].delete(val):dislikes[key].add(val); saveDislikes(); updateBanCount(); }
 function allowedItems(key) { const items=REEL_CONFIG.find(r=>r.key===key)?.items||[]; const f=items.filter(i=>!isDisliked(key,i)); return f.length>0?f:items; }
 function weightedPick(items, preferred) { const pool=[]; items.forEach(i=>{const w=preferred?.includes(i)?4:1;for(let j=0;j<w;j++)pool.push(i);}); return pool[Math.floor(Math.random()*pool.length)]; }
 
@@ -524,7 +554,7 @@ async function shareResult(btn) {
   } catch(e) { btn.textContent = "✗ TRY AGAIN"; setTimeout(() => btn.textContent = "📤 SHARE THIS PICK", 2000); }
 }
 
-function init() { loadDislikes(); buildReels(); buildDuoOptions(); getLocation(); }
+function init() { loadDislikes(); loadHistory(); buildReels(); buildDuoOptions(); getLocation(); updateBanCount(); checkDuoInvite(); }
 
 function setTab(tab) {
   document.getElementById("spinPanel").style.display = tab==="spin"?"block":"none";
@@ -537,7 +567,9 @@ function setTab(tab) {
 }
 
 function getLocation() {
-  if (!navigator.geolocation) { document.getElementById("locationText").textContent="📍 New York City"; return; }
+  const saved=localStorage.getItem(WAWE_HOOD_KEY);
+  if(saved){userNeighborhood=saved;document.getElementById("locationText").textContent=`📍 ${saved}`;}
+  if (!navigator.geolocation) { if(!saved)document.getElementById("locationText").textContent="📍 New York City"; return; }
   navigator.geolocation.getCurrentPosition(
     async pos => {
       userLat=pos.coords.latitude; userLng=pos.coords.longitude;
@@ -545,9 +577,10 @@ function getLocation() {
         const d=await (await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLng}&format=json`)).json();
         userNeighborhood=d.address?.neighbourhood||d.address?.suburb||d.address?.city||"Manhattan";
         document.getElementById("locationText").textContent=`📍 ${userNeighborhood}`;
-      } catch { document.getElementById("locationText").textContent="📍 New York City"; }
+        try{localStorage.setItem(WAWE_HOOD_KEY,userNeighborhood);}catch{}
+      } catch { if(!saved)document.getElementById("locationText").textContent="📍 New York City"; }
     },
-    () => { document.getElementById("locationText").textContent="📍 New York City"; }
+    () => { if(!saved)document.getElementById("locationText").textContent="📍 New York City"; }
   );
 }
 
@@ -616,7 +649,8 @@ async function spin() {
   document.getElementById("comboBadge").classList.add("visible");
   document.getElementById("execButtons").classList.add("visible");
   showReelControls(currentCombo);
-  btn.disabled=false; btn.textContent="SPIN AGAIN, COWARD";
+  saveCombo(currentCombo); updateBanCount();
+  btn.disabled=false; btn.textContent="SPIN AGAIN, HUMAN";
 }
 
 async function execute(mode) {
@@ -807,7 +841,7 @@ function buildDuoOptions() {
       container.innerHTML="";
       opts.forEach(opt=>{
         const btn=document.createElement("button"); btn.className="duo-option"; btn.textContent=opt;
-        btn.onclick=()=>{document.getElementById(`${player}-${cat}`).querySelectorAll(".duo-option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");duoSelections[player][cat]=opt;};
+        btn.onclick=()=>{document.getElementById(`${player}-${cat}`).querySelectorAll(".duo-option").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");duoSelections[player][cat]=opt;if(player==="p1")checkDuoChallenge();};
         container.appendChild(btn);
       });
     });
@@ -841,9 +875,11 @@ Person 2: ${p2.mood} mood, loves ${p2.cuisine}, budget ${p2.budget}
 Find ONE recipe satisfying both. Split into two parallel cooking stations — Person 1: protein, heat. Person 2: prep, sauce, plating.
 Respond ONLY with JSON: {"title":"...","description":"...","ingredients":["..."],"p1_steps":["..."],"p2_steps":["..."],"tip":"...","why_it_won":"...","win_tags":["..."]}
 3-5 steps each.`, 1400);
+  const score=calcCompromiseScore(p1,p2);
   const steps=(arr)=>(arr||[]).map(s=>`<div class="station-step" onclick="this.classList.toggle('done-step')"><div class="station-checkbox"><span class="station-check-icon">✓</span></div><div class="station-step-text">${s}</div></div>`).join("");
   document.getElementById("duoResultInner").innerHTML=`
     <div class="result-inner">
+      <div class="compromise-score"><div class="compromise-num">${score}</div><div class="compromise-label">COMPATIBILITY SCORE</div></div>
       <div class="result-title">${r.title||""}</div>
       ${r.description?`<p class="result-desc">${r.description}</p>`:""}
       ${r.why_it_won?`<div class="why-won"><div class="why-won-label">✓ Why This Won</div><div class="why-won-text">${r.why_it_won}</div>${r.win_tags?.length?`<div class="why-won-tags">${r.win_tags.map(t=>`<span class="why-tag">${t}</span>`).join("")}</div>`:""}</div>`:""}
@@ -862,6 +898,7 @@ async function runDuoGoOut(p1,p2) {
 P1: ${p1.mood}, wants ${p1.cuisine}, budget ${p1.budget}. P2: ${p2.mood}, wants ${p2.cuisine}, budget ${p2.budget}.
 Location: ${userNeighborhood}, NYC. Type: ${duoType==="delivery"?"delivery":"sit-down"}.
 Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuisine_tags":["..."],"price":"$$","why":"2 sentences","win_tags":["..."]}`, 500);
+  const score=calcCompromiseScore(p1,p2);
   const today=new Date().toISOString().split("T")[0];
   const resyURL=`https://resy.com/cities/ny?date=${today}&seats=2&query=${encodeURIComponent(r.name)}`;
   const uberURL=`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent((r.address||r.name)+", New York, NY")}&dropoff%5Bnickname%5D=${encodeURIComponent(r.name)}`;
@@ -870,6 +907,7 @@ Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuis
   const winTags=(r.win_tags||[]).map(t=>`<span class="why-tag">${t}</span>`).join("");
   document.getElementById("duoResultInner").innerHTML=`
     <div class="result-inner">
+      <div class="compromise-score"><div class="compromise-num">${score}</div><div class="compromise-label">COMPATIBILITY SCORE</div></div>
       <div class="result-title">${r.name}</div>
       <div class="restaurant-meta"><div class="restaurant-price">${r.price||"$$"}</div><div style="color:var(--text-muted);font-size:13px">📍 ${r.neighborhood||""}</div></div>
       ${tags?`<div class="restaurant-cats">${tags}</div>`:""}
@@ -995,6 +1033,84 @@ function showResult(id) {
   rc.classList.add("visible");
   requestAnimationFrame(()=>requestAnimationFrame(()=>rc.classList.add("shown")));
   if(id==="resultCard") document.getElementById("cowardBtn").classList.add("visible");
+}
+
+// #6 — Save taste
+const WAWE_HOOD_KEY="wawe_hood_v1", WAWE_HISTORY_KEY="wawe_history_v1";
+let comboHistory=[];
+function loadHistory(){try{const r=localStorage.getItem(WAWE_HISTORY_KEY);if(r)comboHistory=JSON.parse(r)||[];}catch{}}
+function saveHistory(){try{localStorage.setItem(WAWE_HISTORY_KEY,JSON.stringify(comboHistory.slice(-3)));}catch{}}
+function saveCombo(combo){comboHistory.push({...combo});if(comboHistory.length>3)comboHistory=comboHistory.slice(-3);saveHistory();updateAgainWrap();}
+function updateAgainWrap(){
+  const wrap=document.getElementById("againWrap"),text=document.getElementById("againText");
+  if(!wrap||!text)return;
+  if(comboHistory.length>=2){const prev=comboHistory[comboHistory.length-2];text.textContent=`${prev.cuisine} · ${prev.vibe} · ${prev.for}`;wrap.classList.add("visible");}
+  else wrap.classList.remove("visible");
+}
+function spinAgainCombo(){
+  if(comboHistory.length<2)return;
+  const prev=comboHistory[comboHistory.length-2];
+  currentCombo={...prev};
+  REEL_CONFIG.forEach(cfg=>{
+    const el=document.getElementById(`reel-text-${cfg.key}`);if(el)el.textContent=currentCombo[cfg.key]||cfg.items[0];
+    document.getElementById(`reel-${cfg.key}`)?.classList.toggle("disliked",isDisliked(cfg.key,currentCombo[cfg.key]));
+  });
+  document.getElementById("comboText").textContent=`${currentCombo.cuisine} · ${currentCombo.vibe} · ${currentCombo.for}`;
+  document.getElementById("comboBadge").classList.add("visible");
+  document.getElementById("execButtons").classList.add("visible");
+  showReelControls(currentCombo);
+}
+function updateBanCount(){
+  const el=document.getElementById("banCount");if(!el)return;
+  let total=0;Object.values(dislikes).forEach(s=>total+=s.size);
+  if(total>0){el.textContent=`${total} ban${total===1?"":"s"} active — tap to clear all`;el.classList.add("visible");}
+  else el.classList.remove("visible");
+}
+function clearAllBans(){
+  dislikes={};saveDislikes();updateBanCount();
+  document.querySelectorAll(".reel-ctrl-btn.dislike-btn").forEach(btn=>{btn.textContent="👎 BAN";btn.classList.remove("disliked-active");});
+  document.querySelectorAll(".reel.disliked").forEach(r=>r.classList.remove("disliked"));
+}
+
+// #4 — Duo share link
+function checkDuoChallenge(){
+  const p1=duoSelections.p1;
+  const wrap=document.getElementById("duoChallengeWrap");
+  if(wrap)wrap.style.display=(p1.mood&&p1.cuisine&&p1.budget)?"block":"none";
+}
+async function generateDuoLink(){
+  const p1=duoSelections.p1;
+  const params=new URLSearchParams({duo:"1",m:p1.mood,c:p1.cuisine,b:p1.budget});
+  const url=`${location.origin}${location.pathname}?${params}`;
+  const copied=document.getElementById("duoChallengeCopied");
+  if(navigator.share){try{await navigator.share({title:"What We Eating — Duo Challenge",url});return;}catch{}}
+  try{await navigator.clipboard.writeText(url);if(copied){copied.style.display="block";setTimeout(()=>copied.style.display="none",3000);}}
+  catch{prompt("Copy this link:",url);}
+}
+function selectDuoOption(player,cat,val){
+  const container=document.getElementById(`${player}-${cat}`);if(!container)return;
+  container.querySelectorAll(".duo-option").forEach(b=>{
+    if(b.textContent===val){b.classList.add("selected");duoSelections[player][cat]=val;}
+    else b.classList.remove("selected");
+  });
+}
+function checkDuoInvite(){
+  const params=new URLSearchParams(location.search);
+  if(!params.get("duo"))return;
+  const m=params.get("m"),c=params.get("c"),b=params.get("b");
+  if(m)selectDuoOption("p1","mood",m);
+  if(c)selectDuoOption("p1","cuisine",c);
+  if(b)selectDuoOption("p1","budget",b);
+  const banner=document.getElementById("duoInviteBanner");
+  if(banner)banner.style.display="block";
+  setTab("duo");
+}
+function calcCompromiseScore(p1,p2){
+  let score=55;
+  if(p1.cuisine===p2.cuisine)score+=25;
+  if(p1.budget===p2.budget)score+=15;
+  if(p1.mood===p2.mood)score+=5;
+  return Math.min(score,100);
 }
 
 init();
