@@ -132,6 +132,11 @@
     .result-card { margin-top:22px; opacity:0; transform:translateY(20px); transition:opacity 0.6s ease,transform 0.6s ease; display:none; }
     .result-card.visible { display:block; }
     .result-card.shown { opacity:1; transform:translateY(0); }
+    .coward-btn { margin-top:12px; width:100%; padding:12px; background:transparent; border:1px solid #2a0850; border-radius:10px; color:var(--text-muted); font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:3px; cursor:pointer; transition:all 0.3s; display:none; }
+    .coward-btn.visible { display:block; }
+    .coward-btn:hover { border-color:var(--accent); color:var(--text-warm); background:rgba(255,68,0,0.05); }
+    .share-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:12px; background:rgba(255,255,255,0.03); border:1px solid #2a0850; border-radius:8px; color:var(--text-muted); font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:2px; cursor:pointer; transition:all 0.2s; margin-top:10px; }
+    .share-btn:hover { border-color:var(--accent); color:var(--text-warm); }
 
     /* TICKET */
     .ticket { background:#fff; border-radius:4px 4px 0 0; color:#1a0800; font-family:'Crimson Pro',Georgia,serif; }
@@ -312,7 +317,7 @@
 
   <p class="eyebrow">Dinner, Decided</p>
   <h1 class="headline">What We <span>Eating</span></h1>
-  <p class="tagline">Spin. Pick how. Done.</p>
+  <p class="tagline">One spin. No debate. Capitán decides.</p>
 
   <!-- MASCOT -->
   <div class="mascot-wrap">
@@ -342,7 +347,7 @@
       </div>
 
       <div class="combo-badge" id="comboBadge">
-        <div class="combo-label">TONIGHT'S PICK</div>
+        <div class="combo-label">CAPITÁN HAS SPOKEN</div>
         <div class="combo-text" id="comboText"></div>
       </div>
 
@@ -364,12 +369,13 @@
         </button>
       </div>
 
-      <div class="loading-text" id="loadingText">One sec...</div>
+      <div class="loading-text" id="loadingText">Capitán is sniffing out dinner...</div>
       <div class="error-text"   id="errorText"></div>
 
       <div class="result-card" id="resultCard">
         <div id="resultInner"></div>
       </div>
+      <button class="coward-btn" id="cowardBtn" onclick="spin()">↻ &nbsp; SPIN AGAIN, COWARD</button>
     </div>
 
     <!-- DUO PANEL -->
@@ -401,7 +407,7 @@
         <div class="pulse-ring" id="duoPulseRing"></div>
         <button class="spin-btn duo-btn" id="duoBtn" onclick="spinDuo()">FIND OUR MATCH</button>
       </div>
-      <div class="loading-text" id="duoLoadingText">Finding your match...</div>
+      <div class="loading-text" id="duoLoadingText">Capitán is brokering a deal...</div>
       <div class="error-text"   id="duoErrorText"></div>
       <div class="result-card"  id="duoResultCard"><div id="duoResultInner"></div></div>
     </div>
@@ -421,7 +427,7 @@
       </div>
       <button class="snap-retake-btn" id="snapRetakeBtn" onclick="document.getElementById('snapInput').click()">↺ &nbsp;Use a different photo</button>
 
-      <div class="loading-text" id="snapLoadingText">Reading the vibe...</div>
+      <div class="loading-text" id="snapLoadingText">Capitán is reading the room...</div>
       <div class="error-text"   id="snapErrorText"></div>
 
       <div class="result-card" id="snapResultCard">
@@ -504,6 +510,19 @@ let currentCombo={}, reelIntervals={};
 let currentRecipeTitle="";
 let timerInterval=null, timerTotal=0, timerRemaining=0, timerRunning=false;
 let snapImage64=null, snapMime=null, snapCurrentDish="", snapCurrentCuisine="";
+
+async function shareResult(btn) {
+  const text = btn.getAttribute("data-share") + "\n\nhttps://whatweeating.netlify.app";
+  if (navigator.share) {
+    try { await navigator.share({ text }); return; } catch(e) {}
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = "✓ COPIED";
+    setTimeout(() => btn.textContent = orig, 2000);
+  } catch(e) { btn.textContent = "✗ TRY AGAIN"; setTimeout(() => btn.textContent = "📤 SHARE THIS PICK", 2000); }
+}
 
 function init() { loadDislikes(); buildReels(); buildDuoOptions(); getLocation(); }
 
@@ -597,7 +616,7 @@ async function spin() {
   document.getElementById("comboBadge").classList.add("visible");
   document.getElementById("execButtons").classList.add("visible");
   showReelControls(currentCombo);
-  btn.disabled=false; btn.textContent="SPIN AGAIN";
+  btn.disabled=false; btn.textContent="SPIN AGAIN, COWARD";
 }
 
 async function execute(mode) {
@@ -625,6 +644,7 @@ function resetResult() {
   document.getElementById("loadingText").classList.remove("visible");
   document.getElementById("errorText").classList.remove("visible");
   document.getElementById("resultCard").classList.remove("visible","shown");
+  document.getElementById("cowardBtn").classList.remove("visible");
   hideReelControls(); stopTimer();
 }
 
@@ -662,6 +682,7 @@ function renderRestaurantCard(r, seats) {
   const resyURL=`https://resy.com/cities/ny?date=${today}&seats=${seats}&query=${encodeURIComponent(r.name)}`;
   const uberURL=`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(r.address+", New York, NY")}&dropoff%5Bnickname%5D=${encodeURIComponent(r.name)}`;
   const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
+  const shareText=`What We Eating Tonight\nCapitán picked: ${r.name}\n${r.neighborhood||""} · ${r.price||"$$"}\nMove: Go out`;
   document.getElementById("resultInner").innerHTML=`
     <div class="result-inner">
       <div class="result-title">${r.name}</div>
@@ -675,13 +696,15 @@ function renderRestaurantCard(r, seats) {
         <div class="cta-divider">not feeling it?</div>
         <button class="cta-btn retry" onclick="execute('goout')">↻ &nbsp; DIFFERENT SPOT</button>
       </div>
-    </div>`;
+    </div>
+    <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS PICK</button>`;
 }
 
 function runOrder() {
   const cuisine=currentCombo.cuisine;
   const seamlessURL=`https://www.seamless.com/search#sq=${encodeURIComponent(cuisine)}`;
   const uberEatsURL=`https://www.ubereats.com/search?q=${encodeURIComponent(cuisine)}&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMk5ldyUyMFlvcmslMjBDaXR5JTIyJTdE`;
+  const shareText=`What We Eating Tonight\nCapitán picked: ${cuisine} delivery\n${currentCombo.vibe} · ${currentCombo.for}\nMove: Order it`;
   document.getElementById("resultInner").innerHTML=`
     <div class="result-inner">
       <div class="result-title">${cuisine} delivery</div>
@@ -691,7 +714,8 @@ function runOrder() {
         <div class="cta-divider">or</div>
         <a class="cta-btn ubereats" href="${uberEatsURL}" target="_blank" rel="noopener">⬛ &nbsp; ORDER ON UBER EATS</a>
       </div>
-    </div>`;
+    </div>
+    <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS PICK</button>`;
   showResult("resultCard"); isLoading=false;
   document.getElementById("loadingText").classList.remove("visible");
   document.querySelectorAll(".exec-btn").forEach(b=>b.disabled=false);
@@ -705,6 +729,7 @@ function renderTicket(r, targetId="resultInner") {
   const ts=r.time||"30 min";
   timerTotal=timeToSeconds(ts); timerRemaining=timerTotal; timerRunning=false; stopTimer();
   const orderNum=`#${String(Math.floor(Math.random()*9000)+1000)}`;
+  const shareText=`What We Eating Tonight\nCapitán picked: ${r.title||"dinner"}\n${currentCombo.cuisine||""} · ${currentCombo.vibe||""} · ${currentCombo.for||""}\nMove: Cook it`;
   document.getElementById(targetId).innerHTML=`
     <div class="ticket">
       <div class="ticket-header">
@@ -735,7 +760,8 @@ function renderTicket(r, targetId="resultInner") {
       <button class="ticket-upload-btn" onclick="document.getElementById('imageInput').click()">Upload your dish — get scored</button>
       <div class="score-loading" id="scoreLoading">The judges are deliberating...</div>
       <div class="score-result" id="scoreResult"></div>
-    </div>`;
+    </div>
+    <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS PICK</button>`;
 }
 
 function checkAllDone() {
@@ -964,7 +990,12 @@ function runSnapOrder() {
   </div>`;
 }
 
-function showResult(id) { const rc=document.getElementById(id); rc.classList.add("visible"); requestAnimationFrame(()=>requestAnimationFrame(()=>rc.classList.add("shown"))); }
+function showResult(id) {
+  const rc=document.getElementById(id);
+  rc.classList.add("visible");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>rc.classList.add("shown")));
+  if(id==="resultCard") document.getElementById("cowardBtn").classList.add("visible");
+}
 
 init();
 </script>
