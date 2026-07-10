@@ -764,10 +764,19 @@ Respond ONLY with this JSON, nothing else:
   renderRestaurantCard(r, seats); showResult("resultCard");
 }
 
+function resyVenueURL(name, date, seats) {
+  const slug=name.toLowerCase().replace(/[''`]/g,'').replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  return `https://resy.com/cities/ny/venues/${slug}?date=${date}&seats=${seats}`;
+}
+function uberDestURL(name, address, neighborhood) {
+  const addr=((address||(neighborhood?neighborhood+', New York':'New York')))+', NY';
+  return `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(addr)}&dropoff%5Bnickname%5D=${encodeURIComponent(name)}`;
+}
+
 function renderRestaurantCard(r, seats) {
   const today=new Date().toISOString().split("T")[0];
-  const resyURL=`https://resy.com/cities/ny?date=${today}&seats=${seats}&query=${encodeURIComponent(r.name)}`;
-  const uberURL=`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(r.address+", New York, NY")}&dropoff%5Bnickname%5D=${encodeURIComponent(r.name)}`;
+  const resyURL=resyVenueURL(r.name,today,seats);
+  const uberURL=uberDestURL(r.name,r.address,r.neighborhood);
   const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
   const shareText=`What We Eating Tonight\nCapitán picked: ${r.name}\n${r.neighborhood||""} · ${r.price||"$$"}\nMove: Go out`;
   document.getElementById("resultInner").innerHTML=`
@@ -958,8 +967,8 @@ Location: ${userNeighborhood}, NYC. Type: ${duoType==="delivery"?"delivery":"sit
 Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuisine_tags":["..."],"price":"$$","why":"2 sentences","win_tags":["..."]}`, 500);
   const score=calcCompromiseScore(p1,p2);
   const today=new Date().toISOString().split("T")[0];
-  const resyURL=`https://resy.com/cities/ny?date=${today}&seats=2&query=${encodeURIComponent(r.name)}`;
-  const uberURL=`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent((r.address||r.name)+", New York, NY")}&dropoff%5Bnickname%5D=${encodeURIComponent(r.name)}`;
+  const resyURL=resyVenueURL(r.name,today,2);
+  const uberURL=uberDestURL(r.name,r.address,r.neighborhood);
   const seamlessURL=`https://www.seamless.com/search#sq=${encodeURIComponent(r.name)}`;
   const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
   const winTags=(r.win_tags||[]).map(t=>`<span class="why-tag">${t}</span>`).join("");
@@ -1052,8 +1061,8 @@ async function runSnapGoOut() {
 Location: ${userNeighborhood}, NYC. Party: 2. Real, operating, sit-down only.
 Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuisine_tags":["..."],"price":"$$","why":"2 sentences","vibe_note":"1 sentence"}`, 500);
     const today=new Date().toISOString().split("T")[0];
-    const resyURL=`https://resy.com/cities/ny?date=${today}&seats=2&query=${encodeURIComponent(r.name)}`;
-    const uberURL=`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(r.address+", New York, NY")}&dropoff%5Bnickname%5D=${encodeURIComponent(r.name)}`;
+    const resyURL=resyVenueURL(r.name,today,2);
+    const uberURL=uberDestURL(r.name,r.address,r.neighborhood);
     const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
     container.innerHTML=`<div class="result-inner" style="margin-top:16px">
       <div class="result-title">${r.name}</div>
