@@ -31,7 +31,19 @@ exports.handler = async function(event) {
       role: "user",
       content: [
         { type: "image", source: { type: "base64", media_type: body.mediaType || "image/jpeg", data: body.image } },
-        { type: "text", text: `Score this dish called "${body.recipeTitle || "this dish"}". Respond ONLY with JSON: {"score":7,"verdict":"...","highlight":"...","improve":"..."}` }
+        { type: "text", text: `You are grading a home cook's plated dish: "${body.recipeTitle || "this dish"}". Be specific and honest — read the actual photo, never generic praise.
+
+Score out of 100 across three components:
+- taste (out of 50): what this would eat like. Carbon or burnt spots are acrid and cost real points. Missing acid, missing finishing salt, and passenger ingredients that add nothing all cost points.
+- technique (out of 40): doneness, crust, browning, whether the pan was crowded, whether anything steamed instead of searing.
+- presentation (out of 10): plating intent, negative space, a clean rim, one herb and one condiment rather than clutter. Utensils in frame, packaging in frame, or a straight-overhead shot instead of 45 degrees all cost points.
+
+verdict: one or two sharp sentences on how it ate overall.
+highlight: the single best thing they did, named specifically.
+improve: the one change with the biggest payoff next time, phrased as an instruction.
+
+Respond ONLY with JSON, nothing else:
+{"score":76,"taste":40,"technique":31,"presentation":5,"verdict":"...","highlight":"...","improve":"..."}` }
       ]
     }];
   } else {

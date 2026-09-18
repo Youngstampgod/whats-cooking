@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>What We Eating</title>
+  <meta name="description" content="One spin. No debate. Capitán decides what you're eating tonight." />
+  <meta name="theme-color" content="#07030e" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="What We Eating" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
@@ -48,7 +56,7 @@
 
     /* TABS */
     .mode-tabs { display:flex; gap:5px; margin-top:22px; width:100%; max-width:640px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:12px; padding:5px; }
-    .mode-tab { font-family:'Bebas Neue',cursive; font-size:clamp(12px,2.5vw,15px); letter-spacing:2px; padding:9px 18px; border-radius:8px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.3s; white-space:nowrap; flex:1; }
+    .mode-tab { font-family:'Bebas Neue',cursive; font-size:clamp(11px,2.5vw,15px); letter-spacing:clamp(0.5px,0.4vw,2px); padding:9px 6px; border-radius:8px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.3s; white-space:nowrap; flex:1; min-width:0; }
     .mode-tab.active-spin { background:rgba(255,68,0,0.15); color:var(--fire); border:1px solid rgba(255,68,0,0.35); }
     .mode-tab.active-duo  { background:rgba(221,68,255,0.12); color:var(--duo); border:1px solid rgba(221,68,255,0.3); }
     .mode-tab.active-snap { background:rgba(255,221,0,0.12); color:var(--snap); border:1px solid rgba(255,221,0,0.3); }
@@ -65,7 +73,7 @@
     .location-text { flex:1; font-style:italic; }
 
     /* REELS */
-    .reels { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+    .reels { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:20px; }
     .reel-wrap { display:flex; flex-direction:column; align-items:center; gap:5px; }
     .reel-label { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:3px; color:var(--accent); opacity:0.8; text-transform:uppercase; }
     .reel { width:100%; height:80px; background:linear-gradient(135deg,#1a0840 0%,var(--reel-bg) 100%); border:2px solid #2a0860; border-radius:10px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; transition:border-color 0.3s,box-shadow 0.3s; box-shadow:inset 0 0 24px rgba(0,0,0,0.6); }
@@ -78,9 +86,9 @@
     .reel.spinning .reel-text { color:#ff8844; text-shadow:0 0 18px rgba(255,68,0,0.9); }
 
     /* REEL CONTROLS */
-    .reel-controls { display:none; justify-content:center; gap:5px; }
+    .reel-controls { display:none; justify-content:center; gap:5px; flex-wrap:wrap; }
     .reel-controls.visible { display:flex; margin-top:4px; }
-    .reel-ctrl-btn { font-size:10px; padding:2px 7px; border-radius:5px; border:1px solid #2a0860; background:transparent; color:var(--text-muted); cursor:pointer; font-family:'Bebas Neue',cursive; letter-spacing:1px; transition:all 0.2s; white-space:nowrap; }
+    .reel-ctrl-btn { font-size:10px; padding:2px 6px; border-radius:5px; border:1px solid #2a0860; background:transparent; color:var(--text-muted); cursor:pointer; font-family:'Bebas Neue',cursive; letter-spacing:1px; transition:all 0.2s; white-space:nowrap; }
     .reel-ctrl-btn:hover { border-color:var(--accent); color:var(--text-warm); }
     .reel-ctrl-btn.dislike-btn:hover { border-color:#f87171; color:#f87171; }
     .reel-ctrl-btn.disliked-active { border-color:#f87171; color:#f87171; background:rgba(248,113,113,0.08); }
@@ -333,6 +341,168 @@
     @keyframes shadow-pulse { 0%,100%{transform:translateX(-50%) scaleX(1);opacity:0.6} 30%{transform:translateX(-50%) scaleX(0.75);opacity:0.3} }
     @keyframes dot-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
     @keyframes snap-bob { 0%,100%{transform:scale(1) rotate(-3deg)} 50%{transform:scale(1.1) rotate(3deg)} }
+
+    /* ============ TOP UTILITY BAR ============ */
+    .util-bar { display:flex; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:14px; width:100%; max-width:640px; }
+    .util-chip { display:inline-flex; align-items:center; gap:5px; font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:1.5px; padding:7px 12px; border-radius:999px; background:rgba(255,255,255,0.04); border:1px solid rgba(30,8,64,0.9); color:var(--text-muted); cursor:pointer; transition:all 0.25s; }
+    .util-chip:hover { color:var(--text-warm); border-color:rgba(255,68,0,0.3); }
+    .util-chip.streak-live { color:var(--fire); border-color:rgba(255,68,0,0.35); background:rgba(255,68,0,0.08); }
+
+    /* ============ MODAL SHEET ============ */
+    .sheet-backdrop { position:fixed; inset:0; background:rgba(2,0,8,0.82); backdrop-filter:blur(6px); z-index:200; display:none; align-items:flex-end; justify-content:center; padding:0; }
+    .sheet-backdrop.open { display:flex; }
+    @media(min-width:700px){ .sheet-backdrop { align-items:center; padding:24px; } }
+    .sheet { width:100%; max-width:640px; max-height:88vh; overflow-y:auto; background:linear-gradient(160deg,#180840 0%,#0c0420 60%,#080212 100%); border:1px solid var(--card-border); border-radius:20px 20px 0 0; padding:22px 20px calc(28px + env(safe-area-inset-bottom)); box-shadow:0 -20px 80px rgba(0,0,0,0.9); animation:sheet-up 0.28s cubic-bezier(0.2,0.8,0.3,1); }
+    @media(min-width:700px){ .sheet { border-radius:20px; } }
+    @keyframes sheet-up { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .sheet-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .sheet-title { font-family:'Bebas Neue',cursive; font-size:24px; letter-spacing:2px; color:#fff; }
+    .sheet-close { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-muted); width:32px; height:32px; border-radius:50%; font-size:17px; cursor:pointer; line-height:1; }
+    .sheet-close:hover { color:#fff; border-color:var(--accent); }
+    .sheet-section { margin-bottom:20px; }
+    .sheet-label { font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:3px; color:var(--accent); margin-bottom:9px; }
+    .sheet-hint { font-size:12.5px; color:var(--text-muted); font-style:italic; margin-bottom:10px; line-height:1.5; }
+    .chip-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .chip { font-family:'Bebas Neue',cursive; font-size:12.5px; letter-spacing:1.2px; padding:8px 13px; border-radius:999px; background:rgba(255,255,255,0.04); border:1px solid rgba(30,8,64,0.9); color:var(--text-muted); cursor:pointer; transition:all 0.2s; }
+    .chip:hover { color:var(--text-warm); }
+    .chip.on { background:rgba(255,68,0,0.15); border-color:rgba(255,68,0,0.5); color:var(--fire); }
+    .chip.on.danger { background:rgba(255,60,60,0.14); border-color:rgba(255,80,80,0.45); color:#ff8080; }
+    .sheet-btn { width:100%; font-family:'Bebas Neue',cursive; font-size:17px; letter-spacing:2.5px; padding:14px; border-radius:12px; border:none; background:linear-gradient(135deg,var(--fire),#ff0066); color:#fff; cursor:pointer; margin-top:6px; }
+    .sheet-btn.ghost { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:var(--text-muted); }
+    .sheet-btn:hover { filter:brightness(1.12); }
+
+    /* ============ VAULT PANEL ============ */
+    .vault-panel { display:none; }
+    .mode-tab.active-vault { background:rgba(0,255,136,0.12); color:var(--green); border:1px solid rgba(0,255,136,0.3); }
+    .vault-nav { display:flex; gap:5px; margin-bottom:18px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:10px; padding:4px; }
+    .vault-nav-btn { flex:1; font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:1.5px; padding:8px 6px; border-radius:7px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.25s; }
+    .vault-nav-btn.active { background:rgba(0,255,136,0.12); color:var(--green); }
+    .vault-view { display:none; }
+    .vault-view.active { display:block; }
+    .empty-state { text-align:center; padding:36px 18px; color:var(--text-muted); }
+    .empty-state-icon { font-size:38px; margin-bottom:10px; opacity:0.5; }
+    .empty-state-title { font-family:'Bebas Neue',cursive; font-size:19px; letter-spacing:2px; color:var(--text-warm); margin-bottom:6px; }
+    .empty-state-sub { font-size:13px; font-style:italic; line-height:1.5; }
+    .vault-item { display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:12px; padding:13px 14px; margin-bottom:8px; cursor:pointer; transition:all 0.22s; text-align:left; width:100%; }
+    .vault-item:hover { border-color:rgba(0,255,136,0.35); background:rgba(0,255,136,0.05); }
+    .vault-item-main { flex:1; min-width:0; }
+    .vault-item-title { font-family:'Bebas Neue',cursive; font-size:16px; letter-spacing:1px; color:#fff; margin-bottom:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .vault-item-meta { font-size:11.5px; color:var(--text-muted); }
+    .vault-item-del { background:rgba(255,60,60,0.1); border:1px solid rgba(255,80,80,0.25); color:#ff8080; width:28px; height:28px; border-radius:50%; font-size:14px; cursor:pointer; flex-shrink:0; line-height:1; }
+    .vault-item-del:hover { background:rgba(255,60,60,0.25); }
+    .vault-back { font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:2px; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:6px 0; margin-bottom:12px; }
+    .vault-back:hover { color:var(--green); }
+
+    /* ============ RECENT DECISIONS ============ */
+    .recent-wrap { margin-top:16px; }
+    .recent-list { display:flex; flex-direction:column; gap:7px; }
+    .recent-row { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:10px; padding:10px 12px; width:100%; text-align:left; cursor:pointer; transition:all 0.2s; }
+    .recent-row:hover { border-color:rgba(255,68,0,0.35); }
+    .recent-outcome { font-size:16px; flex-shrink:0; }
+    .recent-main { flex:1; min-width:0; }
+    .recent-combo { font-family:'Bebas Neue',cursive; font-size:14px; letter-spacing:1px; color:var(--text-warm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .recent-when { font-size:11px; color:var(--text-dimmer); }
+    .recent-redo { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:1.5px; color:var(--accent); background:rgba(255,68,0,0.1); border:1px solid rgba(255,68,0,0.3); border-radius:999px; padding:5px 10px; flex-shrink:0; }
+
+    /* ============ WEEK RECAP ============ */
+    .recap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
+    .recap-stat { background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:12px; padding:14px 8px; text-align:center; }
+    .recap-num { font-family:'Bebas Neue',cursive; font-size:30px; line-height:1; color:var(--green); }
+    .recap-stat-label { font-family:'Bebas Neue',cursive; font-size:10px; letter-spacing:1.5px; color:var(--text-muted); margin-top:4px; }
+    .streak-hero { text-align:center; background:linear-gradient(135deg,rgba(255,68,0,0.12),rgba(255,0,102,0.08)); border:1px solid rgba(255,68,0,0.3); border-radius:14px; padding:20px; margin-bottom:14px; }
+    .streak-num { font-family:'Bebas Neue',cursive; font-size:52px; line-height:1; background:linear-gradient(135deg,#ff4400,#ff0066); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .streak-caption { font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:2.5px; color:var(--text-warm); margin-top:4px; }
+    .insight-row { display:flex; gap:9px; align-items:flex-start; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:10px; padding:11px 13px; margin-bottom:7px; font-size:13px; color:var(--text-warm); line-height:1.5; }
+    .insight-icon { flex-shrink:0; font-size:15px; }
+
+    /* ============ BANNERS ============ */
+    .app-banner { display:none; align-items:center; gap:11px; width:100%; max-width:640px; margin-top:12px; background:linear-gradient(135deg,rgba(255,68,0,0.13),rgba(255,0,102,0.07)); border:1px solid rgba(255,68,0,0.32); border-radius:13px; padding:13px 15px; }
+    .app-banner.show { display:flex; }
+    .app-banner.hook { background:linear-gradient(135deg,rgba(0,255,136,0.11),rgba(0,200,255,0.06)); border-color:rgba(0,255,136,0.3); }
+    .app-banner-icon { font-size:22px; flex-shrink:0; }
+    .app-banner-body { flex:1; min-width:0; }
+    .app-banner-title { font-family:'Bebas Neue',cursive; font-size:15px; letter-spacing:1.5px; color:#fff; }
+    .app-banner-sub { font-size:12px; color:var(--text-muted); line-height:1.45; }
+    .app-banner-btn { font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:1.5px; padding:8px 13px; border-radius:999px; border:none; background:var(--accent); color:#fff; cursor:pointer; flex-shrink:0; }
+    .app-banner.hook .app-banner-btn { background:var(--green); color:#04120a; }
+    .app-banner-x { background:none; border:none; color:var(--text-dimmer); font-size:17px; cursor:pointer; flex-shrink:0; line-height:1; padding:0 2px; }
+    .app-banner-x:hover { color:var(--text-muted); }
+    .duo-invite-banner.expired { background:rgba(255,60,60,0.1); border-color:rgba(255,80,80,0.35); color:#ff9090; }
+
+    /* ============ DECISION TIMER + LOCK-IN ============ */
+    .decide-controls { display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:14px; }
+    .decide-toggle { display:inline-flex; align-items:center; gap:6px; font-family:'Bebas Neue',cursive; font-size:11.5px; letter-spacing:1.5px; padding:8px 13px; border-radius:999px; background:rgba(255,255,255,0.04); border:1px solid rgba(30,8,64,0.9); color:var(--text-muted); cursor:pointer; transition:all 0.22s; }
+    .decide-toggle:hover { color:var(--text-warm); }
+    .decide-toggle.on { background:rgba(255,68,0,0.15); border-color:rgba(255,68,0,0.5); color:var(--fire); }
+    .decide-toggle.on.lock { background:rgba(221,68,255,0.15); border-color:rgba(221,68,255,0.5); color:var(--duo); }
+    .countdown-bar { display:none; text-align:center; margin-bottom:14px; }
+    .countdown-bar.show { display:block; }
+    .countdown-num { font-family:'Bebas Neue',cursive; font-size:38px; line-height:1; color:var(--fire); }
+    .countdown-num.urgent { color:#ff0044; animation:pulse-urgent 0.6s ease-in-out infinite; }
+    @keyframes pulse-urgent { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.65;transform:scale(1.06)} }
+    .countdown-caption { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:2.5px; color:var(--text-muted); margin-top:2px; }
+    .countdown-track { height:3px; background:rgba(255,255,255,0.07); border-radius:2px; overflow:hidden; margin-top:9px; }
+    .countdown-fill { height:100%; background:linear-gradient(90deg,var(--fire),#ff0066); width:100%; transition:width 1s linear; }
+    .locked-verdict { display:none; text-align:center; background:linear-gradient(135deg,rgba(221,68,255,0.14),rgba(255,0,102,0.07)); border:1px solid rgba(221,68,255,0.35); border-radius:14px; padding:16px; margin-bottom:14px; }
+    .locked-verdict.show { display:block; }
+    .locked-verdict-label { font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:3px; color:var(--duo); margin-bottom:5px; }
+    .locked-verdict-text { font-size:13.5px; color:var(--text-warm); font-style:italic; line-height:1.5; }
+    .locked-exit { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:1.5px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.14); color:var(--text-muted); border-radius:999px; padding:7px 14px; cursor:pointer; margin-top:11px; }
+    .locked-exit:hover { color:#fff; }
+    .reel-controls.locked, .coward-btn.locked { opacity:0.35; pointer-events:none; }
+
+    /* ============ RESTAURANT EXTRA META ============ */
+    .restaurant-facts { display:flex; gap:7px; flex-wrap:wrap; margin:10px 0 4px; }
+    .fact-pill { display:inline-flex; align-items:center; gap:4px; font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:1px; padding:6px 11px; border-radius:999px; background:rgba(255,255,255,0.04); border:1px solid rgba(30,8,64,0.9); color:var(--text-warm); }
+    .fact-pill.rating { color:var(--snap); border-color:rgba(255,221,0,0.3); background:rgba(255,221,0,0.07); }
+    .fact-pill.price { color:var(--green); border-color:rgba(0,255,136,0.28); background:rgba(0,255,136,0.07); }
+    .fact-pill.dist { color:var(--blue); border-color:rgba(0,200,255,0.28); background:rgba(0,200,255,0.07); }
+    .est-note { font-size:10.5px; color:var(--text-dimmer); font-style:italic; margin-top:7px; text-align:center; }
+
+    /* ============ VETO DUO / GROUP ============ */
+    .duo-flow-toggle { display:flex; gap:5px; margin-bottom:16px; background:rgba(255,255,255,0.03); border:1px solid rgba(30,8,64,0.9); border-radius:10px; padding:4px; }
+    .duo-flow-btn { flex:1; font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:1.5px; padding:9px 6px; border-radius:7px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.25s; }
+    .duo-flow-btn.active { background:rgba(221,68,255,0.14); color:var(--duo); }
+    .veto-player { background:rgba(255,255,255,0.025); border:1px solid rgba(30,8,64,0.9); border-radius:14px; padding:15px; margin-bottom:11px; }
+    .veto-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:11px; gap:10px; }
+    .veto-name-input { font-family:'Bebas Neue',cursive; font-size:15px; letter-spacing:1.5px; background:rgba(255,255,255,0.05); border:1px solid rgba(30,8,64,0.9); border-radius:8px; padding:7px 11px; color:#fff; width:130px; }
+    .veto-name-input:focus { outline:none; border-color:var(--duo); }
+    .veto-count { font-family:'Bebas Neue',cursive; font-size:11.5px; letter-spacing:1.5px; color:var(--text-muted); }
+    .veto-count.full { color:var(--duo); }
+    .chip.vetoed { background:rgba(255,60,60,0.16); border-color:rgba(255,80,80,0.5); color:#ff8080; text-decoration:line-through; }
+    .group-size-row { display:flex; gap:6px; justify-content:center; margin-bottom:16px; }
+    .survivors-box { background:rgba(0,255,136,0.05); border:1px solid rgba(0,255,136,0.22); border-radius:12px; padding:13px 15px; margin-bottom:14px; }
+    .survivors-label { font-family:'Bebas Neue',cursive; font-size:11px; letter-spacing:2.5px; color:var(--green); margin-bottom:7px; }
+    .survivors-list { font-size:13px; color:var(--text-warm); line-height:1.6; }
+    .survivors-none { color:#ff8080; font-style:italic; font-size:12.5px; }
+
+    /* ============ DUO SHARED RESULT ============ */
+    .duo-names-row { display:flex; align-items:center; justify-content:center; gap:11px; margin-bottom:13px; flex-wrap:wrap; }
+    .duo-name-tag { font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:1.5px; padding:6px 13px; border-radius:999px; }
+    .duo-name-tag.p1 { background:rgba(255,68,0,0.13); border:1px solid rgba(255,68,0,0.35); color:var(--fire); }
+    .duo-name-tag.p2 { background:rgba(0,200,255,0.13); border:1px solid rgba(0,200,255,0.35); color:var(--blue); }
+    .duo-name-tag.p3 { background:rgba(0,255,136,0.13); border:1px solid rgba(0,255,136,0.35); color:var(--green); }
+    .duo-name-tag.p4 { background:rgba(255,221,0,0.13); border:1px solid rgba(255,221,0,0.35); color:var(--snap); }
+    .duo-vs { font-family:'Bebas Neue',cursive; font-size:12px; color:var(--text-dimmer); letter-spacing:2px; }
+    .rematch-btn { width:100%; font-family:'Bebas Neue',cursive; font-size:15px; letter-spacing:2.5px; padding:13px; border-radius:11px; border:1px solid rgba(221,68,255,0.4); background:rgba(221,68,255,0.1); color:var(--duo); cursor:pointer; margin-top:12px; }
+    .rematch-btn:hover { background:rgba(221,68,255,0.2); }
+
+    /* ============ SNAP A11Y ============ */
+    .snap-upload-area { width:100%; font-family:inherit; display:block; }
+    .snap-upload-text, .snap-upload-sub { display:block; }
+    .snap-upload-area:focus-visible, .vault-item:focus-visible, .recent-row:focus-visible, .chip:focus-visible, .util-chip:focus-visible, .decide-toggle:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* ============ TOAST ============ */
+    .toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:rgba(12,4,32,0.97); border:1px solid rgba(255,68,0,0.4); color:#fff; font-family:'Bebas Neue',cursive; font-size:14px; letter-spacing:1.5px; padding:12px 20px; border-radius:999px; z-index:300; opacity:0; pointer-events:none; transition:all 0.3s; box-shadow:0 12px 40px rgba(0,0,0,0.7); max-width:90vw; text-align:center; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* ============ SAVE AS IMAGE ============ */
+    .score-breakdown { font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:1.5px; color:var(--text-muted); text-align:center; margin-top:2px; }
+    .receipt-btn { width:100%; font-family:'Bebas Neue',cursive; font-size:14px; letter-spacing:2.5px; padding:13px; border-radius:11px; border:1px solid rgba(0,200,255,0.4); background:rgba(0,200,255,0.09); color:var(--blue); cursor:pointer; margin-top:9px; }
+    .receipt-btn:hover { background:rgba(0,200,255,0.18); }
+    .offline-note { display:none; text-align:center; font-size:12px; color:var(--snap); font-style:italic; margin-top:10px; }
+    .offline-note.show { display:block; }
   </style>
 </head>
 <body>
@@ -347,19 +517,67 @@
     <img src="/logo.png" class="mascot-img" alt="What We Eating" />
   </div>
 
+  <div class="util-bar">
+    <button class="util-chip" id="cityChip" onclick="openCitySheet()" aria-label="Change city">📍 <span id="cityChipText">New York City</span></button>
+    <button class="util-chip" id="streakChip" onclick="setTab('vault');setVaultView('week')" aria-label="View your week in food" style="display:none"></button>
+    <button class="util-chip" id="profileChip" onclick="openProfileSheet()" aria-label="Dietary preferences and settings">⚙️ Preferences</button>
+  </div>
+
+  <div class="app-banner" id="installBanner">
+    <span class="app-banner-icon">📲</span>
+    <div class="app-banner-body">
+      <div class="app-banner-title">Put Capitán on your home screen</div>
+      <div class="app-banner-sub">Works offline. Unlocks the 6pm nudge.</div>
+    </div>
+    <button class="app-banner-btn" onclick="doInstall()">INSTALL</button>
+    <button class="app-banner-x" onclick="dismissBanner('install')" aria-label="Dismiss">×</button>
+  </div>
+
+  <div class="app-banner" id="nudgeBanner">
+    <span class="app-banner-icon">🔔</span>
+    <div class="app-banner-body">
+      <div class="app-banner-title">"It's 6pm. What are we eating?"</div>
+      <div class="app-banner-sub">One nudge a day, right when the question hits.</div>
+    </div>
+    <button class="app-banner-btn" onclick="enableNudge()">TURN ON</button>
+    <button class="app-banner-x" onclick="dismissBanner('nudge')" aria-label="Dismiss">×</button>
+  </div>
+
+  <div class="app-banner hook" id="hookBanner">
+    <span class="app-banner-icon" id="hookIcon">🌮</span>
+    <div class="app-banner-body">
+      <div class="app-banner-title" id="hookTitle"></div>
+      <div class="app-banner-sub" id="hookSub"></div>
+    </div>
+    <button class="app-banner-btn" onclick="runHook()">LET'S GO</button>
+    <button class="app-banner-x" onclick="dismissBanner('hook')" aria-label="Dismiss">×</button>
+  </div>
+
   <div class="mode-tabs">
-    <button class="mode-tab active-spin" id="tab-spin" onclick="setTab('spin')">🎲 Spin</button>
-    <button class="mode-tab"             id="tab-duo"  onclick="setTab('duo')">👫 Duo</button>
-    <button class="mode-tab"             id="tab-snap" onclick="setTab('snap')">📸 Snap</button>
+    <button class="mode-tab active-spin" id="tab-spin"  onclick="setTab('spin')">🎲 Spin</button>
+    <button class="mode-tab"             id="tab-duo"   onclick="setTab('duo')">👫 Duo</button>
+    <button class="mode-tab"             id="tab-snap"  onclick="setTab('snap')">📸 Snap</button>
+    <button class="mode-tab"             id="tab-vault" onclick="setTab('vault')">📓 Vault</button>
   </div>
 
   <div class="card">
 
     <!-- SPIN PANEL -->
     <div id="spinPanel">
-      <div class="location-bar" id="locationBar" onclick="getLocation()">
+      <div class="location-bar" id="locationBar" onclick="openCitySheet()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCitySheet();}">
         <div class="location-dot"></div>
-        <div class="location-text" id="locationText">📍 Detecting location...</div>
+        <div class="location-text" id="locationText">📍 New York City</div>
+      </div>
+
+      <div class="decide-controls">
+        <button class="decide-toggle lock" id="lockInToggle" onclick="toggleLockIn()" aria-pressed="false">🐕 Blame Capitán</button>
+        <button class="decide-toggle" id="decideTimerToggle" onclick="toggleDecisionTimer()" aria-pressed="false">⏳ 60-sec decide</button>
+      </div>
+
+      <div class="countdown-bar" id="countdownBar" aria-live="polite">
+        <div class="countdown-num" id="countdownNum">60</div>
+        <div class="countdown-caption">DECIDE OR CAPITÁN DECIDES</div>
+        <div class="countdown-track"><div class="countdown-fill" id="countdownFill"></div></div>
       </div>
 
       <div class="reels" id="reels"></div>
@@ -372,6 +590,12 @@
       <div class="combo-badge" id="comboBadge">
         <div class="combo-label">CAPITÁN HAS SPOKEN</div>
         <div class="combo-text" id="comboText"></div>
+      </div>
+
+      <div class="locked-verdict" id="lockedVerdict">
+        <div class="locked-verdict-label">🔒 LOCKED IN</div>
+        <div class="locked-verdict-text">Capitán has decided. All complaints to the dog.</div>
+        <button class="locked-exit" onclick="exitLockIn()">Exit lock-in mode</button>
       </div>
 
       <div class="exec-buttons" id="execButtons">
@@ -388,7 +612,7 @@
         <button class="exec-btn order-btn" onclick="execute('order')">
           <span class="exec-btn-icon">🛵</span>
           <span class="exec-btn-label">ORDER IT</span>
-          <span class="exec-btn-sub">Seamless</span>
+          <span class="exec-btn-sub">Best delivery</span>
         </button>
       </div>
 
@@ -400,9 +624,9 @@
       </div>
       <button class="coward-btn" id="cowardBtn" onclick="spin()">↻ &nbsp; SPIN AGAIN, HUMAN</button>
       <div class="ban-count" id="banCount" onclick="clearAllBans()"></div>
-      <div class="again-wrap" id="againWrap">
-        <span class="again-text">Last time: <span id="againText"></span></span>
-        <button class="again-btn" onclick="spinAgainCombo()">AGAIN?</button>
+      <div class="recent-wrap" id="recentWrap" style="display:none">
+        <div class="sheet-label">RECENT</div>
+        <div class="recent-list" id="recentList"></div>
       </div>
     </div>
 
@@ -414,13 +638,34 @@
       </div>
       <div class="duo-intro">
         <div class="duo-intro-title">👫 Duo Mode</div>
-        <div class="duo-intro-sub">Two people. Three picks each. One answer.</div>
+        <div class="duo-intro-sub" id="duoIntroSub">Nobody names what they want. Everyone vetoes what they don't.</div>
       </div>
+
+      <div class="duo-flow-toggle">
+        <button class="duo-flow-btn active" id="flow-veto-btn"  onclick="setDuoFlow('veto')">🚫 Veto Mode</button>
+        <button class="duo-flow-btn"        id="flow-pick-btn"  onclick="setDuoFlow('pick')">✋ Pick &amp; Match</button>
+      </div>
+
       <div class="duo-mode-toggle">
         <button class="duo-mode-btn active" id="duo-cook-btn"     onclick="setDuoType('cook')">🍳 Cook</button>
         <button class="duo-mode-btn"        id="duo-goout-btn"    onclick="setDuoType('goout')">🍽️ Go Out</button>
         <button class="duo-mode-btn"        id="duo-delivery-btn" onclick="setDuoType('delivery')">🛵 Order</button>
       </div>
+
+      <!-- VETO FLOW -->
+      <div id="vetoFlow">
+        <div class="sheet-label">HOW MANY OF YOU?</div>
+        <div class="group-size-row" id="groupSizeRow"></div>
+        <div class="sheet-hint">Each person crosses off two cuisines and one mood they're not in the mood for. Capitán picks from whatever survives.</div>
+        <div id="vetoPlayers"></div>
+        <div class="survivors-box">
+          <div class="survivors-label">STILL STANDING</div>
+          <div class="survivors-list" id="survivorsList"></div>
+        </div>
+      </div>
+
+      <!-- CLASSIC PICK-AND-MATCH FLOW -->
+      <div id="pickFlow" style="display:none">
       <div class="duo-players">
         <div class="duo-player">
           <div class="duo-player-name">Person 1</div>
@@ -435,6 +680,7 @@
           <div class="duo-pick"><div class="duo-pick-label">Budget</div><div class="duo-pick-options" id="p2-budget"></div></div>
         </div>
       </div>
+      </div><!-- /pickFlow -->
       <div class="duo-challenge-wrap" id="duoChallengeWrap">
         <button class="duo-challenge-btn" onclick="generateDuoLink()">⚡ CHALLENGE A FRIEND</button>
         <div class="duo-challenge-copied" id="duoChallengeCopied">Link copied — send it!</div>
@@ -455,12 +701,12 @@
         <div class="snap-sub">Photo anything. Get a meal inspired by the vibe.</div>
       </div>
 
-      <div class="snap-upload-area" id="snapUploadArea" onclick="document.getElementById('snapInput').click()">
-        <span class="snap-camera-icon">📷</span>
-        <div class="snap-upload-text">Tap to snap or upload</div>
-        <div class="snap-upload-sub">Your fit, the skyline, a painting — anything goes</div>
-        <img id="snapPreviewImg" class="snap-preview-img" alt="" />
-      </div>
+      <button type="button" class="snap-upload-area" id="snapUploadArea" onclick="document.getElementById('snapInput').click()" aria-describedby="snapUploadSub">
+        <span class="snap-camera-icon" aria-hidden="true">📷</span>
+        <span class="snap-upload-text">Tap to snap or upload a photo</span>
+        <span class="snap-upload-sub" id="snapUploadSub">Your fit, the skyline, a painting — anything goes</span>
+        <img id="snapPreviewImg" class="snap-preview-img" alt="Your uploaded photo" />
+      </button>
       <button class="snap-retake-btn" id="snapRetakeBtn" onclick="document.getElementById('snapInput').click()">↺ &nbsp;Use a different photo</button>
 
       <div class="loading-text" id="snapLoadingText">Capitán is reading the room...</div>
@@ -471,10 +717,83 @@
       </div>
     </div>
 
+    <!-- VAULT PANEL -->
+    <div class="vault-panel" id="vaultPanel">
+      <div class="vault-nav">
+        <button class="vault-nav-btn active" id="vnav-recipes" onclick="setVaultView('recipes')">💾 Recipes</button>
+        <button class="vault-nav-btn"        id="vnav-history" onclick="setVaultView('history')">🕐 History</button>
+        <button class="vault-nav-btn"        id="vnav-week"    onclick="setVaultView('week')">🔥 Your Week</button>
+        <button class="vault-nav-btn"        id="vnav-taste"   onclick="setVaultView('taste')">🧠 Taste</button>
+      </div>
+
+      <div class="vault-view active" id="vview-recipes">
+        <div id="vaultRecipeList"></div>
+        <div id="vaultRecipeDetail" style="display:none">
+          <button class="vault-back" onclick="closeVaultRecipe()">← Back to vault</button>
+          <div id="vaultRecipeInner"></div>
+        </div>
+      </div>
+
+      <div class="vault-view" id="vview-history"><div id="vaultHistoryList"></div></div>
+      <div class="vault-view" id="vview-week"><div id="vaultWeekInner"></div></div>
+      <div class="vault-view" id="vview-taste"><div id="vaultTasteInner"></div></div>
+    </div>
+
   </div>
 
-  <p class="footer">New York City &nbsp;◆&nbsp; whatweeating</p>
+  <p class="footer"><span id="footerCity">New York City</span> &nbsp;◆&nbsp; whatweeating</p>
 </div>
+
+<!-- PREFERENCES SHEET -->
+<div class="sheet-backdrop" id="profileSheet" onclick="if(event.target===this)closeProfileSheet()">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="profileSheetTitle">
+    <div class="sheet-head">
+      <div class="sheet-title" id="profileSheetTitle">Your Preferences</div>
+      <button class="sheet-close" onclick="closeProfileSheet()" aria-label="Close">×</button>
+    </div>
+    <div class="sheet-hint">Capitán will never suggest something you can't eat. This stays on your device.</div>
+
+    <div class="sheet-section">
+      <div class="sheet-label">HOW YOU EAT</div>
+      <div class="chip-row" id="dietChips"></div>
+    </div>
+    <div class="sheet-section">
+      <div class="sheet-label">ALLERGIES — HARD BLOCKS</div>
+      <div class="chip-row" id="allergyChips"></div>
+    </div>
+    <div class="sheet-section">
+      <div class="sheet-label">CUISINES TO SKIP</div>
+      <div class="chip-row" id="cuisineSkipChips"></div>
+    </div>
+    <div class="sheet-section">
+      <div class="sheet-label">USUAL PARTY SIZE</div>
+      <div class="chip-row" id="partyChips"></div>
+    </div>
+    <div class="sheet-section">
+      <div class="sheet-label">USUAL BUDGET</div>
+      <div class="chip-row" id="budgetChips"></div>
+    </div>
+    <button class="sheet-btn" onclick="saveProfileFromSheet()">SAVE PREFERENCES</button>
+  </div>
+</div>
+
+<!-- CITY SHEET -->
+<div class="sheet-backdrop" id="citySheet" onclick="if(event.target===this)closeCitySheet()">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="citySheetTitle">
+    <div class="sheet-head">
+      <div class="sheet-title" id="citySheetTitle">Where are you?</div>
+      <button class="sheet-close" onclick="closeCitySheet()" aria-label="Close">×</button>
+    </div>
+    <div class="sheet-hint" id="locStatusHint">Restaurant picks, booking links and rides all use this.</div>
+    <button class="sheet-btn" id="useLocationBtn" onclick="requestLocation()">📍 USE MY CURRENT LOCATION</button>
+    <div class="sheet-section" style="margin-top:20px">
+      <div class="sheet-label">OR PICK A CITY</div>
+      <div class="chip-row" id="cityChips"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)" style="display:none" />
 <input type="file" id="snapInput"  accept="image/*" onchange="handleSnapPhoto(event)" style="display:none" />
@@ -497,21 +816,21 @@ async function callClaude(prompt, maxTokens = 1200) {
 const CUISINES = [
   "Korean","Japanese","Italian","Mexican","Thai","Indian","French",
   "Mediterranean","Chinese","Halal","Dominican","West African",
-  "Dim Sum","Jewish Deli","Pizza","Sushi",
+  "Dim Sum","Jewish Deli","Pizza","Sushi","Spanish","American","Vietnamese","Caribbean",
   "Birria","Ramen","Smash Burger","Nashville Hot","Poke Bowl","Jerk Chicken","Ethiopian","Filipino"
 ];
 const VIBES = ["Comfort","Healthy","Indulgent","Adventurous","Light","Quick","Romantic","Lively","Viral","Late Night","Spicy"];
 const FOR   = ["Just Me","For Two","Small Group","Big Night"];
 
 const VIBE_WEIGHTS = {
-  Comfort:      ["Korean","Italian","Chinese","Jewish Deli","Ramen"],
-  Healthy:      ["Japanese","Mediterranean","Thai","Sushi","Poke Bowl"],
-  Indulgent:    ["French","Italian","Korean","Dim Sum","Smash Burger"],
-  Adventurous:  ["West African","Dominican","Halal","Korean","Thai","Ethiopian","Filipino"],
-  Light:        ["Japanese","Sushi","Mediterranean","Thai","Poke Bowl"],
-  Quick:        ["Pizza","Halal","Mexican","Chinese","Smash Burger"],
-  Romantic:     ["Italian","French","Japanese","Sushi","Mediterranean"],
-  Lively:       ["Korean","Mexican","Dominican","Chinese","Birria"],
+  Comfort:      ["Korean","Italian","Chinese","Jewish Deli","Ramen","American"],
+  Healthy:      ["Japanese","Mediterranean","Thai","Sushi","Poke Bowl","Vietnamese"],
+  Indulgent:    ["French","Italian","Korean","Dim Sum","Smash Burger","Spanish"],
+  Adventurous:  ["West African","Dominican","Halal","Korean","Thai","Ethiopian","Filipino","Caribbean"],
+  Light:        ["Japanese","Sushi","Mediterranean","Thai","Poke Bowl","Vietnamese"],
+  Quick:        ["Pizza","Halal","Mexican","Chinese","Smash Burger","Japanese"],
+  Romantic:     ["Italian","French","Japanese","Sushi","Mediterranean","Spanish"],
+  Lively:       ["Korean","Mexican","Dominican","Chinese","Birria","Caribbean"],
   Viral:        ["Birria","Ramen","Smash Burger","Korean","Poke Bowl","Nashville Hot"],
   "Late Night": ["Pizza","Halal","Mexican","Chinese","Nashville Hot","Smash Burger"],
   Spicy:        ["Nashville Hot","Korean","Mexican","Thai","Indian","Birria","Jerk Chicken"],
@@ -552,20 +871,129 @@ const RECIPE_BANK = [
   {cuisine:"Chinese",vibe:"Comfort",title:"Char Siu Pork Fried Rice",description:"Better than takeout — caramelized char siu pork, wok-charred rice, and that specific restaurant smokiness.",time:"15 min",ingredients:["2 cups day-old jasmine rice","200g char siu pork (from a Chinese BBQ shop), sliced","3 eggs, beaten","3 tbsp soy sauce + 1 tbsp oyster sauce","4 scallions, sliced + 1 cup frozen peas","1 tsp toasted sesame oil"],steps:["Get a wok absolutely screaming hot. Add oil and swirl to coat the sides.","Add rice all at once and press flat. Don't stir — let it char for 2 minutes. Then stir and repeat.","Push rice to sides. Add eggs to center, scramble until 80% set, then fold into rice before they fully cook.","Add char siu, peas, soy sauce, and oyster sauce. Toss constantly for 1 minute. Kill heat, drizzle sesame oil, top with scallions."],tip:"Buying char siu from a Chinese BBQ shop ($8-12/lb) is the move — making it yourself on a weeknight is unnecessary."},
   {cuisine:"Vietnamese",vibe:"Light",title:"Lemongrass Chicken Noodle Bowl",description:"Cool, herby, citrusy — the bowl that makes you feel virtuous and genuinely satisfied at the same time.",time:"30 min",ingredients:["2 chicken thighs, bone-in","2 stalks lemongrass, white part minced + 3 garlic cloves, minced","rice vermicelli noodles","2 tbsp fish sauce + 1.5 tbsp lime juice + 1 tsp sugar (dressing)","fresh mint, Thai basil, and cilantro","cucumber, julienned + crushed roasted peanuts"],steps:["Marinate chicken in minced lemongrass, garlic, 2 tbsp fish sauce, and a drizzle of oil for at least 15 minutes.","Grill or sear chicken 6 minutes per side until cooked through with charred edges. Rest 5 minutes, then slice thin.","Cook rice noodles per package — usually 3 minutes in boiling water, then rinse cold.","Build bowls: noodles, cucumber, herbs, sliced chicken, peanuts. Dress with the fish sauce mixture. Taste and adjust."],tip:"The dressing should be more aggressively seasoned than feels right — it has a lot of noodles and herbs to penetrate."},
   {cuisine:"Spanish",vibe:"Romantic",title:"Gambas al Ajillo",description:"10 minutes of cooking. A week's worth of satisfaction. The tapa that made olive oil a religion.",time:"15 min",ingredients:["400g large shrimp, peeled and deveined","6 garlic cloves, sliced thin","1 dried guindilla or chili de arbol","½ cup good Spanish olive oil","¼ cup dry sherry (fino or Manzanilla)","flat-leaf parsley + crusty sourdough for the oil"],steps:["Add olive oil and garlic to a cold pan. Turn to medium-low and bring up heat slowly — you want the garlic to infuse the oil as it warms, not burn.","When garlic turns pale golden, add dried chili. Infuse 30 more seconds.","Add shrimp in a single layer. Cook 1 minute per side — pull the second they turn pink.","Pour sherry over the top, let it bubble 30 seconds. Finish with parsley. Serve immediately in the pan with bread."],tip:"The olive oil IS the dish — use the best you own. The shrimp are just something to put in it."},
-  {cuisine:"Caribbean",vibe:"Adventurous",title:"Jerk Chicken Thighs",description:"Scotch bonnets, allspice, and time — the Jamaican technique that makes every other chicken recipe feel ordinary.",time:"1 hour",ingredients:["4 bone-in chicken thighs","3 scotch bonnet peppers (or habaneros) + 4 scallions + 4 garlic cloves","2 tbsp allspice + 1 tsp cinnamon + 1 tsp dried thyme","2 tbsp soy sauce + 1 tbsp brown sugar","1 tbsp fresh ginger, grated","lime + rice and peas, for serving"],steps:["Blend scotch bonnets, scallions, garlic, ginger, allspice, cinnamon, thyme, soy sauce, and brown sugar into a paste.","Score chicken thighs 3 times to the bone. Rub paste into every surface and into the cuts. Marinate minimum 2 hours.","Grill over medium-high or roast at 425°F for 35-40 minutes, turning twice, until skin is charred in spots and internal temp hits 175°F.","Rest 5 minutes. Serve with rice and peas, pickled slaw, and lime wedges."],tip:"The scotch bonnet seeds carry most of the heat — remove them for flavor without fire. Allspice is actually the dominant taste."}
+  {cuisine:"Caribbean",vibe:"Adventurous",title:"Jerk Chicken Thighs",description:"Scotch bonnets, allspice, and time — the Jamaican technique that makes every other chicken recipe feel ordinary.",time:"1 hour",ingredients:["4 bone-in chicken thighs","3 scotch bonnet peppers (or habaneros) + 4 scallions + 4 garlic cloves","2 tbsp allspice + 1 tsp cinnamon + 1 tsp dried thyme","2 tbsp soy sauce + 1 tbsp brown sugar","1 tbsp fresh ginger, grated","lime + rice and peas, for serving"],steps:["Blend scotch bonnets, scallions, garlic, ginger, allspice, cinnamon, thyme, soy sauce, and brown sugar into a paste.","Score chicken thighs 3 times to the bone. Rub paste into every surface and into the cuts. Marinate minimum 2 hours.","Grill over medium-high or roast at 425°F for 35-40 minutes, turning twice, until skin is charred in spots and internal temp hits 175°F.","Rest 5 minutes. Serve with rice and peas, pickled slaw, and lime wedges."],tip:"The scotch bonnet seeds carry most of the heat — remove them for flavor without fire. Allspice is actually the dominant taste."},
+  {cuisine:"Mediterranean",vibe:"Light",title:"Tuna & Jammy Eggs (Deconstructed Niçoise)",description:"No potatoes, no beans, no lettuce. Ten minutes of assembly and the best thing you'll eat all week.",time:"15 min",ingredients:["2 tins good oil-packed tuna (Ortiz bonito del norte)","4 large eggs","1 lemon, halved","2 tbsp chili crisp","12 olives, whole or torn","2 scallions, sliced thin on the bias"],steps:["Lower eggs into already-boiling water. Seven minutes exactly, then straight into ice water until cold all the way through.","Pour every drop of oil from the tuna tins into a small bowl. Whisk in the juice of half the lemon, a little zest, cracked pepper and a pinch of salt — that's the dressing.","Peel the eggs under running water and halve them lengthwise, wiping the blade between cuts so the yolks stay intact. Flake the tuna into large chunks with your fingers, never a fork.","Tuna in the center of a wide shallow bowl, egg halves in a ring around it cut side up, olives in the gaps. Spoon the dressing over, then chili crisp on the tuna only, scallion across everything, flaky salt onto each yolk last."],tip:"Seven minutes is not a range. Six bleeds runny yolk into the dressing, eight gives you chalk. And never pour the tin oil down the drain — it IS the dressing."},
+  {cuisine:"Spanish",vibe:"Indulgent",title:"Spanish Skillet — Shrimp, Sausage & Crispy Potatoes",description:"Sofrito built in sequence, potatoes fried hard in sausage fat and kept out of the sauce until the very last second.",time:"1 hour",ingredients:["340g jumbo shrimp, peeled and deveined","170g sweet Italian sausage, casings removed","450g small Yukon Gold potatoes","1 yellow onion finely diced + 2 tomatoes finely diced, juices reserved","8 garlic cloves, sliced thin — never minced","80ml dry white wine + 1 tsp pimentón de la Vera + 1 lemon"],steps:["Boil the potatoes until tender, drain, then return them to the empty pot on low and shake every few seconds until the surface goes from glossy to chalky matte. Cool ten minutes, halve them, and drag a fork hard across each cut face.","Render the torn sausage in cold stainless over medium, 7 minutes untouched then 3 more. Lift it out with a slotted spoon and leave every drop of fat and all the fond behind.","Spoon 2 tbsp of that fat into a ripping-hot cast iron with olive oil, lay the potatoes cut side down with real gaps, and do not touch them for 5 minutes. Flip once, 4 more, out to a plate, salt hard while the surface is still hot.","Back in the stainless: onion on medium until edges color, then pull the pan off the burner a full minute before the sliced garlic and chili go in. Tomatoes and their juice next, cooked down until it darkens, then the wine scraped up and reduced. Shrimp in the center 1m45s, turn, 45 more. Off heat stir in the pimentón, return the sausage, squeeze in lemon, and tuck the potatoes along one edge so they stay crisp."],tip:"Two pans, not one. Cast iron holds its temperature and ignores the knob, so it's for the potatoes only — the moment a dish needs five heat changes, build the sauce in stainless where the pan answers in thirty seconds."},
+  {cuisine:"Japanese",vibe:"Quick",title:"King Oyster Mushroom Planks",description:"Cast iron seared, mirin and fish sauce glaze. Three ingredients, one pan, ten minutes, no meat required.",time:"15 min",ingredients:["4 king oyster mushrooms","1 tbsp avocado oil","2 tbsp mirin + 1 tbsp fish sauce","½ tsp garlic powder + ¼ tsp white pepper","1 pinch smoked paprika","½ tsp kosher salt"],steps:["Slice the mushrooms lengthwise into half-inch planks and pat them completely dry. Surface moisture is the enemy of crust.","Whisk mirin, fish sauce, garlic powder, white pepper and paprika in a small bowl and set it next to the stove — once the pan is going you won't have time.","Get cast iron screaming hot with no oil, lay the planks flat without crowding, and don't touch them until the bottom edge browns. Add a thin ring of oil around them, let it work underneath, salt, then flip once for deep color.","Kill the heat, drizzle the glaze over the planks, and let residual heat do the glazing. Plate immediately or they steam in their own sauce."],tip:"Mirin caramelizes and fish sauce brings the umami depth — it's a cleaner glaze than kalbi. Any hesitation on the heat and they steam instead of sear."},
+  {cuisine:"Italian",vibe:"Comfort",title:"Fennel Dry-Brined Pork Chops",description:"The overnight salt cure that turns a butcher-counter chop into something that crusts like a steak.",time:"30 min",ingredients:["2 thick bone-in pork chops","2 tsp whole fennel seeds","2 tbsp kosher salt + cracked black pepper","1 sprig rosemary + small bundle sage","1 head garlic, cloves smashed","2 tbsp butter + 1 lemon + flaky finishing salt"],steps:["The night before: pat the chops bone dry, toast the fennel seeds 30 seconds in a dry pan and crush them coarse. Salt the chops aggressively on every side, add pepper and fennel, and set them on a rack over a plate — uncovered — in the fridge overnight.","Take them out 45 minutes before cooking. The surface should be tacky and dry, never wet. Do not rinse.","Sear in a high-smoke-point fat over medium-high until the crust genuinely sets, about 4 minutes, then flip. Pull the heat down to medium before the butter goes anywhere near the pan.","Add butter, rosemary and smashed garlic tucked under the chops rather than flat on bare metal, and baste 45 seconds. Pull at 130–132°F, rest 8 minutes, then finish with lemon zest, a squeeze of juice and flaky salt."],tip:"Dry brine, never a wet marinade — wet adds surface moisture and kills the crust. And crack the pepper on after slicing if you're searing hot: pepper carbonizes around 350°F and turns acrid."}
 ];
 
-// Recipe vault — save + find
+/* ================= STORAGE ================= */
 const WAWE_SAVED_KEY="wawe_saved_recipes_v1";
+const DISLIKE_KEY="wawe_dislikes_v2";
+const PROFILE_KEY="wawe_profile_v1";
+const CITY_KEY="wawe_city_v1";
+const NUDGE_KEY="wawe_nudge_v1";
+const BANNER_KEY="wawe_banners_v1";
+const readJSON=(k,fb)=>{try{const r=localStorage.getItem(k);return r?JSON.parse(r):fb;}catch{return fb;}};
+const writeJSON=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}};
+
+/* ================= CITIES (#14, #22) ================= */
+const CITIES=[
+  {name:"New York City",resy:"ny",short:"NYC",lat:40.7128,lng:-74.0060},
+  {name:"Los Angeles",resy:"la",short:"LA",lat:34.0522,lng:-118.2437},
+  {name:"Chicago",resy:"chi",short:"Chicago",lat:41.8781,lng:-87.6298},
+  {name:"San Francisco",resy:"sf",short:"SF",lat:37.7749,lng:-122.4194},
+  {name:"Miami",resy:"mia",short:"Miami",lat:25.7617,lng:-80.1918},
+  {name:"Austin",resy:"atx",short:"Austin",lat:30.2672,lng:-97.7431},
+  {name:"Seattle",resy:"sea",short:"Seattle",lat:47.6062,lng:-122.3321},
+  {name:"Boston",resy:"bos",short:"Boston",lat:42.3601,lng:-71.0589},
+  {name:"Washington DC",resy:"dc",short:"DC",lat:38.9072,lng:-77.0369},
+  {name:"Philadelphia",resy:"phl",short:"Philly",lat:39.9526,lng:-75.1652},
+  {name:"Atlanta",resy:"atl",short:"Atlanta",lat:33.7490,lng:-84.3880},
+  {name:"Denver",resy:"den",short:"Denver",lat:39.7392,lng:-104.9903},
+  {name:"New Orleans",resy:"nola",short:"NOLA",lat:29.9511,lng:-90.0715},
+  {name:"London",resy:"ldn",short:"London",lat:51.5074,lng:-0.1278},
+  {name:"Toronto",resy:"tor",short:"Toronto",lat:43.6532,lng:-79.3832},
+  {name:"Sydney",resy:"syd",short:"Sydney",lat:-33.8688,lng:151.2093},
+];
+let city=readJSON(CITY_KEY,null)||{...CITIES[0],neighborhood:""};
+function cityName(){return city.name;}
+function cityArea(){return city.neighborhood?`${city.neighborhood}, ${city.name}`:city.name;}
+function saveCity(){writeJSON(CITY_KEY,city);}
+
+/* ================= PROFILE (#8) ================= */
+const DIETS=["Vegetarian","Vegan","Pescatarian","Halal","Kosher","Gluten-free","Dairy-free"];
+const ALLERGENS=["Shellfish","Fish","Peanuts","Tree nuts","Soy","Eggs","Sesame","Gluten","Dairy"];
+const BUDGETS=["$","$$","$$$","Doesn't matter"];
+// Cuisines whose whole point is the thing a profile rules out.
+const DIET_BLOCKS={
+  Vegetarian:["Birria","Nashville Hot","Jerk Chicken","Smash Burger","Jewish Deli","Sushi","Poke Bowl"],
+  Vegan:["Birria","Nashville Hot","Jerk Chicken","Smash Burger","Jewish Deli","Sushi","Poke Bowl","Dim Sum"],
+  Pescatarian:["Birria","Nashville Hot","Jerk Chicken","Smash Burger"],
+  Halal:["Jewish Deli"],
+  Kosher:["Dim Sum","Halal"],
+};
+const ALLERGY_BLOCKS={ Shellfish:["Poke Bowl"], Fish:["Sushi","Poke Bowl"] };
+const DEFAULT_PROFILE={diets:[],allergies:[],skipCuisines:[],party:"For Two",budget:"$$",onboarded:false};
+let profile={...DEFAULT_PROFILE,...readJSON(PROFILE_KEY,{})};
+function saveProfile(){writeJSON(PROFILE_KEY,profile);}
+function blockedCuisines(){
+  const out=new Set(profile.skipCuisines||[]);
+  (profile.diets||[]).forEach(d=>(DIET_BLOCKS[d]||[]).forEach(c=>out.add(c)));
+  (profile.allergies||[]).forEach(a=>(ALLERGY_BLOCKS[a]||[]).forEach(c=>out.add(c)));
+  return out;
+}
+// Injected into every AI prompt so nothing suggested can violate the profile.
+function profileRules(){
+  const parts=[];
+  if(profile.diets?.length)parts.push(`STRICT dietary requirement: ${profile.diets.join(" + ")}. Every ingredient must comply.`);
+  if(profile.allergies?.length)parts.push(`ALLERGIES — must not appear in any form, including sauces, stocks and garnishes: ${profile.allergies.join(", ")}.`);
+  if(profile.skipCuisines?.length)parts.push(`Avoid these cuisines entirely: ${profile.skipCuisines.join(", ")}.`);
+  return parts.length?`\n\nNON-NEGOTIABLE CONSTRAINTS:\n${parts.join("\n")}\nIf the requested cuisine cannot satisfy these, adapt the dish so it does — never ignore a constraint.`:"";
+}
+
+/* ================= DECISION HISTORY (#5) ================= */
+const HISTORY_KEY="wawe_history_v2", LEGACY_HISTORY_KEY="wawe_history_v1", HISTORY_MAX=30;
+let history=[];
+function loadHistory(){
+  history=readJSON(HISTORY_KEY,null)||[];
+  if(!history.length){ // one-time migration off the old 3-entry combo list
+    const legacy=readJSON(LEGACY_HISTORY_KEY,[]);
+    if(Array.isArray(legacy)&&legacy.length){
+      history=legacy.filter(c=>c&&c.cuisine).map(c=>({ts:Date.now(),mode:"spin",cuisine:c.cuisine,vibe:c.vibe,for:c.for,outcome:"skipped",title:""}));
+      persistHistory();
+    }
+  }
+}
+function persistHistory(){ if(history.length>HISTORY_MAX)history=history.slice(-HISTORY_MAX); writeJSON(HISTORY_KEY,history); }
+function logDecision({mode,combo,outcome,title}){
+  if(!combo?.cuisine)return;
+  const last=history[history.length-1];
+  // Same combo + same outcome inside a minute is one decision, not two.
+  if(last&&last.cuisine===combo.cuisine&&last.vibe===combo.vibe&&last.outcome===outcome&&Date.now()-last.ts<60000){
+    if(title)last.title=title; persistHistory(); renderRecent(); return;
+  }
+  history.push({ts:Date.now(),mode:mode||"spin",cuisine:combo.cuisine,vibe:combo.vibe,for:combo.for||"",outcome:outcome||"skipped",title:title||""});
+  persistHistory(); renderRecent(); renderStreakChip();
+}
+const OUTCOME_ICON={cooked:"🍳",went_out:"🍽️",ordered:"🛵",skipped:"🎲"};
+const OUTCOME_WORD={cooked:"Cooked",went_out:"Went out",ordered:"Ordered",skipped:"Spun"};
+function relTime(ts){
+  const d=Math.floor((Date.now()-ts)/1000);
+  if(d<3600)return d<60?"just now":`${Math.floor(d/60)}m ago`;
+  if(d<86400)return `${Math.floor(d/3600)}h ago`;
+  const days=Math.floor(d/86400);
+  return days===1?"yesterday":days<7?`${days}d ago`:new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+
+/* ================= RECIPE VAULT (#1) ================= */
 let savedRecipes=[], currentSavedRecipe=null;
-function loadSavedRecipes(){try{savedRecipes=JSON.parse(localStorage.getItem(WAWE_SAVED_KEY)||"[]");}catch{savedRecipes=[];} return savedRecipes;}
-function persistSavedRecipes(){try{localStorage.setItem(WAWE_SAVED_KEY,JSON.stringify(savedRecipes));}catch{}}
+function loadSavedRecipes(){savedRecipes=readJSON(WAWE_SAVED_KEY,[])||[];return savedRecipes;}
+function persistSavedRecipes(){writeJSON(WAWE_SAVED_KEY,savedRecipes);}
 function saveCurrentRecipe(){
   if(!currentSavedRecipe)return;
-  const btn=document.getElementById("saveRecipeBtn");if(!btn)return;
-  const isDupe=savedRecipes.some(r=>r.title===currentSavedRecipe.title);
-  if(!isDupe){savedRecipes.push(currentSavedRecipe);persistSavedRecipes();}
-  btn.textContent="✓ SAVED IN YOUR VAULT";btn.classList.add("saved");
+  const btn=document.getElementById("saveRecipeBtn");
+  if(!savedRecipes.some(r=>r.title===currentSavedRecipe.title)){
+    savedRecipes.push({...currentSavedRecipe,savedAt:Date.now()});
+    persistSavedRecipes(); renderVaultRecipes();
+  }
+  if(btn){btn.textContent="✓ SAVED IN YOUR VAULT";btn.classList.add("saved");}
+  toast("Saved — find it under 📓 Vault");
+}
+function deleteSavedRecipe(i,ev){
+  ev?.stopPropagation();
+  savedRecipes.splice(i,1); persistSavedRecipes(); renderVaultRecipes(); toast("Removed from vault");
 }
 function findRecipe(cuisine,vibe){
   loadSavedRecipes();
@@ -576,21 +1004,298 @@ function findRecipe(cuisine,vibe){
   return null;
 }
 
-const DISLIKE_KEY = "wawe_dislikes_v2";
+/* ================= BANS + PICKING ================= */
 let dislikes = {};
 function loadDislikes() { try { const r=localStorage.getItem(DISLIKE_KEY); if(r){const o=JSON.parse(r);Object.keys(o).forEach(k=>{dislikes[k]=new Set(o[k]);});} } catch{} }
 function saveDislikes() { try { const o={};Object.keys(dislikes).forEach(k=>{o[k]=[...dislikes[k]];});localStorage.setItem(DISLIKE_KEY,JSON.stringify(o)); } catch{} }
 function isDisliked(key,val) { return dislikes[key]?.has(val)||false; }
-function toggleDislike(key,val) { if(!dislikes[key])dislikes[key]=new Set(); dislikes[key].has(val)?dislikes[key].delete(val):dislikes[key].add(val); saveDislikes(); updateBanCount(); }
-function allowedItems(key) { const items=REEL_CONFIG.find(r=>r.key===key)?.items||[]; const f=items.filter(i=>!isDisliked(key,i)); return f.length>0?f:items; }
-function weightedPick(items, preferred) { const pool=[]; items.forEach(i=>{const w=preferred?.includes(i)?4:1;for(let j=0;j<w;j++)pool.push(i);}); return pool[Math.floor(Math.random()*pool.length)]; }
+function isBlocked(key,val) { return isDisliked(key,val)||(key==="cuisine"&&blockedCuisines().has(val)); }
+function toggleDislike(key,val) { if(!dislikes[key])dislikes[key]=new Set(); dislikes[key].has(val)?dislikes[key].delete(val):dislikes[key].add(val); saveDislikes(); updateBanCount(); renderRecent(); }
+function allowedItems(key) {
+  const items=REEL_CONFIG.find(r=>r.key===key)?.items||[];
+  const f=items.filter(i=>!isBlocked(key,i));
+  if(f.length)return f;
+  // Profile blocks are absolute; bans are only a preference, so drop the bans first.
+  const p=items.filter(i=>!(key==="cuisine"&&blockedCuisines().has(i)));
+  return p.length?p:items;
+}
+function weightedPick(items, preferred) {
+  const taste=key_taste_boost(items);
+  const pool=[];
+  items.forEach(i=>{
+    let w=1;
+    if(preferred?.includes(i))w+=3;
+    if(taste[i])w+=taste[i];
+    for(let j=0;j<w;j++)pool.push(i);
+  });
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+// Taste profile nudges the reels toward what you actually keep choosing (#16).
+function key_taste_boost(items){
+  const t=tasteProfile(); const out={};
+  if(!t.enoughData)return out;
+  items.forEach(i=>{ if(t.topCuisines.includes(i))out[i]=2; if(t.todayFavorite===i)out[i]=(out[i]||0)+2; });
+  return out;
+}
 
 let isSpinning=false, isLoading=false;
-let userLat=40.7128, userLng=-74.0060, userNeighborhood="Manhattan";
 let currentCombo={}, reelIntervals={};
 let currentRecipeTitle="";
 let timerInterval=null, timerTotal=0, timerRemaining=0, timerRunning=false;
 let snapImage64=null, snapMime=null, snapCurrentDish="", snapCurrentCuisine="";
+let lockInMode=false, isLocked=false;
+let decideTimerOn=false, decideInterval=null, decideRemaining=60;
+const DECIDE_SECONDS=60;
+let deferredInstall=null;
+let activeTab="spin";
+
+/* ================= TOAST ================= */
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById("toast"); if(!el)return;
+  el.textContent=msg; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),2600);
+}
+
+/* ================= STREAK + WEEK RECAP (#15) ================= */
+const dayKey=ts=>{const d=new Date(ts);return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;};
+function computeStreak(){
+  if(!history.length)return 0;
+  const days=new Set(history.map(h=>dayKey(h.ts)));
+  let streak=0; const cur=new Date();
+  // Yesterday still counts while today is undecided, so the streak doesn't look broken at 9am.
+  if(!days.has(dayKey(cur.getTime()))){
+    cur.setDate(cur.getDate()-1);
+    if(!days.has(dayKey(cur.getTime())))return 0;
+  }
+  while(days.has(dayKey(cur.getTime()))){streak++;cur.setDate(cur.getDate()-1);}
+  return streak;
+}
+function weekRecap(){
+  const since=Date.now()-7*86400000;
+  const week=history.filter(h=>h.ts>=since);
+  const counts={cooked:0,went_out:0,ordered:0,skipped:0};
+  const cuisines={};
+  week.forEach(h=>{counts[h.outcome]=(counts[h.outcome]||0)+1;cuisines[h.cuisine]=(cuisines[h.cuisine]||0)+1;});
+  const top=Object.entries(cuisines).sort((a,b)=>b[1]-a[1])[0];
+  return {total:week.length,...counts,topCuisine:top?top[0]:null,topCount:top?top[1]:0,decidedDays:new Set(week.map(h=>dayKey(h.ts))).size};
+}
+function renderStreakChip(){
+  const chip=document.getElementById("streakChip"); if(!chip)return;
+  const s=computeStreak();
+  if(s<1){chip.style.display="none";return;}
+  chip.style.display="inline-flex";
+  chip.textContent=`🔥 ${s}-day streak`;
+  chip.classList.toggle("streak-live",s>=3);
+}
+
+/* ================= TASTE PROFILE (#16) ================= */
+const WEEKDAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+function tasteProfile(){
+  const decided=history.filter(h=>h.outcome!=="skipped");
+  const base=decided.length>=4?decided:history;
+  if(base.length<4)return{enoughData:false,topCuisines:[],todayFavorite:null,insights:[],sampleSize:base.length};
+  const cuisines={},byDay={},outcomes={};
+  base.forEach(h=>{
+    cuisines[h.cuisine]=(cuisines[h.cuisine]||0)+1;
+    outcomes[h.outcome]=(outcomes[h.outcome]||0)+1;
+    const d=new Date(h.ts).getDay();
+    (byDay[d]=byDay[d]||{})[h.cuisine]=(byDay[d]?.[h.cuisine]||0)+1;
+  });
+  // The vault is a stronger signal than a spin — you chose to keep these.
+  savedRecipes.forEach(r=>{if(r.cuisine)cuisines[r.cuisine]=(cuisines[r.cuisine]||0)+2;});
+  const ranked=Object.entries(cuisines).sort((a,b)=>b[1]-a[1]);
+  const topCuisines=ranked.slice(0,3).map(e=>e[0]);
+  const today=new Date().getDay();
+  const todayTop=Object.entries(byDay[today]||{}).sort((a,b)=>b[1]-a[1])[0];
+  const topOutcome=Object.entries(outcomes).sort((a,b)=>b[1]-a[1])[0];
+
+  const insights=[];
+  if(ranked[0])insights.push({icon:"🍽️",text:`<strong>${ranked[0][0]}</strong> is your most-chosen cuisine — ${ranked[0][1]} time${ranked[0][1]===1?"":"s"} logged.`});
+  if(todayTop&&todayTop[1]>=2)insights.push({icon:"📅",text:`You lean <strong>${todayTop[0]}</strong> on ${WEEKDAYS[today]}s.`});
+  const weeknight=base.filter(h=>{const d=new Date(h.ts).getDay();return d>=1&&d<=4;});
+  const weekend=base.filter(h=>{const d=new Date(h.ts).getDay();return d===0||d===5||d===6;});
+  const cookRate=a=>a.length?a.filter(h=>h.outcome==="cooked").length/a.length:0;
+  if(weeknight.length>=3&&weekend.length>=2){
+    if(cookRate(weeknight)>cookRate(weekend)+0.25)insights.push({icon:"🍳",text:"You cook on weeknights and go out on weekends."});
+    else if(cookRate(weekend)>cookRate(weeknight)+0.25)insights.push({icon:"🌙",text:"Weekends are when you actually cook."});
+  }
+  if(topOutcome&&topOutcome[0]!=="skipped")insights.push({icon:OUTCOME_ICON[topOutcome[0]],text:`Your default move is <strong>${OUTCOME_WORD[topOutcome[0]].toLowerCase()}</strong>.`});
+  if(savedRecipes.length>=3)insights.push({icon:"💾",text:`${savedRecipes.length} recipes in your vault — Capitán checks it before asking the kitchen.`});
+  return {enoughData:true,topCuisines,todayFavorite:todayTop?todayTop[0]:null,insights,sampleSize:base.length,ranked};
+}
+// Appended to AI prompts so generated picks match the pattern too.
+function tasteHint(){
+  const t=tasteProfile();
+  if(!t.enoughData)return "";
+  return `\n\nThis person's track record: they gravitate toward ${t.topCuisines.join(", ")}. Lean that way when it doesn't fight the brief.`;
+}
+
+/* ================= WEEKLY HOOKS (#18) ================= */
+const WEEKLY_HOOKS={
+  2:{icon:"🌮",title:"It's Taco Tuesday",sub:"Capitán is legally obligated to mention this.",cuisine:"Mexican",vibe:"Lively"},
+  5:{icon:"🍷",title:"Date-night Friday",sub:"Something worth putting a shirt on for.",cuisine:"Italian",vibe:"Romantic"},
+  0:{icon:"🍲",title:"Sunday supper",sub:"Low and slow. Cook something that fills the apartment.",cuisine:"Italian",vibe:"Comfort"},
+};
+function todayHook(){return WEEKLY_HOOKS[new Date().getDay()]||null;}
+function renderHookBanner(){
+  const hook=todayHook(); const el=document.getElementById("hookBanner"); if(!el)return;
+  if(!hook||isBannerDismissed("hook")){el.classList.remove("show");return;}
+  if(blockedCuisines().has(hook.cuisine)){el.classList.remove("show");return;}
+  document.getElementById("hookIcon").textContent=hook.icon;
+  document.getElementById("hookTitle").textContent=hook.title;
+  document.getElementById("hookSub").textContent=hook.sub;
+  el.classList.add("show");
+}
+function runHook(){
+  const hook=todayHook(); if(!hook)return;
+  setTab("spin");
+  currentCombo={cuisine:hook.cuisine,vibe:hook.vibe,for:profile.party||"For Two"};
+  applyComboToReels(currentCombo);
+  logDecision({mode:"hook",combo:currentCombo,outcome:"skipped"});
+  document.getElementById("execButtons")?.scrollIntoView({behavior:"smooth",block:"center"});
+  toast(`${hook.title} — locked in`);
+}
+
+/* ================= BANNER DISMISSAL ================= */
+function dismissedBanners(){return readJSON(BANNER_KEY,{});}
+function isBannerDismissed(k){
+  const d=dismissedBanners()[k];
+  if(!d)return false;
+  // Hook dismissals are per-day; the rest are permanent.
+  return k==="hook"?d===dayKey(Date.now()):true;
+}
+function dismissBanner(k){
+  const d=dismissedBanners(); d[k]=k==="hook"?dayKey(Date.now()):true; writeJSON(BANNER_KEY,d);
+  const el=document.getElementById(k+"Banner"); if(el)el.classList.remove("show");
+}
+
+/* ================= PWA INSTALL (#6) ================= */
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault(); deferredInstall=e;
+  if(!isBannerDismissed("install")&&!isStandalone())document.getElementById("installBanner")?.classList.add("show");
+});
+function isStandalone(){return window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;}
+async function doInstall(){
+  if(!deferredInstall){toast("On iPhone: Share → Add to Home Screen");return;}
+  deferredInstall.prompt();
+  const {outcome}=await deferredInstall.userChoice;
+  deferredInstall=null;
+  document.getElementById("installBanner")?.classList.remove("show");
+  if(outcome==="accepted")toast("Installed — Capitán lives on your home screen now");
+}
+window.addEventListener("appinstalled",()=>{
+  document.getElementById("installBanner")?.classList.remove("show");
+  maybeShowNudgeBanner();
+});
+function registerSW(){
+  if(!("serviceWorker" in navigator))return;
+  navigator.serviceWorker.register("/sw.js").catch(()=>{});
+}
+function watchConnection(){
+  const paint=()=>document.querySelectorAll(".offline-note").forEach(n=>n.classList.toggle("show",!navigator.onLine));
+  window.addEventListener("online",paint); window.addEventListener("offline",paint); paint();
+}
+
+/* ================= DINNER NUDGE (#7) ================= */
+function nudgeState(){return readJSON(NUDGE_KEY,{on:false,hour:18,lastFired:null});}
+function saveNudge(s){writeJSON(NUDGE_KEY,s);}
+function maybeShowNudgeBanner(){
+  const el=document.getElementById("nudgeBanner"); if(!el)return;
+  const s=nudgeState();
+  const supported="Notification" in window;
+  const show=supported&&!s.on&&Notification.permission!=="denied"&&!isBannerDismissed("nudge")&&(isStandalone()||history.length>=2);
+  el.classList.toggle("show",!!show);
+}
+async function enableNudge(){
+  if(!("Notification" in window)){toast("This browser can't do reminders");return;}
+  const perm=await Notification.requestPermission();
+  if(perm!=="granted"){toast("Reminders blocked — enable them in browser settings");document.getElementById("nudgeBanner")?.classList.remove("show");return;}
+  saveNudge({...nudgeState(),on:true});
+  document.getElementById("nudgeBanner")?.classList.remove("show");
+  toast("Capitán will check in at 6pm");
+  scheduleNudge();
+}
+function fireNudge(){
+  const s=nudgeState();
+  if(!s.on||Notification.permission!=="granted")return;
+  const today=dayKey(Date.now());
+  if(s.lastFired===today)return;
+  // Already decided today — no need to nag.
+  if(history.some(h=>dayKey(h.ts)===today)){saveNudge({...s,lastFired:today});return;}
+  const body=todayHook()?.title||"One spin. No debate.";
+  try{
+    navigator.serviceWorker?.ready?.then(reg=>{
+      reg.showNotification("It's 6pm. What are we eating?",{body,icon:"/icon-192.png",badge:"/icon-192.png",tag:"wawe-dinner"});
+    }).catch(()=>new Notification("It's 6pm. What are we eating?",{body,icon:"/icon-192.png"}));
+    saveNudge({...s,lastFired:today});
+  }catch{}
+}
+let nudgeTimer=null;
+function scheduleNudge(){
+  clearTimeout(nudgeTimer);
+  const s=nudgeState(); if(!s.on)return;
+  const now=new Date(); const target=new Date();
+  target.setHours(s.hour,0,0,0);
+  if(now>=target){fireNudge();target.setDate(target.getDate()+1);}
+  const ms=target-now;
+  // setTimeout caps out around 24.8 days; a dinner slot is always well inside that.
+  nudgeTimer=setTimeout(()=>{fireNudge();scheduleNudge();},Math.max(1000,ms));
+}
+
+/* ================= LOCK-IN + DECISION TIMER (#9, #10) ================= */
+function toggleLockIn(){
+  lockInMode=!lockInMode;
+  const b=document.getElementById("lockInToggle");
+  b.classList.toggle("on",lockInMode); b.setAttribute("aria-pressed",String(lockInMode));
+  if(lockInMode)toast("One spin. No take-backs.");
+  else exitLockIn(true);
+}
+function applyLockUI(){
+  document.getElementById("lockedVerdict")?.classList.toggle("show",isLocked);
+  document.querySelectorAll(".reel-controls").forEach(el=>el.classList.toggle("locked",isLocked));
+  const spinBtn=document.getElementById("spinBtn");
+  if(spinBtn){spinBtn.disabled=isLocked;spinBtn.textContent=isLocked?"CAPITÁN HAS DECIDED":"SPIN AGAIN, HUMAN";}
+  document.getElementById("cowardBtn")?.classList.toggle("locked",isLocked);
+}
+function exitLockIn(silent){
+  isLocked=false;
+  if(!silent)lockInMode=false;
+  const b=document.getElementById("lockInToggle");
+  if(b){b.classList.toggle("on",lockInMode);b.setAttribute("aria-pressed",String(lockInMode));}
+  applyLockUI();
+  const cb=document.getElementById("cowardBtn"); if(cb)cb.classList.remove("locked");
+}
+function toggleDecisionTimer(){
+  decideTimerOn=!decideTimerOn;
+  const b=document.getElementById("decideTimerToggle");
+  b.classList.toggle("on",decideTimerOn); b.setAttribute("aria-pressed",String(decideTimerOn));
+  if(decideTimerOn)startDecideCountdown(); else stopDecideCountdown();
+}
+function startDecideCountdown(){
+  stopDecideCountdown();
+  decideRemaining=DECIDE_SECONDS;
+  document.getElementById("countdownBar")?.classList.add("show");
+  paintCountdown();
+  decideInterval=setInterval(()=>{
+    decideRemaining--; paintCountdown();
+    if(decideRemaining<=0){
+      stopDecideCountdown();
+      toast("Time's up. Capitán decides.");
+      if(!lockInMode){lockInMode=true;const b=document.getElementById("lockInToggle");b?.classList.add("on");b?.setAttribute("aria-pressed","true");}
+      spin();
+    }
+  },1000);
+}
+function paintCountdown(){
+  const n=document.getElementById("countdownNum"), f=document.getElementById("countdownFill");
+  if(n){n.textContent=Math.max(0,decideRemaining);n.classList.toggle("urgent",decideRemaining<=10);}
+  if(f)f.style.width=`${Math.max(0,(decideRemaining/DECIDE_SECONDS)*100)}%`;
+}
+function stopDecideCountdown(){
+  if(decideInterval){clearInterval(decideInterval);decideInterval=null;}
+  document.getElementById("countdownBar")?.classList.remove("show");
+}
 
 async function shareResult(btn) {
   const text = btn.getAttribute("data-share") + "\n\nhttps://whatweeating.netlify.app";
@@ -605,34 +1310,148 @@ async function shareResult(btn) {
   } catch(e) { btn.textContent = "✗ TRY AGAIN"; setTimeout(() => btn.textContent = "📤 SHARE THIS PICK", 2000); }
 }
 
-function init() { loadDislikes(); loadHistory(); loadSavedRecipes(); buildReels(); buildDuoOptions(); getLocation(); updateBanCount(); checkDuoInvite(); }
-
-function setTab(tab) {
-  document.getElementById("spinPanel").style.display = tab==="spin"?"block":"none";
-  document.getElementById("duoPanel").style.display  = tab==="duo"?"block":"none";
-  document.getElementById("snapPanel").style.display = tab==="snap"?"block":"none";
-  document.getElementById("tab-spin").className = `mode-tab${tab==="spin"?" active-spin":""}`;
-  document.getElementById("tab-duo").className  = `mode-tab${tab==="duo"?" active-duo":""}`;
-  document.getElementById("tab-snap").className = `mode-tab${tab==="snap"?" active-snap":""}`;
-  document.documentElement.style.setProperty("--accent", tab==="duo"?"#dd44ff":tab==="snap"?"#ffdd00":"#ff4400");
+function init() {
+  loadDislikes(); loadHistory(); loadSavedRecipes();
+  buildReels(); buildDuoOptions(); buildVetoUI(); buildProfileSheet(); buildCitySheet();
+  paintCity(); updateBanCount(); renderRecent(); renderStreakChip(); renderHookBanner();
+  renderVaultRecipes(); checkDuoInvite();
+  registerSW(); watchConnection(); maybeShowNudgeBanner(); scheduleNudge();
+  applyStartParams();
+  if(!profile.onboarded&&history.length===0) setTimeout(()=>openProfileSheet(true),900);
 }
 
-function getLocation() {
-  const saved=localStorage.getItem(WAWE_HOOD_KEY);
-  if(saved){userNeighborhood=saved;document.getElementById("locationText").textContent=`📍 ${saved}`;}
-  if (!navigator.geolocation) { if(!saved)document.getElementById("locationText").textContent="📍 New York City"; return; }
-  navigator.geolocation.getCurrentPosition(
-    async pos => {
-      userLat=pos.coords.latitude; userLng=pos.coords.longitude;
-      try {
-        const d=await (await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLng}&format=json`)).json();
-        userNeighborhood=d.address?.neighbourhood||d.address?.suburb||d.address?.city||"Manhattan";
-        document.getElementById("locationText").textContent=`📍 ${userNeighborhood}`;
-        try{localStorage.setItem(WAWE_HOOD_KEY,userNeighborhood);}catch{}
-      } catch { if(!saved)document.getElementById("locationText").textContent="📍 New York City"; }
-    },
-    () => { if(!saved)document.getElementById("locationText").textContent="📍 New York City"; }
-  );
+function applyStartParams(){
+  const p=new URLSearchParams(location.search);
+  const tab=p.get("tab");
+  if(tab&&["spin","duo","snap","vault"].includes(tab))setTab(tab);
+  if(p.get("src")==="nudge")toast("Let's settle this.");
+}
+
+function setTab(tab) {
+  activeTab=tab;
+  ["spin","duo","snap","vault"].forEach(t=>{
+    const panel=document.getElementById(t+"Panel"); if(panel)panel.style.display=t===tab?"block":"none";
+    const btn=document.getElementById("tab-"+t); if(btn)btn.className=`mode-tab${t===tab?" active-"+t:""}`;
+  });
+  document.documentElement.style.setProperty("--accent", tab==="duo"?"#dd44ff":tab==="snap"?"#ffdd00":tab==="vault"?"#00ff88":"#ff4400");
+  if(tab==="vault"){renderVaultRecipes();renderVaultHistory();renderWeek();renderTaste();}
+}
+
+/* ================= LOCATION (#14) ================= */
+function paintCity(){
+  const label=`📍 ${city.neighborhood||city.name}`;
+  const lt=document.getElementById("locationText"); if(lt)lt.textContent=label;
+  const cc=document.getElementById("cityChipText"); if(cc)cc.textContent=city.neighborhood||city.short||city.name;
+  const fc=document.getElementById("footerCity"); if(fc)fc.textContent=city.name;
+  document.querySelectorAll("#cityChips .chip").forEach(c=>c.classList.toggle("on",c.dataset.city===city.name));
+}
+function openCitySheet(){document.getElementById("citySheet").classList.add("open");refreshLocHint();}
+function closeCitySheet(){document.getElementById("citySheet").classList.remove("open");}
+function buildCitySheet(){
+  const wrap=document.getElementById("cityChips"); if(!wrap)return;
+  wrap.innerHTML="";
+  CITIES.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="chip"+(c.name===city.name?" on":""); b.textContent=c.name; b.dataset.city=c.name;
+    b.onclick=()=>pickCity(c);
+    wrap.appendChild(b);
+  });
+}
+function pickCity(c){
+  city={...c,neighborhood:""}; saveCity(); paintCity(); closeCitySheet();
+  toast(`${c.name} it is`);
+}
+async function refreshLocHint(){
+  const hint=document.getElementById("locStatusHint");
+  const btn=document.getElementById("useLocationBtn");
+  if(!hint||!btn)return;
+  if(!navigator.geolocation){
+    hint.textContent="This browser can't share location — pick a city below instead.";
+    btn.style.display="none"; return;
+  }
+  btn.style.display="block";
+  let state="prompt";
+  try{ state=(await navigator.permissions.query({name:"geolocation"})).state; }catch{}
+  if(state==="denied"){
+    hint.textContent="Location is blocked for this site. Re-allow it in your browser's site settings, or just pick a city below — everything works either way.";
+    btn.style.display="none";
+  } else if(state==="granted"){
+    hint.textContent="Location is on. Refresh it any time, or override it with a city below.";
+  } else {
+    hint.textContent="Share your location for neighborhood-level picks, or skip it and choose a city. Nothing leaves your device except the lookup.";
+  }
+}
+function requestLocation(){
+  const btn=document.getElementById("useLocationBtn");
+  const hint=document.getElementById("locStatusHint");
+  if(!navigator.geolocation)return;
+  btn.textContent="LOCATING…"; btn.disabled=true;
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const lat=pos.coords.latitude,lng=pos.coords.longitude;
+    const nearest=CITIES.reduce((best,c)=>{
+      const d=Math.hypot(c.lat-lat,c.lng-lng);
+      return d<best.d?{c,d}:best;
+    },{c:CITIES[0],d:Infinity});
+    let hood="";
+    try{
+      const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+      const d=await r.json();
+      hood=d.address?.neighbourhood||d.address?.suburb||d.address?.city_district||d.address?.city||"";
+    }catch{}
+    // More than ~2 degrees from every city we support: keep the coordinates, drop the city guess.
+    city={...nearest.c,neighborhood:hood&&hood!==nearest.c.name?hood:""};
+    saveCity(); paintCity();
+    btn.textContent="📍 USE MY CURRENT LOCATION"; btn.disabled=false;
+    closeCitySheet();
+    toast(hood?`Found you in ${hood}`:`Found you in ${nearest.c.name}`);
+  },err=>{
+    btn.textContent="📍 USE MY CURRENT LOCATION"; btn.disabled=false;
+    if(hint)hint.textContent=err.code===1
+      ? "Location denied — no problem. Pick a city below and everything still works."
+      : "Couldn't get a fix on you. Pick a city below instead.";
+  },{timeout:10000,maximumAge:600000});
+}
+
+/* ================= PREFERENCES SHEET (#8) ================= */
+let draftProfile=null;
+function openProfileSheet(firstRun){
+  draftProfile=JSON.parse(JSON.stringify(profile));
+  buildProfileSheet();
+  document.getElementById("profileSheet").classList.add("open");
+  if(firstRun){
+    // Shown once, ever. After this it lives behind the ⚙️ chip.
+    profile.onboarded=true; saveProfile();
+    toast("Tell Capitán what you can't eat");
+  }
+}
+function closeProfileSheet(){document.getElementById("profileSheet").classList.remove("open");}
+function buildProfileSheet(){
+  const d=draftProfile||profile;
+  const mk=(wrapId,items,selected,onToggle,danger)=>{
+    const wrap=document.getElementById(wrapId); if(!wrap)return;
+    wrap.innerHTML="";
+    items.forEach(it=>{
+      const b=document.createElement("button");
+      b.className="chip"+(selected.includes(it)?" on"+(danger?" danger":""):"");
+      b.textContent=it; b.type="button";
+      b.setAttribute("aria-pressed",String(selected.includes(it)));
+      b.onclick=()=>{onToggle(it);buildProfileSheet();};
+      wrap.appendChild(b);
+    });
+  };
+  const tog=(arr,v)=>{const i=arr.indexOf(v);i>=0?arr.splice(i,1):arr.push(v);};
+  mk("dietChips",DIETS,d.diets,v=>tog(d.diets,v));
+  mk("allergyChips",ALLERGENS,d.allergies,v=>tog(d.allergies,v),true);
+  mk("cuisineSkipChips",CUISINES,d.skipCuisines,v=>tog(d.skipCuisines,v),true);
+  mk("partyChips",FOR,[d.party],v=>{d.party=v;});
+  mk("budgetChips",BUDGETS,[d.budget],v=>{d.budget=v;});
+}
+function saveProfileFromSheet(){
+  profile={...profile,...draftProfile,onboarded:true};
+  saveProfile(); closeProfileSheet();
+  buildReels(); renderHookBanner(); buildVetoUI();
+  const blocked=blockedCuisines().size;
+  toast(blocked?`Saved — ${blocked} cuisine${blocked===1?"":"s"} filtered out`:"Preferences saved");
 }
 
 function buildReels() {
@@ -656,7 +1475,7 @@ function hideReelControls() { document.querySelectorAll(".reel-controls").forEac
 function handleDislike(key,val,btn) { toggleDislike(key,val); const isD=isDisliked(key,val); btn.textContent=isD?"✓ BANNED":"👎 BAN"; btn.classList.toggle("disliked-active",isD); document.getElementById(`reel-${key}`)?.classList.toggle("disliked",isD); }
 
 async function swapReel(key) {
-  if(isSpinning||isLoading)return;
+  if(isSpinning||isLoading||isLocked)return;
   document.querySelectorAll(".reel-ctrl-btn").forEach(b=>b.disabled=true);
   const cfg=REEL_CONFIG.find(r=>r.key===key);
   const pool=allowedItems(key).filter(i=>i!==currentCombo[key]); const finalPool=pool.length>0?pool:allowedItems(key);
@@ -674,8 +1493,20 @@ async function swapReel(key) {
   document.querySelectorAll(".reel-ctrl-btn").forEach(b=>b.disabled=false);
 }
 
+function applyComboToReels(combo){
+  REEL_CONFIG.forEach(cfg=>{
+    const el=document.getElementById(`reel-text-${cfg.key}`); if(el)el.textContent=combo[cfg.key]||cfg.items[0];
+    document.getElementById(`reel-${cfg.key}`)?.classList.toggle("disliked",isBlocked(cfg.key,combo[cfg.key]));
+  });
+  document.getElementById("comboText").textContent=`${combo.cuisine} · ${combo.vibe} · ${combo.for}`;
+  document.getElementById("comboBadge").classList.add("visible");
+  document.getElementById("execButtons").classList.add("visible");
+  showReelControls(combo);
+}
+
 async function spin() {
-  if(isSpinning||isLoading)return;
+  if(isSpinning||isLoading||isLocked)return;
+  stopDecideCountdown();
   isSpinning=true; resetResult();
   const btn=document.getElementById("spinBtn"); const pr=document.getElementById("pulseRing");
   btn.disabled=true; btn.textContent="SPINNING..."; pr.classList.add("active");
@@ -700,8 +1531,10 @@ async function spin() {
   document.getElementById("comboBadge").classList.add("visible");
   document.getElementById("execButtons").classList.add("visible");
   showReelControls(currentCombo);
-  saveCombo(currentCombo); updateBanCount();
+  logDecision({mode:"spin",combo:currentCombo,outcome:"skipped"});
+  updateBanCount();
   btn.disabled=false; btn.textContent="SPIN AGAIN, HUMAN";
+  if(lockInMode){isLocked=true;applyLockUI();}
 }
 
 async function execute(mode) {
@@ -711,9 +1544,9 @@ async function execute(mode) {
   document.getElementById("loadingText").classList.add("visible");
   document.querySelectorAll(".exec-btn").forEach(b=>b.disabled=true);
   try {
-    if(mode==="cook")  await runCook();
-    if(mode==="goout") await runGoOut();
-    if(mode==="order") runOrder();
+    if(mode==="cook")  { await runCook();  logDecision({mode:"spin",combo:currentCombo,outcome:"cooked",title:currentRecipeTitle}); }
+    if(mode==="goout") { await runGoOut(); logDecision({mode:"spin",combo:currentCombo,outcome:"went_out",title:lastVenueName}); }
+    if(mode==="order") { await runOrder(); logDecision({mode:"spin",combo:currentCombo,outcome:"ordered",title:lastVenueName}); }
   } catch(e) {
     document.getElementById("errorText").textContent = e.message || "Something went wrong — try again.";
     document.getElementById("errorText").classList.add("visible");
@@ -730,47 +1563,111 @@ function resetResult() {
   document.getElementById("errorText").classList.remove("visible");
   document.getElementById("resultCard").classList.remove("visible","shown");
   document.getElementById("cowardBtn").classList.remove("visible");
+  document.getElementById("lockedVerdict")?.classList.remove("show");
   hideReelControls(); stopTimer();
 }
 
 async function runCook() {
   const found=findRecipe(currentCombo.cuisine,currentCombo.vibe);
-  if(found){renderTicket(found.recipe,"resultInner",found.source);showResult("resultCard");return;}
+  if(found&&!violatesProfile(found.recipe)){renderTicket(found.recipe,"resultInner",found.source);showResult("resultCard");return;}
   const r = await callClaude(`Personal chef, Anthony Bourdain precision. One recipe:
-Cuisine: ${currentCombo.cuisine} | Vibe: ${currentCombo.vibe} | Serves: ${currentCombo.for} | NYC ingredients
+Cuisine: ${currentCombo.cuisine} | Vibe: ${currentCombo.vibe} | Serves: ${currentCombo.for} | Ingredients available in ${cityName()}
 
 Respond ONLY with this JSON:
 {"title":"...","description":"one evocative sentence","time":"30 min","ingredients":["6 specific items max"],"steps":["4 sensory steps max"],"tip":"one insider tip"}
 
-time: "15 min", "30 min", or "1 hour". Exactly 6 ingredients. Exactly 4 steps. Each step 1-2 sentences. Be specific (e.g. "Calabrian chili oil", "gochujang").`, 650);
+time: "15 min", "30 min", or "1 hour". Exactly 6 ingredients. Exactly 4 steps. Each step 1-2 sentences. Be specific (e.g. "Calabrian chili oil", "gochujang").${profileRules()}${tasteHint()}`, 650);
   renderTicket(r,"resultInner","new"); showResult("resultCard");
 }
+// A banked recipe is only usable if it clears the profile — otherwise fall through to the kitchen.
+function violatesProfile(r){
+  const hay=[(r.ingredients||[]).join(" "),r.title||"",r.description||""].join(" ").toLowerCase();
+  const ALLERGEN_WORDS={Shellfish:["shrimp","prawn","crab","lobster","scallop","clam","mussel","oyster"],Fish:["fish sauce","salmon","tuna","anchovy","bonito","dashi","cod","sardine"],Peanuts:["peanut"],"Tree nuts":["almond","walnut","pecan","cashew","pistachio","hazelnut"],Soy:["soy sauce","tofu","miso","edamame","tamari"],Eggs:["egg"],Sesame:["sesame","tahini"],Gluten:["pasta","flour","bread","noodle","spaghetti","bucatini","tortilla","panko","soy sauce"],Dairy:["butter","cheese","cream","milk","pecorino","parmigiano","yogurt"]};
+  const MEAT=["beef","pork","chicken","lamb","sausage","bacon","guanciale","pancetta","chuck","ribeye","strip","thigh","duck","veal","chorizo","prosciutto"];
+  const SEA=["shrimp","prawn","crab","lobster","scallop","clam","mussel","oyster","salmon","tuna","anchovy","bonito","fish","cod","sardine"];
+  const ANIMAL=["butter","cheese","cream","milk","egg","honey","pecorino","parmigiano","yogurt","lard"];
+  for(const a of (profile.allergies||[])) if((ALLERGEN_WORDS[a]||[]).some(w=>hay.includes(w))) return true;
+  const d=profile.diets||[];
+  if((d.includes("Vegetarian")||d.includes("Vegan"))&&[...MEAT,...SEA].some(w=>hay.includes(w))) return true;
+  if(d.includes("Vegan")&&ANIMAL.some(w=>hay.includes(w))) return true;
+  if(d.includes("Pescatarian")&&MEAT.some(w=>hay.includes(w))) return true;
+  if(d.includes("Gluten-free")&&ALLERGEN_WORDS.Gluten.some(w=>hay.includes(w))) return true;
+  if(d.includes("Dairy-free")&&ALLERGEN_WORDS.Dairy.some(w=>hay.includes(w))) return true;
+  return false;
+}
+
+let lastVenueName="";
+
+const VENUE_JSON=`{"name":"...","neighborhood":"...","address":"full street address","cuisine_tags":["..."],"price":"$$","rating":4.4,"walk_time":"12 min walk","why":"2 sentences on why this fits tonight","vibe_note":"one sentence on the atmosphere"}`;
 
 async function runGoOut() {
   const seats = PARTY_SEATS[currentCombo.for] || 2;
-  const r = await callClaude(`You are a well-connected New York City food expert who knows the restaurant scene deeply.
+  const r = await callClaude(`You are a well-connected ${cityName()} food expert who knows the restaurant scene deeply.
 
 Recommend ONE specific real restaurant for:
 Cuisine: ${currentCombo.cuisine}
 Vibe: ${currentCombo.vibe}
-Party size: ${currentCombo.for}
-Neighborhood context: ${userNeighborhood}, NYC
+Party size: ${currentCombo.for} (${seats} seats)
+Starting point: ${cityArea()}
 
-Rules: real currently-operating NYC restaurant, sit-down only, genuinely good.
-Price: $ under $20, $$ $20-45, $$$ $45-80, $$$$ $80+
+Rules: a real, currently-operating restaurant in ${cityName()}. Sit-down only. Genuinely good.
+price: $ = under $20/person, $$ = $20-45, $$$ = $45-80, $$$$ = $80+
+rating: its typical public rating out of 5, one decimal place (e.g. 4.4)
+walk_time: realistic travel time from ${cityArea()}, phrased like "12 min walk" or "20 min subway"
 
 Respond ONLY with this JSON, nothing else:
-{"name":"...","neighborhood":"...","address":"...","cuisine_tags":["..."],"price":"$$","why":"2 sentences on why this fits tonight","vibe_note":"one sentence on the atmosphere"}`, 600);
+${VENUE_JSON}${profileRules()}${tasteHint()}`, 600);
+  lastVenueName=r.name||"";
   renderRestaurantCard(r, seats); showResult("resultCard");
 }
 
+async function runOrder() {
+  const r = await callClaude(`You are a ${cityName()} delivery expert who knows which kitchens actually travel well.
+
+Recommend ONE specific real restaurant that delivers, for:
+Cuisine: ${currentCombo.cuisine}
+Vibe: ${currentCombo.vibe}
+Feeding: ${currentCombo.for}
+Delivering to: ${cityArea()}
+
+Rules: a real, currently-operating ${cityName()} restaurant that does delivery. Pick one whose food survives the trip — nothing that arrives soggy.
+price: $ = under $20/person, $$ = $20-45, $$$ = $45-80, $$$$ = $80+
+rating: typical public rating out of 5, one decimal
+signature_dish: the one thing to actually order from them
+
+Respond ONLY with this JSON, nothing else:
+{"name":"...","neighborhood":"...","address":"full street address","cuisine_tags":["..."],"price":"$$","rating":4.4,"signature_dish":"...","why":"2 sentences on why this is the delivery order tonight","travels_well":"one sentence on why it holds up in a bag"}${profileRules()}${tasteHint()}`, 600);
+  lastVenueName=r.name||"";
+  renderDeliveryCard(r); showResult("resultCard");
+}
+
+function slugify(name){return (name||"").toLowerCase().replace(/[''`]/g,'').replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
 function resyVenueURL(name, date, seats) {
-  const slug=name.toLowerCase().replace(/[''`]/g,'').replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-  return `https://resy.com/cities/ny/venues/${slug}?date=${date}&seats=${seats}`;
+  return `https://resy.com/cities/${city.resy||"ny"}/venues/${slugify(name)}?date=${date}&seats=${seats}`;
 }
 function uberDestURL(name, address, neighborhood) {
-  const addr=((address||(neighborhood?neighborhood+', New York':'New York')))+', NY';
+  const addr=address||`${neighborhood||""} ${city.name}`.trim();
   return `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Bformatted_address%5D=${encodeURIComponent(addr)}&dropoff%5Bnickname%5D=${encodeURIComponent(name)}`;
+}
+function mapsURL(name,address){
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} ${address||city.name}`)}`;
+}
+// Seamless is the NYC brand of Grubhub; everywhere else the Grubhub domain is the working one.
+function deliverySearchURL(q){
+  return city.resy==="ny"
+    ? `https://www.seamless.com/search?queryText=${encodeURIComponent(q)}`
+    : `https://www.grubhub.com/search?queryText=${encodeURIComponent(q)}`;
+}
+function deliveryBrand(){return city.resy==="ny"?"SEAMLESS":"GRUBHUB";}
+function uberEatsURL(q){return `https://www.ubereats.com/search?q=${encodeURIComponent(q)}`;}
+function dtSearchURL(q){return `https://www.doordash.com/search/store/${encodeURIComponent(q)}`;}
+
+function factPills(r,extra){
+  const pills=[];
+  if(r.price)pills.push(`<span class="fact-pill price">${r.price}</span>`);
+  if(r.rating)pills.push(`<span class="fact-pill rating">★ ${Number(r.rating).toFixed(1)}</span>`);
+  if(extra)pills.push(extra);
+  return pills.length?`<div class="restaurant-facts">${pills.join("")}</div>`:"";
 }
 
 function renderRestaurantCard(r, seats) {
@@ -778,43 +1675,50 @@ function renderRestaurantCard(r, seats) {
   const resyURL=resyVenueURL(r.name,today,seats);
   const uberURL=uberDestURL(r.name,r.address,r.neighborhood);
   const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
-  const shareText=`What We Eating Tonight\nCapitán picked: ${r.name}\n${r.neighborhood||""} · ${r.price||"$$"}\nMove: Go out`;
+  const shareText=`What We Eating Tonight\nCapitán picked: ${r.name}\n${r.neighborhood||""} · ${r.price||"$$"}${r.rating?` · ★${Number(r.rating).toFixed(1)}`:""}\nMove: Go out`;
+  const walk=r.walk_time?`<span class="fact-pill dist">🚶 ${r.walk_time}</span>`:"";
   document.getElementById("resultInner").innerHTML=`
     <div class="result-inner">
       <div class="result-title">${r.name}</div>
-      <div class="restaurant-meta"><div class="restaurant-price">${r.price||"$$"}</div><div style="color:var(--text-muted);font-size:13px">📍 ${r.neighborhood||""}</div></div>
+      <div class="restaurant-meta"><div style="color:var(--text-muted);font-size:13px">📍 ${r.neighborhood||city.name}</div></div>
+      ${factPills(r,walk)}
       ${tags?`<div class="restaurant-cats">${tags}</div>`:""}
       ${r.address?`<div class="restaurant-address">${r.address}</div>`:""}
       ${r.why?`<div class="restaurant-note">${r.why}${r.vibe_note?" "+r.vibe_note:""}</div>`:""}
       <div class="goout-ctas">
         <a class="cta-btn resy" href="${resyURL}" target="_blank" rel="noopener">🍽️ &nbsp; BOOK ON RESY</a>
         <a class="cta-btn uber" href="${uberURL}" target="_blank" rel="noopener">⬛ &nbsp; GET AN UBER THERE</a>
+        <a class="cta-btn retry" href="${mapsURL(r.name,r.address)}" target="_blank" rel="noopener">🗺️ &nbsp; SEE IT ON THE MAP</a>
         <div class="cta-divider">not feeling it?</div>
         <button class="cta-btn retry" onclick="execute('goout')">↻ &nbsp; DIFFERENT SPOT</button>
       </div>
+      <div class="est-note">Price, rating and travel time are Capitán's estimates — check the map before you commit.</div>
     </div>
     <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS PICK</button>`;
 }
 
-function runOrder() {
-  const cuisine=currentCombo.cuisine;
-  const seamlessURL=`https://www.seamless.com/search#sq=${encodeURIComponent(cuisine)}`;
-  const uberEatsURL=`https://www.ubereats.com/search?q=${encodeURIComponent(cuisine)}&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMk5ldyUyMFlvcmslMjBDaXR5JTIyJTdE`;
-  const shareText=`What We Eating Tonight\nCapitán picked: ${cuisine} delivery\n${currentCombo.vibe} · ${currentCombo.for}\nMove: Order it`;
+function renderDeliveryCard(r) {
+  const q=r.name||currentCombo.cuisine;
+  const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
+  const shareText=`What We Eating Tonight\nCapitán picked: ${r.name}${r.signature_dish?` — get the ${r.signature_dish}`:""}\n${r.neighborhood||""} · ${r.price||"$$"}\nMove: Order it`;
   document.getElementById("resultInner").innerHTML=`
     <div class="result-inner">
-      <div class="result-title">${cuisine} delivery</div>
-      <p style="color:var(--text-muted);font-style:italic;font-size:14px;margin-bottom:18px">${currentCombo.vibe} · ${currentCombo.for}</p>
+      <div class="result-title">${r.name}</div>
+      <div class="restaurant-meta"><div style="color:var(--text-muted);font-size:13px">📍 ${r.neighborhood||city.name}</div></div>
+      ${factPills(r,`<span class="fact-pill dist">🛵 delivers</span>`)}
+      ${tags?`<div class="restaurant-cats">${tags}</div>`:""}
+      ${r.signature_dish?`<div class="ticket-tip" style="margin:10px 0"><span class="ticket-tip-label">ORDER THIS:</span>${r.signature_dish}</div>`:""}
+      ${r.why?`<div class="restaurant-note">${r.why}${r.travels_well?" "+r.travels_well:""}</div>`:""}
       <div class="goout-ctas">
-        <a class="cta-btn seamless" href="${seamlessURL}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON SEAMLESS</a>
-        <div class="cta-divider">or</div>
-        <a class="cta-btn ubereats" href="${uberEatsURL}" target="_blank" rel="noopener">⬛ &nbsp; ORDER ON UBER EATS</a>
+        <a class="cta-btn seamless" href="${deliverySearchURL(q)}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON ${deliveryBrand()}</a>
+        <a class="cta-btn ubereats" href="${uberEatsURL(q)}" target="_blank" rel="noopener">⬛ &nbsp; ORDER ON UBER EATS</a>
+        <a class="cta-btn retry" href="${dtSearchURL(q)}" target="_blank" rel="noopener">🚪 &nbsp; ORDER ON DOORDASH</a>
+        <div class="cta-divider">not feeling it?</div>
+        <button class="cta-btn retry" onclick="execute('order')">↻ &nbsp; DIFFERENT SPOT</button>
       </div>
+      <div class="est-note">Capitán picks the kitchen — the app just opens the search. Availability depends on your address.</div>
     </div>
     <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS PICK</button>`;
-  showResult("resultCard"); isLoading=false;
-  document.getElementById("loadingText").classList.remove("visible");
-  document.querySelectorAll(".exec-btn").forEach(b=>b.disabled=false);
 }
 
 function timeToSeconds(t) { if(t==="15 min")return 900; if(t==="1 hour")return 3600; return 1800; }
@@ -822,7 +1726,7 @@ function formatTime(s) { return `${String(Math.floor(s/60)).padStart(2,"0")}:${S
 
 function renderTicket(r, targetId="resultInner", source=null) {
   currentRecipeTitle=r.title||"this dish";
-  currentSavedRecipe={...r,cuisine:currentCombo.cuisine||r.cuisine||"",vibe:currentCombo.vibe||r.vibe||""};
+  currentSavedRecipe={...r,cuisine:r.cuisine||currentCombo.cuisine||"",vibe:r.vibe||currentCombo.vibe||""};
   const ts=r.time||"30 min";
   timerTotal=timeToSeconds(ts); timerRemaining=timerTotal; timerRunning=false; stopTimer();
   const orderNum=`#${String(Math.floor(Math.random()*9000)+1000)}`;
@@ -862,7 +1766,89 @@ function renderTicket(r, targetId="resultInner", source=null) {
       <div class="score-result" id="scoreResult"></div>
     </div>
     <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS PICK</button>
+    <button class="receipt-btn" onclick="exportReceipt()">🖼️ &nbsp; SAVE AS IMAGE</button>
     <button class="save-recipe-btn${alreadySaved?" saved":""}" id="saveRecipeBtn" onclick="saveCurrentRecipe()">${alreadySaved?"✓ SAVED IN YOUR VAULT":"💾 SAVE THIS RECIPE"}</button>`;
+}
+
+/* ================= SHAREABLE RECEIPT IMAGE (#17) ================= */
+function wrapLines(ctx,text,maxWidth){
+  const words=String(text).split(/\s+/); const lines=[]; let line="";
+  words.forEach(w=>{
+    const t=line?line+" "+w:w;
+    if(ctx.measureText(t).width>maxWidth&&line){lines.push(line);line=w;}
+    else line=t;
+  });
+  if(line)lines.push(line);
+  return lines;
+}
+function buildReceiptCanvas(r){
+  const W=1080,H=1920,c=document.createElement("canvas");
+  c.width=W;c.height=H;
+  const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,"#140a33");g.addColorStop(0.5,"#07030e");g.addColorStop(1,"#0b0418");
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.fillStyle="rgba(255,68,0,0.09)";x.beginPath();x.arc(W/2,300,420,0,Math.PI*2);x.fill();
+
+  const M=110; let y=250;
+  x.textAlign="center";
+  x.fillStyle="#ff4400";x.font="600 34px Georgia,serif";
+  x.fillText("W H A T   W E   E A T I N G",W/2,y); y+=90;
+
+  x.fillStyle="#ffffff";x.font="bold 74px Georgia,serif";
+  const titleLines=wrapLines(x,r.title||"Dinner",W-M*2).slice(0,3);
+  titleLines.forEach(l=>{x.fillText(l,W/2,y);y+=88;});
+  y+=14;
+
+  const meta=[r.cuisine,r.vibe,r.time].filter(Boolean).join("  ·  ");
+  if(meta){x.fillStyle="#b083e0";x.font="italic 40px Georgia,serif";x.fillText(meta,W/2,y);y+=76;}
+
+  x.strokeStyle="rgba(255,68,0,0.45)";x.lineWidth=3;
+  x.beginPath();x.moveTo(M,y);x.lineTo(W-M,y);x.stroke(); y+=72;
+
+  x.textAlign="left";
+  x.fillStyle="#ff4400";x.font="600 32px Georgia,serif";
+  x.fillText("INGREDIENTS",M,y); y+=56;
+  x.fillStyle="#e8d8ff";x.font="36px Georgia,serif";
+  (r.ingredients||[]).slice(0,8).forEach(i=>{
+    wrapLines(x,"· "+i,W-M*2).slice(0,2).forEach(l=>{x.fillText(l,M,y);y+=50;});
+  });
+  y+=34;
+
+  if(y<H-520){
+    x.fillStyle="#ff4400";x.font="600 32px Georgia,serif";
+    x.fillText("METHOD",M,y); y+=56;
+    x.fillStyle="#e8d8ff";x.font="34px Georgia,serif";
+    (r.steps||[]).forEach((s,i)=>{
+      if(y>H-300)return;
+      wrapLines(x,`${i+1}. ${s}`,W-M*2).slice(0,3).forEach(l=>{ if(y>H-300)return; x.fillText(l,M,y);y+=46; });
+      y+=18;
+    });
+  }
+
+  x.textAlign="center";
+  x.fillStyle="#6b46a8";x.font="italic 32px Georgia,serif";
+  x.fillText("Capitán decided. No debate.",W/2,H-150);
+  x.fillStyle="#ff4400";x.font="600 30px Georgia,serif";
+  x.fillText("whatweeating.netlify.app",W/2,H-92);
+  return c;
+}
+async function exportReceipt(){
+  const r=currentSavedRecipe; if(!r)return;
+  try{
+    const canvas=buildReceiptCanvas(r);
+    const blob=await new Promise(res=>canvas.toBlob(res,"image/png"));
+    if(!blob)throw new Error("no blob");
+    const file=new File([blob],`what-we-eating-${slugify(r.title)||"dinner"}.png`,{type:"image/png"});
+    if(navigator.canShare?.({files:[file]})){
+      try{ await navigator.share({files:[file],title:r.title||"What We Eating"}); return; }catch(e){ if(e.name==="AbortError")return; }
+    }
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url; a.download=file.name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    toast("Saved — sized for Stories");
+  }catch{ toast("Couldn't build the image"); }
 }
 
 function checkAllDone() {
@@ -895,10 +1881,90 @@ async function handleImageUpload(event) {
     const text=(data.content||[]).map(c=>c.text||"").join("");
     const s=text.indexOf("{");const e=text.lastIndexOf("}");
     const sc=JSON.parse(text.slice(s,e+1));
-    const score=sc.score||0;const cls=score>=8?"high":score>=5?"mid":"low";
-    if(result){result.innerHTML=`<div class="score-number ${cls}">${score}</div><div class="score-out-of">OUT OF 10</div><div class="score-verdict">${sc.verdict||""}</div><div class="score-row"><div class="score-pill good"><span class="score-pill-label">✓ BEST PART</span>${sc.highlight||""}</div><div class="score-pill bad"><span class="score-pill-label">↑ IMPROVE</span>${sc.improve||""}</div></div>`;result.classList.add("visible");}
+    const score=sc.score||0;const cls=score>=80?"high":score>=60?"mid":"low";
+    const breakdown=[sc.taste!=null?`Taste ${sc.taste}/50`:"",sc.technique!=null?`Technique ${sc.technique}/40`:"",sc.presentation!=null?`Presentation ${sc.presentation}/10`:""].filter(Boolean).join(" · ");
+    if(result){result.innerHTML=`<div class="score-number ${cls}">${score}</div><div class="score-out-of">OUT OF 100</div>${breakdown?`<div class="score-breakdown">${esc(breakdown)}</div>`:""}<div class="score-verdict">${esc(sc.verdict||"")}</div><div class="score-row"><div class="score-pill good"><span class="score-pill-label">✓ BEST PART</span>${esc(sc.highlight||"")}</div><div class="score-pill bad"><span class="score-pill-label">↑ IMPROVE</span>${esc(sc.improve||"")}</div></div>`;result.classList.add("visible");}
   } catch(e){if(result){result.innerHTML=`<p style="color:#f87171;text-align:center;font-size:13px">Couldn't score this. Try again.</p>`;result.classList.add("visible");}}
   if(loading)loading.classList.remove("visible");
+}
+
+/* ================= VETO DUO / GROUP (#19, #21) ================= */
+let duoFlow="veto", groupSize=2, lastDuoResult=null;
+const VETO_CUISINES=2, VETO_MOODS=1;
+const PLAYER_DEFAULTS=["You","Them","Player 3","Player 4"];
+let players=PLAYER_DEFAULTS.map(n=>({name:n,cuisines:[],moods:[]}));
+function vetoCuisinePool(){return DUO_OPTIONS.cuisine.filter(c=>!blockedCuisines().has(c));}
+function vetoMoodPool(){return DUO_OPTIONS.mood;}
+
+function setDuoFlow(flow){
+  duoFlow=flow;
+  document.getElementById("flow-veto-btn").classList.toggle("active",flow==="veto");
+  document.getElementById("flow-pick-btn").classList.toggle("active",flow==="pick");
+  document.getElementById("vetoFlow").style.display=flow==="veto"?"block":"none";
+  document.getElementById("pickFlow").style.display=flow==="pick"?"block":"none";
+  document.getElementById("duoIntroSub").textContent=flow==="veto"
+    ?"Nobody names what they want. Everyone vetoes what they don't."
+    :"Two people. Three picks each. One answer.";
+  document.getElementById("duoChallengeWrap").style.display=flow==="veto"?"block":"none";
+  if(flow==="veto")renderSurvivors(); else checkDuoChallenge();
+}
+function setGroupSize(n){
+  groupSize=n; buildVetoUI();
+}
+function setPlayerName(i,v){ players[i].name=v.slice(0,12); }
+function buildVetoUI(){
+  const row=document.getElementById("groupSizeRow"); if(!row)return;
+  row.innerHTML=[2,3,4].map(n=>`<button type="button" class="chip${n===groupSize?" on":""}" onclick="setGroupSize(${n})">${n} people</button>`).join("");
+  const wrap=document.getElementById("vetoPlayers"); if(!wrap)return;
+  wrap.innerHTML=players.slice(0,groupSize).map((p,i)=>`
+    <div class="veto-player">
+      <div class="veto-head">
+        <input class="veto-name-input" value="${esc(p.name)}" oninput="setPlayerName(${i},this.value)" aria-label="Name for player ${i+1}" maxlength="12" />
+        <span class="veto-count" id="vcount-${i}"></span>
+      </div>
+      <div class="sheet-label">CROSS OFF ${VETO_CUISINES} CUISINES</div>
+      <div class="chip-row" id="vcuisine-${i}"></div>
+      <div class="sheet-label" style="margin-top:12px">CROSS OFF ${VETO_MOODS} MOOD</div>
+      <div class="chip-row" id="vmood-${i}"></div>
+    </div>`).join("");
+  players.slice(0,groupSize).forEach((_,i)=>paintVetoChips(i));
+  renderSurvivors();
+}
+function paintVetoChips(i){
+  const p=players[i];
+  const cw=document.getElementById(`vcuisine-${i}`), mw=document.getElementById(`vmood-${i}`);
+  if(cw)cw.innerHTML=vetoCuisinePool().map(c=>`<button type="button" class="chip${p.cuisines.includes(c)?" vetoed":""}" aria-pressed="${p.cuisines.includes(c)}" onclick="toggleVeto(${i},'cuisines','${esc(c)}')">${esc(c)}</button>`).join("");
+  if(mw)mw.innerHTML=vetoMoodPool().map(m=>`<button type="button" class="chip${p.moods.includes(m)?" vetoed":""}" aria-pressed="${p.moods.includes(m)}" onclick="toggleVeto(${i},'moods','${esc(m)}')">${esc(m)}</button>`).join("");
+  const cnt=document.getElementById(`vcount-${i}`);
+  if(cnt){
+    const done=p.cuisines.length>=VETO_CUISINES&&p.moods.length>=VETO_MOODS;
+    cnt.textContent=`${p.cuisines.length}/${VETO_CUISINES} cuisines · ${p.moods.length}/${VETO_MOODS} mood`;
+    cnt.classList.toggle("full",done);
+  }
+}
+function toggleVeto(i,kind,val){
+  const p=players[i], arr=p[kind];
+  const limit=kind==="cuisines"?VETO_CUISINES:VETO_MOODS;
+  const at=arr.indexOf(val);
+  if(at>=0)arr.splice(at,1);
+  else if(arr.length>=limit){arr.shift();arr.push(val);}
+  else arr.push(val);
+  paintVetoChips(i); renderSurvivors();
+}
+function survivors(){
+  const active=players.slice(0,groupSize);
+  const vetoedC=new Set(active.flatMap(p=>p.cuisines));
+  const vetoedM=new Set(active.flatMap(p=>p.moods));
+  return {
+    cuisines:vetoCuisinePool().filter(c=>!vetoedC.has(c)),
+    moods:vetoMoodPool().filter(m=>!vetoedM.has(m)),
+  };
+}
+function renderSurvivors(){
+  const el=document.getElementById("survivorsList"); if(!el)return;
+  const s=survivors();
+  if(!s.cuisines.length){el.innerHTML=`<span class="survivors-none">You've vetoed everything. Somebody has to give a little.</span>`;return;}
+  el.innerHTML=`<strong>${s.cuisines.length}</strong> cuisine${s.cuisines.length===1?"":"s"}: ${s.cuisines.map(esc).join(" · ")}<br/><strong>${s.moods.length||"0"}</strong> mood${s.moods.length===1?"":"s"}: ${s.moods.length?s.moods.map(esc).join(" · "):"<em>none left — Capitán picks freely</em>"}`;
 }
 
 function buildDuoOptions() {
@@ -917,76 +1983,159 @@ function buildDuoOptions() {
 function setDuoType(type) { duoType=type; ["cook","goout","delivery"].forEach(t=>{document.getElementById(`duo-${t}-btn`).classList.toggle("active",t===type);}); }
 
 async function spinDuo() {
-  const p1=duoSelections.p1,p2=duoSelections.p2; const missing=[];
-  ["mood","cuisine","budget"].forEach(k=>{if(!p1[k])missing.push(`P1 ${k}`);if(!p2[k])missing.push(`P2 ${k}`);});
-  if(missing.length){document.getElementById("duoErrorText").textContent=`Still need: ${missing.join(", ")}`;document.getElementById("duoErrorText").classList.add("visible");return;}
-  document.getElementById("duoErrorText").classList.remove("visible");
+  const err=document.getElementById("duoErrorText");
+  if(duoFlow==="veto"){
+    const active=players.slice(0,groupSize);
+    const notDone=active.filter(p=>p.cuisines.length<VETO_CUISINES||p.moods.length<VETO_MOODS);
+    if(notDone.length){
+      err.textContent=`Still waiting on: ${notDone.map(p=>p.name).join(", ")}`;
+      err.classList.add("visible"); return;
+    }
+    if(!survivors().cuisines.length){
+      err.textContent="Everything got vetoed. Someone has to give a little.";
+      err.classList.add("visible"); return;
+    }
+  } else {
+    const p1=duoSelections.p1,p2=duoSelections.p2; const missing=[];
+    ["mood","cuisine","budget"].forEach(k=>{if(!p1[k])missing.push(`P1 ${k}`);if(!p2[k])missing.push(`P2 ${k}`);});
+    if(missing.length){err.textContent=`Still need: ${missing.join(", ")}`;err.classList.add("visible");return;}
+  }
+  err.classList.remove("visible");
   const btn=document.getElementById("duoBtn"); const pr=document.getElementById("duoPulseRing");
   btn.disabled=true; btn.textContent="FINDING..."; pr.classList.add("active");
   document.getElementById("duoLoadingText").classList.add("visible");
   document.getElementById("duoResultCard").classList.remove("visible","shown");
   try {
-    if(duoType==="cook") await runDuoCook(p1,p2); else await runDuoGoOut(p1,p2);
+    if(duoFlow==="veto") await runVetoMatch();
+    else if(duoType==="cook") await runDuoCook(duoSelections.p1,duoSelections.p2);
+    else await runDuoGoOut(duoSelections.p1,duoSelections.p2);
   } catch(e) {
-    document.getElementById("duoErrorText").textContent="Couldn't find a match — try again.";
-    document.getElementById("duoErrorText").classList.add("visible");
+    err.textContent="Couldn't find a match — try again.";
+    err.classList.add("visible");
   }
   document.getElementById("duoLoadingText").classList.remove("visible");
   pr.classList.remove("active"); btn.disabled=false; btn.textContent="TRY ANOTHER MATCH";
 }
 
-async function runDuoCook(p1,p2) {
-  const r=await callClaude(`Two people need to agree on dinner in NYC tonight.
-Person 1: ${p1.mood} mood, loves ${p1.cuisine}, budget ${p1.budget}
-Person 2: ${p2.mood} mood, loves ${p2.cuisine}, budget ${p2.budget}
-Find ONE recipe satisfying both. Split into two parallel cooking stations — Person 1: protein, heat. Person 2: prep, sauce, plating.
-Respond ONLY with JSON: {"title":"...","description":"...","ingredients":["..."],"p1_steps":["..."],"p2_steps":["..."],"tip":"...","why_it_won":"...","win_tags":["..."]}
-3-5 steps each.`, 1400);
-  const score=calcCompromiseScore(p1,p2);
-  const steps=(arr)=>(arr||[]).map(s=>`<div class="station-step" onclick="this.classList.toggle('done-step')"><div class="station-checkbox"><span class="station-check-icon">✓</span></div><div class="station-step-text">${s}</div></div>`).join("");
+/* Veto match: Capitán draws only from what survived everyone's vetoes. */
+async function runVetoMatch(){
+  const s=survivors();
+  const active=players.slice(0,groupSize);
+  const cuisine=s.cuisines[Math.floor(Math.random()*s.cuisines.length)];
+  const mood=s.moods.length?s.moods[Math.floor(Math.random()*s.moods.length)]:"Comfort";
+  const names=active.map(p=>p.name).join(", ");
+  lastDuoResult={cuisine,mood,names:active.map(p=>p.name),type:duoType};
+  const vetoedAll=[...new Set(active.flatMap(p=>[...p.cuisines,...p.moods]))];
+
+  if(duoType==="cook"){
+    const r=await callClaude(`${groupSize} people just vetoed their way to dinner.
+Survived every veto: ${cuisine} food, ${mood} mood. They are eating in ${cityName()}.
+Explicitly rejected by someone in the group: ${vetoedAll.join(", ")} — never suggest these.
+Cooking together, ${groupSize} people in one kitchen.
+
+Split the work into two stations — Station 1: protein and heat. Station 2: prep, sauce, plating.
+Respond ONLY with JSON: {"title":"...","description":"...","ingredients":["..."],"p1_steps":["..."],"p2_steps":["..."],"tip":"...","why_it_won":"one sentence on why this survived when everything else got cut","win_tags":["..."]}
+3-5 steps each.${profileRules()}`,1400);
+    renderDuoCookResult(r,vetoScore(),active.map(p=>p.name),`${cuisine} · ${mood}`);
+  } else {
+    const r=await callClaude(`${groupSize} people in ${cityArea()} need one place that survives everyone's vetoes.
+Survived: ${cuisine} food, ${mood} mood. Party of ${groupSize}. Type: ${duoType==="delivery"?"delivery":"sit-down"}.
+Explicitly rejected by someone: ${vetoedAll.join(", ")} — never suggest these.
+Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"full street address","cuisine_tags":["..."],"price":"$$","rating":4.4,"walk_time":"12 min walk","why":"2 sentences","win_tags":["..."]}${profileRules()}`,600);
+    renderDuoVenueResult(r,vetoScore(),active.map(p=>p.name),`${cuisine} · ${mood}`);
+  }
+  logDecision({mode:"duo",combo:{cuisine,vibe:mood,for:groupSize===2?"For Two":"Small Group"},outcome:duoType==="cook"?"cooked":duoType==="delivery"?"ordered":"went_out"});
+}
+// The more room left after the vetoes, the easier this group is to feed.
+function vetoScore(){
+  const s=survivors(), pool=vetoCuisinePool().length;
+  return Math.max(40,Math.min(99,Math.round((s.cuisines.length/pool)*70)+30));
+}
+function nameTags(names){
+  return `<div class="duo-names-row">${names.map((n,i)=>`<span class="duo-name-tag p${i+1}">${esc(n)}</span>${i<names.length-1?'<span class="duo-vs">+</span>':""}`).join("")}</div>`;
+}
+function rematchBtn(){return `<button class="rematch-btn" onclick="rematch()">↻ &nbsp; RUN IT BACK</button>`;}
+function rematch(){
+  document.getElementById("duoResultCard").classList.remove("visible","shown");
+  if(duoFlow==="veto"){ players.forEach(p=>{p.cuisines=[];p.moods=[];}); buildVetoUI(); toast("Fresh vetoes. Go again."); }
+  else toast("Pick again.");
+  document.getElementById("duoBtn")?.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function renderDuoCookResult(r,score,names,subtitle){
+  const steps=(arr)=>(arr||[]).map(s=>`<div class="station-step" onclick="this.classList.toggle('done-step')"><div class="station-checkbox"><span class="station-check-icon">✓</span></div><div class="station-step-text">${esc(s)}</div></div>`).join("");
+  const s1=names[0]||"Person 1", s2=names.slice(1).join(" & ")||"Person 2";
+  const shareText=`What We Eating — ${names.join(" + ")}\nCapitán settled it: ${r.title||"dinner"}\n${subtitle||""}`;
   document.getElementById("duoResultInner").innerHTML=`
     <div class="result-inner">
-      <div class="compromise-score"><div class="compromise-num">${score}</div><div class="compromise-label">COMPATIBILITY SCORE</div></div>
-      <div class="result-title">${r.title||""}</div>
-      ${r.description?`<p class="result-desc">${r.description}</p>`:""}
-      ${r.why_it_won?`<div class="why-won"><div class="why-won-label">✓ Why This Won</div><div class="why-won-text">${r.why_it_won}</div>${r.win_tags?.length?`<div class="why-won-tags">${r.win_tags.map(t=>`<span class="why-tag">${t}</span>`).join("")}</div>`:""}</div>`:""}
+      ${nameTags(names)}
+      <div class="compromise-score"><div class="compromise-num">${score}</div><div class="compromise-label">${duoFlow==="veto"?"ROOM LEFT AFTER VETOES":"COMPATIBILITY SCORE"}</div></div>
+      <div class="result-title">${esc(r.title||"")}</div>
+      ${subtitle?`<p class="result-desc" style="text-align:center">${esc(subtitle)}</p>`:""}
+      ${r.description?`<p class="result-desc">${esc(r.description)}</p>`:""}
+      ${r.why_it_won?`<div class="why-won"><div class="why-won-label">✓ Why This Won</div><div class="why-won-text">${esc(r.why_it_won)}</div>${r.win_tags?.length?`<div class="why-won-tags">${r.win_tags.map(t=>`<span class="why-tag">${esc(t)}</span>`).join("")}</div>`:""}</div>`:""}
       <div class="stations-wrap">
-        <div class="station p1"><div class="station-header">Person 1<span class="station-role">Protein + Heat</span></div><div class="station-steps">${steps(r.p1_steps)}</div></div>
-        <div class="station p2"><div class="station-header">Person 2<span class="station-role">Prep + Plating</span></div><div class="station-steps">${steps(r.p2_steps)}</div></div>
+        <div class="station p1"><div class="station-header">${esc(s1)}<span class="station-role">Protein + Heat</span></div><div class="station-steps">${steps(r.p1_steps)}</div></div>
+        <div class="station p2"><div class="station-header">${esc(s2)}<span class="station-role">Prep + Plating</span></div><div class="station-steps">${steps(r.p2_steps)}</div></div>
       </div>
-      ${r.ingredients?.length?`<div class="ingredients" style="margin-top:16px"><div class="section-label">Ingredients</div>${r.ingredients.map(i=>`<div class="ingredient-item">${i}</div>`).join("")}</div>`:""}
-      ${r.tip?`<div style="margin-top:14px;background:rgba(255,68,0,0.07);border:1px solid rgba(255,68,0,0.18);border-radius:10px;padding:12px 16px;font-size:13px;color:#c49070"><span style="font-family:'Bebas Neue',cursive;font-size:11px;color:var(--accent);letter-spacing:3px;margin-right:6px">PRO TIP:</span>${r.tip}</div>`:""}
+      ${r.ingredients?.length?`<div class="ingredients" style="margin-top:16px"><div class="section-label">Ingredients</div>${r.ingredients.map(i=>`<div class="ingredient-item">${esc(i)}</div>`).join("")}</div>`:""}
+      ${r.tip?`<div style="margin-top:14px;background:rgba(255,68,0,0.07);border:1px solid rgba(255,68,0,0.18);border-radius:10px;padding:12px 16px;font-size:13px;color:#c49070"><span style="font-family:'Bebas Neue',cursive;font-size:11px;color:var(--accent);letter-spacing:3px;margin-right:6px">PRO TIP:</span>${esc(r.tip)}</div>`:""}
+      <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS RESULT</button>
+      ${rematchBtn()}
     </div>`;
   showResult("duoResultCard");
 }
 
-async function runDuoGoOut(p1,p2) {
-  const r=await callClaude(`Two people in NYC need one restaurant that works for both.
-P1: ${p1.mood}, wants ${p1.cuisine}, budget ${p1.budget}. P2: ${p2.mood}, wants ${p2.cuisine}, budget ${p2.budget}.
-Location: ${userNeighborhood}, NYC. Type: ${duoType==="delivery"?"delivery":"sit-down"}.
-Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuisine_tags":["..."],"price":"$$","why":"2 sentences","win_tags":["..."]}`, 500);
-  const score=calcCompromiseScore(p1,p2);
+function renderDuoVenueResult(r,score,names,subtitle){
   const today=new Date().toISOString().split("T")[0];
-  const resyURL=resyVenueURL(r.name,today,2);
-  const uberURL=uberDestURL(r.name,r.address,r.neighborhood);
-  const seamlessURL=`https://www.seamless.com/search#sq=${encodeURIComponent(r.name)}`;
-  const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
-  const winTags=(r.win_tags||[]).map(t=>`<span class="why-tag">${t}</span>`).join("");
+  const seats=Math.max(2,groupSize);
+  const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${esc(t)}</span>`).join("");
+  const winTags=(r.win_tags||[]).map(t=>`<span class="why-tag">${esc(t)}</span>`).join("");
+  const walk=r.walk_time?`<span class="fact-pill dist">🚶 ${esc(r.walk_time)}</span>`:"";
+  const shareText=`What We Eating — ${names.join(" + ")}\nCapitán settled it: ${r.name}\n${r.neighborhood||""} · ${r.price||"$$"}`;
   document.getElementById("duoResultInner").innerHTML=`
     <div class="result-inner">
-      <div class="compromise-score"><div class="compromise-num">${score}</div><div class="compromise-label">COMPATIBILITY SCORE</div></div>
-      <div class="result-title">${r.name}</div>
-      <div class="restaurant-meta"><div class="restaurant-price">${r.price||"$$"}</div><div style="color:var(--text-muted);font-size:13px">📍 ${r.neighborhood||""}</div></div>
+      ${nameTags(names)}
+      <div class="compromise-score"><div class="compromise-num">${score}</div><div class="compromise-label">${duoFlow==="veto"?"ROOM LEFT AFTER VETOES":"COMPATIBILITY SCORE"}</div></div>
+      <div class="result-title">${esc(r.name||"")}</div>
+      <div class="restaurant-meta"><div style="color:var(--text-muted);font-size:13px">📍 ${esc(r.neighborhood||city.name)}</div></div>
+      ${factPills(r,duoType==="delivery"?`<span class="fact-pill dist">🛵 delivers</span>`:walk)}
       ${tags?`<div class="restaurant-cats">${tags}</div>`:""}
-      ${r.address?`<div class="restaurant-address">${r.address}</div>`:""}
-      ${r.why?`<div class="why-won" style="margin-bottom:0"><div class="why-won-label">✓ Why This Won</div><div class="why-won-text">${r.why}</div>${winTags?`<div class="why-won-tags">${winTags}</div>`:""}</div>`:""}
+      ${r.address?`<div class="restaurant-address">${esc(r.address)}</div>`:""}
+      ${r.why?`<div class="why-won" style="margin-bottom:0"><div class="why-won-label">✓ Why This Won</div><div class="why-won-text">${esc(r.why)}</div>${winTags?`<div class="why-won-tags">${winTags}</div>`:""}</div>`:""}
       <div class="goout-ctas" style="margin-top:16px">
         ${duoType==="delivery"
-          ?`<a class="cta-btn seamless" href="${seamlessURL}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON SEAMLESS</a>`
-          :`<a class="cta-btn resy" href="${resyURL}" target="_blank" rel="noopener">🍽️ &nbsp; BOOK ON RESY</a><a class="cta-btn uber" href="${uberURL}" target="_blank" rel="noopener">⬛ &nbsp; GET AN UBER THERE</a>`}
+          ?`<a class="cta-btn seamless" href="${deliverySearchURL(r.name||"")}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON ${deliveryBrand()}</a>
+            <a class="cta-btn ubereats" href="${uberEatsURL(r.name||"")}" target="_blank" rel="noopener">⬛ &nbsp; ORDER ON UBER EATS</a>`
+          :`<a class="cta-btn resy" href="${resyVenueURL(r.name,today,seats)}" target="_blank" rel="noopener">🍽️ &nbsp; BOOK FOR ${seats}</a>
+            <a class="cta-btn uber" href="${uberDestURL(r.name,r.address,r.neighborhood)}" target="_blank" rel="noopener">⬛ &nbsp; GET AN UBER THERE</a>
+            <a class="cta-btn retry" href="${mapsURL(r.name,r.address)}" target="_blank" rel="noopener">🗺️ &nbsp; SEE IT ON THE MAP</a>`}
       </div>
+      <div class="est-note">Price, rating and travel time are Capitán's estimates.</div>
+      <button class="share-btn" onclick="shareResult(this)" data-share="${shareText.replace(/"/g,'&quot;')}">📤 &nbsp; SHARE THIS RESULT</button>
+      ${rematchBtn()}
     </div>`;
   showResult("duoResultCard");
+}
+
+async function runDuoCook(p1,p2) {
+  const r=await callClaude(`Two people need to agree on dinner in ${cityName()} tonight.
+Person 1: ${p1.mood} mood, loves ${p1.cuisine}, budget ${p1.budget}
+Person 2: ${p2.mood} mood, loves ${p2.cuisine}, budget ${p2.budget}
+Find ONE recipe satisfying both. Split into two parallel cooking stations — Person 1: protein, heat. Person 2: prep, sauce, plating.
+Respond ONLY with JSON: {"title":"...","description":"...","ingredients":["..."],"p1_steps":["..."],"p2_steps":["..."],"tip":"...","why_it_won":"...","win_tags":["..."]}
+3-5 steps each.${profileRules()}`, 1400);
+  renderDuoCookResult(r,calcCompromiseScore(p1,p2),[players[0].name,players[1].name],"");
+  logDecision({mode:"duo",combo:{cuisine:p1.cuisine,vibe:p1.mood,for:"For Two"},outcome:"cooked",title:r.title});
+}
+
+async function runDuoGoOut(p1,p2) {
+  const r=await callClaude(`Two people in ${cityArea()} need one restaurant that works for both.
+P1: ${p1.mood}, wants ${p1.cuisine}, budget ${p1.budget}. P2: ${p2.mood}, wants ${p2.cuisine}, budget ${p2.budget}.
+Type: ${duoType==="delivery"?"delivery":"sit-down"}. City: ${cityName()}.
+Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"full street address","cuisine_tags":["..."],"price":"$$","rating":4.4,"walk_time":"12 min walk","why":"2 sentences","win_tags":["..."]}${profileRules()}`, 600);
+  renderDuoVenueResult(r,calcCompromiseScore(p1,p2),[players[0].name,players[1].name],"");
+  logDecision({mode:"duo",combo:{cuisine:p1.cuisine,vibe:p1.mood,for:"For Two"},outcome:duoType==="delivery"?"ordered":"went_out",title:r.name});
 }
 
 async function handleSnapPhoto(event) {
@@ -1042,12 +2191,13 @@ async function runSnapCook() {
   const container=document.getElementById("snapActionResult"); if(!container)return;
   container.innerHTML=`<p style="color:var(--text-muted);font-style:italic;font-size:13px;text-align:center;padding:16px 0">Generating recipe...</p>`;
   try {
-    const r=await callClaude(`Personal chef. One recipe for: ${snapCurrentDish} (${snapCurrentCuisine} style). NYC ingredients.
+    const r=await callClaude(`Personal chef. One recipe for: ${snapCurrentDish} (${snapCurrentCuisine} style). Ingredients available in ${cityName()}.
 Respond ONLY with this JSON: {"title":"...","description":"one evocative sentence","time":"30 min","ingredients":["6 specific items max"],"steps":["4 sensory steps max"],"tip":"..."}
-time: "15 min", "30 min", or "1 hour". Exactly 6 ingredients. Exactly 4 steps, 1-2 sentences each.`, 650);
+time: "15 min", "30 min", or "1 hour". Exactly 6 ingredients. Exactly 4 steps, 1-2 sentences each.${profileRules()}`, 650);
     const wrapper=document.createElement("div"); wrapper.style.marginTop="16px"; wrapper.id="snapTicketTarget";
     container.innerHTML=""; container.appendChild(wrapper);
-    renderTicket(r,"snapTicketTarget");
+    renderTicket({...r,cuisine:snapCurrentCuisine||r.cuisine||""},"snapTicketTarget");
+    logDecision({mode:"snap",combo:{cuisine:snapCurrentCuisine||"Snap",vibe:"Adventurous",for:"For Two"},outcome:"cooked",title:r.title});
   } catch(err) {
     container.innerHTML=`<p style="color:#f87171;font-size:13px;text-align:center;padding:12px 0">Couldn't generate — try again.</p>`;
   }
@@ -1057,24 +2207,30 @@ async function runSnapGoOut() {
   const container=document.getElementById("snapActionResult"); if(!container)return;
   container.innerHTML=`<p style="color:var(--text-muted);font-style:italic;font-size:13px;text-align:center;padding:16px 0">Finding the perfect spot...</p>`;
   try {
-    const r=await callClaude(`NYC food expert. Recommend ONE real restaurant for: ${snapCurrentDish} (${snapCurrentCuisine} style).
-Location: ${userNeighborhood}, NYC. Party: 2. Real, operating, sit-down only.
-Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuisine_tags":["..."],"price":"$$","why":"2 sentences","vibe_note":"1 sentence"}`, 500);
+    const r=await callClaude(`${cityName()} food expert. Recommend ONE real restaurant for: ${snapCurrentDish} (${snapCurrentCuisine} style).
+Location: ${cityArea()}. Party: 2. Real, currently operating, sit-down only.
+rating: typical public rating out of 5, one decimal. walk_time: realistic travel time from ${cityArea()}.
+Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"full street address","cuisine_tags":["..."],"price":"$$","rating":4.4,"walk_time":"12 min walk","why":"2 sentences","vibe_note":"1 sentence"}${profileRules()}`, 600);
     const today=new Date().toISOString().split("T")[0];
     const resyURL=resyVenueURL(r.name,today,2);
     const uberURL=uberDestURL(r.name,r.address,r.neighborhood);
-    const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${t}</span>`).join("");
+    const tags=(r.cuisine_tags||[]).map(t=>`<span class="restaurant-cat-tag">${esc(t)}</span>`).join("");
+    const walk=r.walk_time?`<span class="fact-pill dist">🚶 ${esc(r.walk_time)}</span>`:"";
     container.innerHTML=`<div class="result-inner" style="margin-top:16px">
-      <div class="result-title">${r.name}</div>
-      <div class="restaurant-meta"><div class="restaurant-price">${r.price||"$$"}</div><div style="color:var(--text-muted);font-size:13px">📍 ${r.neighborhood||""}</div></div>
+      <div class="result-title">${esc(r.name||"")}</div>
+      <div class="restaurant-meta"><div style="color:var(--text-muted);font-size:13px">📍 ${esc(r.neighborhood||city.name)}</div></div>
+      ${factPills(r,walk)}
       ${tags?`<div class="restaurant-cats">${tags}</div>`:""}
-      ${r.address?`<div class="restaurant-address">${r.address}</div>`:""}
-      ${r.why?`<div class="restaurant-note">${r.why} ${r.vibe_note||""}</div>`:""}
+      ${r.address?`<div class="restaurant-address">${esc(r.address)}</div>`:""}
+      ${r.why?`<div class="restaurant-note">${esc(r.why)} ${esc(r.vibe_note||"")}</div>`:""}
       <div class="goout-ctas">
         <a class="cta-btn resy" href="${resyURL}" target="_blank" rel="noopener">🍽️ &nbsp; BOOK ON RESY</a>
         <a class="cta-btn uber" href="${uberURL}" target="_blank" rel="noopener">⬛ &nbsp; GET AN UBER THERE</a>
+        <a class="cta-btn retry" href="${mapsURL(r.name,r.address)}" target="_blank" rel="noopener">🗺️ &nbsp; SEE IT ON THE MAP</a>
       </div>
+      <div class="est-note">Price, rating and travel time are Capitán's estimates.</div>
     </div>`;
+    logDecision({mode:"snap",combo:{cuisine:snapCurrentCuisine||"Snap",vibe:"Adventurous",for:"For Two"},outcome:"went_out",title:r.name});
   } catch(err) {
     container.innerHTML=`<p style="color:#f87171;font-size:13px;text-align:center;padding:12px 0">Couldn't find a spot — try again.</p>`;
   }
@@ -1083,16 +2239,15 @@ Respond ONLY with JSON: {"name":"...","neighborhood":"...","address":"...","cuis
 function runSnapOrder() {
   const container=document.getElementById("snapActionResult"); if(!container)return;
   const q=snapCurrentDish||snapCurrentCuisine;
-  const seamlessURL=`https://www.seamless.com/search#sq=${encodeURIComponent(q)}`;
-  const uberEatsURL=`https://www.ubereats.com/search?q=${encodeURIComponent(q)}`;
   container.innerHTML=`<div class="result-inner" style="margin-top:16px">
-    <div class="result-title">${snapCurrentDish}</div>
+    <div class="result-title">${esc(snapCurrentDish||"")}</div>
     <div class="goout-ctas">
-      <a class="cta-btn seamless" href="${seamlessURL}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON SEAMLESS</a>
-      <div class="cta-divider">or</div>
-      <a class="cta-btn ubereats" href="${uberEatsURL}" target="_blank" rel="noopener">⬛ &nbsp; UBER EATS</a>
+      <a class="cta-btn seamless" href="${deliverySearchURL(q)}" target="_blank" rel="noopener">🛵 &nbsp; ORDER ON ${deliveryBrand()}</a>
+      <a class="cta-btn ubereats" href="${uberEatsURL(q)}" target="_blank" rel="noopener">⬛ &nbsp; UBER EATS</a>
+      <a class="cta-btn retry" href="${dtSearchURL(q)}" target="_blank" rel="noopener">🚪 &nbsp; DOORDASH</a>
     </div>
   </div>`;
+  logDecision({mode:"snap",combo:{cuisine:snapCurrentCuisine||"Snap",vibe:"Adventurous",for:"For Two"},outcome:"ordered",title:snapCurrentDish});
 }
 
 function showResult(id) {
@@ -1102,31 +2257,160 @@ function showResult(id) {
   if(id==="resultCard") document.getElementById("cowardBtn").classList.add("visible");
 }
 
-// #6 — Save taste
-const WAWE_HOOD_KEY="wawe_hood_v1", WAWE_HISTORY_KEY="wawe_history_v1";
-let comboHistory=[];
-function loadHistory(){try{const r=localStorage.getItem(WAWE_HISTORY_KEY);if(r)comboHistory=JSON.parse(r)||[];}catch{}}
-function saveHistory(){try{localStorage.setItem(WAWE_HISTORY_KEY,JSON.stringify(comboHistory.slice(-3)));}catch{}}
-function saveCombo(combo){comboHistory.push({...combo});if(comboHistory.length>3)comboHistory=comboHistory.slice(-3);saveHistory();updateAgainWrap();}
-function updateAgainWrap(){
-  const wrap=document.getElementById("againWrap"),text=document.getElementById("againText");
-  if(!wrap||!text)return;
-  if(comboHistory.length>=2){const prev=comboHistory[comboHistory.length-2];text.textContent=`${prev.cuisine} · ${prev.vibe} · ${prev.for}`;wrap.classList.add("visible");}
-  else wrap.classList.remove("visible");
+/* ================= RECENT LIST (#3, #5) ================= */
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+// A combo whose cuisine or vibe is currently banned must never be offered for replay.
+function replayable(){
+  const seen=new Set(), out=[];
+  for(let i=history.length-1;i>=0&&out.length<4;i--){
+    const h=history[i];
+    const key=`${h.cuisine}|${h.vibe}|${h.for}`;
+    if(seen.has(key))continue;
+    if(isBlocked("cuisine",h.cuisine)||isBlocked("vibe",h.vibe))continue;
+    seen.add(key); out.push(h);
+  }
+  return out;
 }
-function spinAgainCombo(){
-  if(comboHistory.length<2)return;
-  const prev=comboHistory[comboHistory.length-2];
-  currentCombo={...prev};
-  REEL_CONFIG.forEach(cfg=>{
-    const el=document.getElementById(`reel-text-${cfg.key}`);if(el)el.textContent=currentCombo[cfg.key]||cfg.items[0];
-    document.getElementById(`reel-${cfg.key}`)?.classList.toggle("disliked",isDisliked(cfg.key,currentCombo[cfg.key]));
+function renderRecent(){
+  const wrap=document.getElementById("recentWrap"), list=document.getElementById("recentList");
+  if(!wrap||!list)return;
+  const items=replayable();
+  if(!items.length){wrap.style.display="none";return;}
+  wrap.style.display="block";
+  list.innerHTML=items.map(h=>`
+    <button class="recent-row" onclick="replayCombo('${esc(h.cuisine)}','${esc(h.vibe)}','${esc(h.for)}')">
+      <span class="recent-outcome" aria-hidden="true">${OUTCOME_ICON[h.outcome]||"🎲"}</span>
+      <span class="recent-main">
+        <span class="recent-combo">${esc(h.cuisine)} · ${esc(h.vibe)}${h.for?" · "+esc(h.for):""}</span>
+        <span class="recent-when">${OUTCOME_WORD[h.outcome]||"Spun"} · ${relTime(h.ts)}</span>
+      </span>
+      <span class="recent-redo">AGAIN</span>
+    </button>`).join("");
+}
+function replayCombo(cuisine,vibe,forVal){
+  if(isLocked){toast("Capitán already decided. Exit lock-in first.");return;}
+  if(isBlocked("cuisine",cuisine)||isBlocked("vibe",vibe)){toast("That one's banned now — spin again.");renderRecent();return;}
+  currentCombo={cuisine,vibe,for:forVal||profile.party||"For Two"};
+  resetResult();
+  applyComboToReels(currentCombo);
+  document.getElementById("execButtons")?.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+/* ================= VAULT VIEWS (#1, #15, #16) ================= */
+function setVaultView(v){
+  ["recipes","history","week","taste"].forEach(n=>{
+    document.getElementById("vview-"+n)?.classList.toggle("active",n===v);
+    document.getElementById("vnav-"+n)?.classList.toggle("active",n===v);
   });
-  document.getElementById("comboText").textContent=`${currentCombo.cuisine} · ${currentCombo.vibe} · ${currentCombo.for}`;
-  document.getElementById("comboBadge").classList.add("visible");
-  document.getElementById("execButtons").classList.add("visible");
-  showReelControls(currentCombo);
+  if(v==="recipes")renderVaultRecipes();
+  if(v==="history")renderVaultHistory();
+  if(v==="week")renderWeek();
+  if(v==="taste")renderTaste();
 }
+function renderVaultRecipes(){
+  const el=document.getElementById("vaultRecipeList"); if(!el)return;
+  document.getElementById("vaultRecipeDetail").style.display="none";
+  el.style.display="block";
+  if(!savedRecipes.length){
+    el.innerHTML=`<div class="empty-state">
+      <div class="empty-state-icon">📓</div>
+      <div class="empty-state-title">Nothing saved yet</div>
+      <div class="empty-state-sub">Hit SAVE THIS RECIPE on any cook ticket and it lands here — permanently, on this device.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML=savedRecipes.map((r,i)=>`
+    <div class="vault-item" role="button" tabindex="0" onclick="openVaultRecipe(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openVaultRecipe(${i});}">
+      <div class="vault-item-main">
+        <div class="vault-item-title">${esc(r.title)}</div>
+        <div class="vault-item-meta">${esc([r.cuisine,r.vibe,r.time].filter(Boolean).join(" · "))}${r.savedAt?` · saved ${relTime(r.savedAt)}`:""}</div>
+      </div>
+      <button class="vault-item-del" onclick="deleteSavedRecipe(${i},event)" aria-label="Remove ${esc(r.title)} from vault">×</button>
+    </div>`).join("");
+}
+function openVaultRecipe(i){
+  const r=savedRecipes[i]; if(!r)return;
+  document.getElementById("vaultRecipeList").style.display="none";
+  document.getElementById("vaultRecipeDetail").style.display="block";
+  renderTicket(r,"vaultRecipeInner","vault");
+  document.getElementById("vaultRecipeDetail").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function closeVaultRecipe(){
+  document.getElementById("vaultRecipeDetail").style.display="none";
+  document.getElementById("vaultRecipeList").style.display="block";
+  stopTimer();
+}
+function renderVaultHistory(){
+  const el=document.getElementById("vaultHistoryList"); if(!el)return;
+  if(!history.length){
+    el.innerHTML=`<div class="empty-state">
+      <div class="empty-state-icon">🕐</div>
+      <div class="empty-state-title">No decisions logged</div>
+      <div class="empty-state-sub">Every spin, cook and reservation shows up here — the last 30 of them.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML=[...history].reverse().map(h=>`
+    <div class="recent-row" style="cursor:default">
+      <span class="recent-outcome" aria-hidden="true">${OUTCOME_ICON[h.outcome]||"🎲"}</span>
+      <span class="recent-main">
+        <span class="recent-combo">${esc(h.title||`${h.cuisine} · ${h.vibe}`)}</span>
+        <span class="recent-when">${OUTCOME_WORD[h.outcome]||"Spun"} · ${esc(h.cuisine)} · ${relTime(h.ts)}</span>
+      </span>
+    </div>`).join("");
+}
+function renderWeek(){
+  const el=document.getElementById("vaultWeekInner"); if(!el)return;
+  const s=computeStreak(), w=weekRecap();
+  if(!history.length){
+    el.innerHTML=`<div class="empty-state">
+      <div class="empty-state-icon">🔥</div>
+      <div class="empty-state-title">Your week starts tonight</div>
+      <div class="empty-state-sub">Decide once a day and the streak begins. Capitán is keeping score.</div>
+    </div>`;
+    return;
+  }
+  const line=w.total===0?"Quiet week so far."
+    :`${w.total} decision${w.total===1?"":"s"} across ${w.decidedDays} day${w.decidedDays===1?"":"s"}${w.topCuisine?` — mostly ${w.topCuisine}`:""}.`;
+  el.innerHTML=`
+    <div class="streak-hero">
+      <div class="streak-num">${s}</div>
+      <div class="streak-caption">${s===1?"DAY STREAK":"DAY NO-DEBATE STREAK"}</div>
+    </div>
+    <div class="recap-grid">
+      <div class="recap-stat"><div class="recap-num">${w.cooked||0}</div><div class="recap-stat-label">COOKED</div></div>
+      <div class="recap-stat"><div class="recap-num">${w.went_out||0}</div><div class="recap-stat-label">WENT OUT</div></div>
+      <div class="recap-stat"><div class="recap-num">${w.ordered||0}</div><div class="recap-stat-label">ORDERED</div></div>
+    </div>
+    <div class="insight-row"><span class="insight-icon">📊</span><span>${esc(line)}</span></div>
+    <button class="receipt-btn" onclick="shareRecap()">📤 &nbsp; SHARE YOUR WEEK</button>`;
+}
+async function shareRecap(){
+  const s=computeStreak(), w=weekRecap();
+  const text=`My week in food 🍽️\n🔥 ${s}-day no-debate streak\n🍳 Cooked ${w.cooked||0} · 🍽️ Went out ${w.went_out||0} · 🛵 Ordered ${w.ordered||0}${w.topCuisine?`\nMost eaten: ${w.topCuisine}`:""}\n\nhttps://whatweeating.netlify.app`;
+  if(navigator.share){try{await navigator.share({text});return;}catch(e){if(e.name==="AbortError")return;}}
+  try{await navigator.clipboard.writeText(text);toast("Recap copied");}catch{toast("Couldn't copy");}
+}
+function renderTaste(){
+  const el=document.getElementById("vaultTasteInner"); if(!el)return;
+  const t=tasteProfile();
+  if(!t.enoughData){
+    el.innerHTML=`<div class="empty-state">
+      <div class="empty-state-icon">🧠</div>
+      <div class="empty-state-title">Capitán is still watching</div>
+      <div class="empty-state-sub">${t.sampleSize} decision${t.sampleSize===1?"":"s"} logged. After 4, patterns start showing up here — and start weighting your spins.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML=`
+    <div class="sheet-hint">Built from your last ${t.sampleSize} decisions and your vault. This quietly weights the reels — it never overrides your dietary rules.</div>
+    ${t.insights.map(i=>`<div class="insight-row"><span class="insight-icon">${i.icon}</span><span>${i.text}</span></div>`).join("")}
+    <div class="sheet-section" style="margin-top:16px">
+      <div class="sheet-label">YOUR TOP CUISINES</div>
+      <div class="chip-row">${t.ranked.slice(0,6).map(([c,n])=>`<span class="chip on">${esc(c)} · ${n}</span>`).join("")}</div>
+    </div>`;
+}
+
 function updateBanCount(){
   const el=document.getElementById("banCount");if(!el)return;
   let total=0;Object.values(dislikes).forEach(s=>total+=s.size);
@@ -1134,25 +2418,69 @@ function updateBanCount(){
   else el.classList.remove("visible");
 }
 function clearAllBans(){
-  dislikes={};saveDislikes();updateBanCount();
+  dislikes={};saveDislikes();updateBanCount();renderRecent();
   document.querySelectorAll(".reel-ctrl-btn.dislike-btn").forEach(btn=>{btn.textContent="👎 BAN";btn.classList.remove("disliked-active");});
   document.querySelectorAll(".reel.disliked").forEach(r=>r.classList.remove("disliked"));
 }
 
-// #4 — Duo share link
+/* ================= DUO SHARE LINK (#2, #4, #20) ================= */
+function b64url(obj){
+  const bytes=new TextEncoder().encode(JSON.stringify(obj));
+  let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function unb64url(str){
+  const s=str.replace(/-/g,"+").replace(/_/g,"/");
+  const bin=atob(s+"=".repeat((4-s.length%4)%4));
+  return JSON.parse(new TextDecoder().decode(Uint8Array.from(bin,c=>c.charCodeAt(0))));
+}
+// Returns a payload only when every field decodes to a value this build actually knows.
+function parseDuoToken(raw){
+  if(!raw)return null;
+  let d; try{ d=unb64url(raw); }catch{ return null; }
+  if(!d||typeof d!=="object"||d.v!==1)return null;
+  const name=typeof d.n==="string"&&d.n.trim()?d.n.trim().slice(0,12):"Them";
+  if(d.f==="veto"){
+    const c=Array.isArray(d.c)?d.c.filter(x=>DUO_OPTIONS.cuisine.includes(x)):[];
+    const m=Array.isArray(d.m)?d.m.filter(x=>DUO_OPTIONS.mood.includes(x)):[];
+    if(c.length!==VETO_CUISINES||m.length!==VETO_MOODS)return null;
+    return {flow:"veto",name,cuisines:c,moods:m};
+  }
+  if(d.f==="pick"){
+    if(!DUO_OPTIONS.mood.includes(d.mo)||!DUO_OPTIONS.cuisine.includes(d.cu)||!DUO_OPTIONS.budget.includes(d.b))return null;
+    return {flow:"pick",name,mood:d.mo,cuisine:d.cu,budget:d.b};
+  }
+  return null;
+}
 function checkDuoChallenge(){
+  const wrap=document.getElementById("duoChallengeWrap"); if(!wrap)return;
+  if(duoFlow==="veto"){wrap.style.display="block";return;}
   const p1=duoSelections.p1;
-  const wrap=document.getElementById("duoChallengeWrap");
-  if(wrap)wrap.style.display=(p1.mood&&p1.cuisine&&p1.budget)?"block":"none";
+  wrap.style.display=(p1.mood&&p1.cuisine&&p1.budget)?"block":"none";
 }
 async function generateDuoLink(){
-  const p1=duoSelections.p1;
-  const params=new URLSearchParams({duo:"1",m:p1.mood,c:p1.cuisine,b:p1.budget});
-  const url=`${location.origin}${location.pathname}?${params}`;
+  let payload;
+  if(duoFlow==="veto"){
+    const p=players[0];
+    if(p.cuisines.length<VETO_CUISINES||p.moods.length<VETO_MOODS){
+      toast(`Cross off ${VETO_CUISINES} cuisines and ${VETO_MOODS} mood first`); return;
+    }
+    payload={v:1,f:"veto",n:p.name,c:p.cuisines,m:p.moods};
+  } else {
+    const p1=duoSelections.p1;
+    if(!p1.mood||!p1.cuisine||!p1.budget){toast("Make all three picks first");return;}
+    payload={v:1,f:"pick",n:players[0].name,mo:p1.mood,cu:p1.cuisine,b:p1.budget};
+  }
+  const url=`${location.origin}${location.pathname}?duo=${b64url(payload)}`;
   const copied=document.getElementById("duoChallengeCopied");
-  if(navigator.share){try{await navigator.share({title:"What We Eating — Duo Challenge",url});return;}catch{}}
-  try{await navigator.clipboard.writeText(url);if(copied){copied.style.display="block";setTimeout(()=>copied.style.display="none",3000);}}
-  catch{prompt("Copy this link:",url);}
+  if(navigator.share){
+    try{ await navigator.share({title:"What We Eating — Duo Challenge",text:"I've locked mine in. Your turn.",url}); return; }
+    catch(e){ if(e.name==="AbortError")return; }
+  }
+  try{
+    await navigator.clipboard.writeText(url);
+    if(copied){copied.style.display="block";setTimeout(()=>copied.style.display="none",3000);}
+  }catch{ prompt("Copy this link:",url); }
 }
 function selectDuoOption(player,cat,val){
   const container=document.getElementById(`${player}-${cat}`);if(!container)return;
@@ -1163,13 +2491,50 @@ function selectDuoOption(player,cat,val){
 }
 function checkDuoInvite(){
   const params=new URLSearchParams(location.search);
-  if(!params.get("duo"))return;
-  const m=params.get("m"),c=params.get("c"),b=params.get("b");
-  if(m)selectDuoOption("p1","mood",m);
-  if(c)selectDuoOption("p1","cuisine",c);
-  if(b)selectDuoOption("p1","budget",b);
+  const raw=params.get("duo");
+  if(!raw)return;
   const banner=document.getElementById("duoInviteBanner");
-  if(banner)banner.style.display="block";
+
+  // Legacy links used plain m/c/b params; accept them when they decode to real values.
+  let data=parseDuoToken(raw);
+  if(!data&&raw==="1"){
+    const mo=params.get("m"),cu=params.get("c"),b=params.get("b");
+    if(DUO_OPTIONS.mood.includes(mo)&&DUO_OPTIONS.cuisine.includes(cu)&&DUO_OPTIONS.budget.includes(b))
+      data={flow:"pick",name:"Them",mood:mo,cuisine:cu,budget:b};
+  }
+
+  if(!data){
+    if(banner){
+      banner.classList.add("expired");
+      banner.innerHTML=`<strong>🔗 THIS LINK LOOKS EXPIRED</strong>Capitán couldn't read your friend's picks. Start a fresh round and send them a new link.`;
+      banner.style.display="block";
+    }
+    setTab("duo");
+    return;
+  }
+
+  players[0].name=data.name;
+  if(data.flow==="veto"){
+    setDuoFlow("veto");
+    players[0].cuisines=[...data.cuisines];
+    players[0].moods=[...data.moods];
+    buildVetoUI();
+    if(banner){
+      banner.classList.remove("expired");
+      banner.innerHTML=`<strong>👫 CHALLENGE ACCEPTED</strong>${esc(data.name)} already crossed off <strong>${data.cuisines.map(esc).join(" and ")}</strong> and <strong>${esc(data.moods[0])}</strong>. Add your vetoes, then find the match.`;
+      banner.style.display="block";
+    }
+  } else {
+    setDuoFlow("pick");
+    selectDuoOption("p1","mood",data.mood);
+    selectDuoOption("p1","cuisine",data.cuisine);
+    selectDuoOption("p1","budget",data.budget);
+    if(banner){
+      banner.classList.remove("expired");
+      banner.innerHTML=`<strong>👫 CHALLENGE ACCEPTED</strong>${esc(data.name)} locked in <strong>${esc(data.cuisine)}</strong>, <strong>${esc(data.mood)}</strong>, <strong>${esc(data.budget)}</strong>. Now choose yours — then find your match.`;
+      banner.style.display="block";
+    }
+  }
   setTab("duo");
 }
 function calcCompromiseScore(p1,p2){

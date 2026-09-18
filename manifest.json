@@ -1,0 +1,21 @@
+{
+  "name": "What We Eating",
+  "short_name": "What We Eating",
+  "description": "One spin. No debate. Capitán decides.",
+  "start_url": "/?src=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07030e",
+  "theme_color": "#07030e",
+  "categories": ["food", "lifestyle", "utilities"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Spin for dinner", "short_name": "Spin", "url": "/?tab=spin", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "My vault", "short_name": "Vault", "url": "/?tab=vault", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
